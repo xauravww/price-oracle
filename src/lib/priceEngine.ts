@@ -109,7 +109,7 @@ export function calculatePriceClarity(userPrice: number, entries: PriceEntry[]):
   };
 }
 
-export async function getExpertOpinion(item: string, price: number, history: PriceEntry[]): Promise<string> {
+export async function getExpertOpinion(item: string, price: number, history: PriceEntry[], category: string = 'general'): Promise<string> {
   try {
     const response = await fetch(process.env.AI_SERVICE_URL || "http://localhost:3010/v1/chat/completions", {
       method: "POST",
@@ -122,11 +122,11 @@ export async function getExpertOpinion(item: string, price: number, history: Pri
         messages: [
           {
             role: "system",
-            content: "You are a local price expert. Analyze the given price against historical data and give a concise verdict."
+            content: `You are a local price expert specializing in ${category}. Analyze the given price against historical data and give a concise verdict with practical advice.`
           },
           {
             role: "user",
-            content: `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}`
+            content: `Category: ${category}, Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}`
           }
         ]
       })

@@ -8,6 +8,7 @@ export default function Home() {
   const [item, setItem] = useState('');
   const [price, setPrice] = useState('');
   const [location, setLocation] = useState('');
+  const [category, setCategory] = useState('transport');
   const [entries, setEntries] = useState<PriceEntry[]>([]);
   const [analysis, setAnalysis] = useState<PriceAnalysis | null>(null);
   const [isContributing, setIsContributing] = useState(false);
@@ -55,12 +56,17 @@ export default function Home() {
     setIsAiLoading(true);
     try {
       const { getExpertOpinion } = await import('@/lib/priceEngine');
-      const opinion = await getExpertOpinion(item, Number(price), filtered);
+      const opinion = await getExpertOpinion(item, Number(price), filtered, category);
       // Format for UI: The UI expects { opinion: string, negotiationTips: string[] }
       // We'll parse the opinion or just wrap it
       setAiAdvice({
         opinion: opinion,
-        negotiationTips: ["Ask for a discount if paying cash", "Check other vendors in the same area"]
+        negotiationTips: [
+          category === 'transport' ? "Check ride-sharing apps for baseline" : 
+          category === 'food' ? "Check if portions justify the price" :
+          category === 'services' ? "Ask for a warranty on the repair" :
+          "Compare with at least 2 other local vendors"
+        ]
       });
     } catch (e) {
       console.error(e);
@@ -111,7 +117,18 @@ export default function Home() {
           {!isContributing ? (
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-4">
-                <input type="text" placeholder="Item e.g. 'Auto'..." className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold" value={item} onChange={(e) => setItem(e.target.value)} />
+                <select 
+                  className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold text-slate-500 appearance-none"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="transport">Transport (Auto/Cab)</option>
+                  <option value="food">Street Food & Local Stalls</option>
+                  <option value="services">Repair & Small Services</option>
+                  <option value="market">Local Vendors & Markets</option>
+                  <option value="other">Other</option>
+                </select>
+                <input type="text" placeholder="Item e.g. 'Samosa', 'AC Repair'..." className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold" value={item} onChange={(e) => setItem(e.target.value)} />
                 <div className="flex gap-4">
                   <input type="number" placeholder="Price (₹)" className="flex-[2] p-4 bg-slate-50 rounded-2xl outline-none font-bold" value={price} onChange={(e) => setPrice(e.target.value)} />
                   <input type="text" placeholder="Area" className="flex-[1] p-4 bg-slate-50 rounded-2xl outline-none font-bold" value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)} />
@@ -121,6 +138,17 @@ export default function Home() {
             </div>
           ) : (
             <form onSubmit={handleContribute} className="space-y-4">
+              <select 
+                className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold text-slate-500 appearance-none"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="transport">Transport (Auto/Cab)</option>
+                <option value="food">Street Food & Local Stalls</option>
+                <option value="services">Repair & Small Services</option>
+                <option value="market">Local Vendors & Markets</option>
+                <option value="other">Other</option>
+              </select>
               <input type="text" placeholder="What did you buy?" className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold" required onChange={(e) => setItem(e.target.value)} />
               <input type="text" placeholder="Location" className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold" required onChange={(e) => setLocation(e.target.value)} />
               <input type="number" placeholder="Price Paid (₹)" className="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold" required onChange={(e) => setPrice(e.target.value)} />
