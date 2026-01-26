@@ -1,0 +1,132 @@
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:39:59.242Z","verify":true}
+{"backend":"auto","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:39:59.247Z"}
+{"level":"error","message":"No keywords provided","timestamp":"2026-01-26T10:39:59.248Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:40:02.346Z","verify":true}
+{"backend":"auto","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:40:02.350Z"}
+{"level":"error","message":"No keywords provided","timestamp":"2026-01-26T10:40:02.351Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:40:06.819Z","verify":true}
+{"backend":"auto","keywords":"OpenAI","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:40:06.824Z"}
+{"keywords":"OpenAI","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:40:06.824Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:40:06.825Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:40:08.369Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:40:08.372Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:40:08.446Z","verify":true}
+{"backend":"auto","keywords":"OpenAI","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:40:08.451Z"}
+{"keywords":"OpenAI","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:40:08.452Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:40:08.454Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:40:10.164Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:40:10.167Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:41:48.946Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:41:48.950Z"}
+{"keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:41:48.952Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:41:48.952Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T10:41:50.678Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T10:41:50.681Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:42:03.210Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:42:03.214Z"}
+{"keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:42:03.215Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:42:03.216Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T10:42:04.629Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T10:42:04.631Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:43:18.345Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in 1500 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:43:18.349Z"}
+{"keywords":"iphone 16 pro in 1500 rs price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:43:18.350Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:43:18.350Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:43:19.882Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:43:19.891Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:45:26.340Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 pro in 1500 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:45:26.345Z"}
+{"keywords":"iphone 15 pro in 1500 rs price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:45:26.346Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:45:26.346Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:45:27.739Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:45:27.742Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:47:39.742Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:47:39.747Z"}
+{"keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:47:39.748Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:47:39.749Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:47:41.311Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:47:41.313Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:48:03.818Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:48:03.822Z"}
+{"keywords":"iPhone 15 price 70000 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:48:03.823Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:48:03.824Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T10:48:05.276Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T10:48:05.278Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:50:28.271Z","verify":true}
+{"backend":"auto","keywords":"mobile case cover of iphone in 1200 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:50:28.275Z"}
+{"keywords":"mobile case cover of iphone in 1200 rs price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:50:28.276Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:50:28.277Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T10:50:29.896Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T10:50:29.899Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T10:54:49.998Z","verify":true}
+{"backend":"auto","keywords":"mobile phone cover in 1500 rs in delhi price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T10:54:50.005Z"}
+{"keywords":"mobile phone cover in 1500 rs in delhi price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T10:54:50.005Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T10:54:50.006Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T10:54:51.288Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T10:54:51.290Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:13:42.274Z","verify":true}
+{"backend":"auto","keywords":"samsung gaalxy latest phone price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:13:42.277Z"}
+{"keywords":"samsung gaalxy latest phone price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:13:42.278Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:13:42.278Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:13:43.968Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:13:43.969Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:19:24.540Z","verify":true}
+{"backend":"auto","keywords":"iphone price price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:19:24.543Z"}
+{"keywords":"iphone price price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:19:24.543Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:19:24.543Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:19:25.670Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:19:25.671Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:20:48.298Z","verify":true}
+{"backend":"auto","keywords":"iphone price price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:20:48.300Z"}
+{"keywords":"iphone price price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:20:48.300Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:20:48.301Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T11:20:49.579Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T11:20:49.580Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:23:15.352Z","verify":true}
+{"backend":"auto","keywords":"samsung led price price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:23:15.354Z"}
+{"keywords":"samsung led price price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:23:15.354Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:23:15.355Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:23:16.852Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:23:16.853Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:24:10.634Z","verify":true}
+{"backend":"auto","keywords":"maruti 800 in 10000 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:24:10.635Z"}
+{"keywords":"maruti 800 in 10000 rs price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:24:10.636Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:24:10.636Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T11:24:11.729Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T11:24:11.730Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:26:03.416Z","verify":true}
+{"backend":"auto","keywords":"freedom 251 mobile  price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:26:03.418Z"}
+{"keywords":"freedom 251 mobile  price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:26:03.418Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:26:03.419Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:26:04.616Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:26:04.617Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:26:15.852Z","verify":true}
+{"backend":"auto","keywords":"freedom 251 mobile in 1000 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:26:15.853Z"}
+{"keywords":"freedom 251 mobile in 1000 rs price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:26:15.853Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:26:15.853Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:26:17.097Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:26:17.097Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:27:38.678Z","verify":true}
+{"backend":"auto","keywords":"gaming console in 500 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:27:38.681Z"}
+{"keywords":"gaming console in 500 rs price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:27:38.682Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:27:38.682Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:27:39.836Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:27:39.837Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:32:51.178Z","verify":true}
+{"backend":"auto","keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:32:51.182Z"}
+{"keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:32:51.183Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:32:51.184Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:32:52.648Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:32:52.649Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:32:55.227Z","verify":true}
+{"backend":"auto","keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:32:55.228Z"}
+{"keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:32:55.229Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:32:55.229Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:32:56.188Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:32:56.189Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:32:58.446Z","verify":true}
+{"backend":"auto","keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:32:58.447Z"}
+{"keywords":"gaming console in for 500 price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:32:58.447Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:32:58.447Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:32:59.346Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:32:59.347Z"}

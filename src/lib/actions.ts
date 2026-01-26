@@ -8,15 +8,25 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { SignJWT } from 'jose';
 
-export async function getEntries(): Promise<PriceEntry[]> {
-  const stmt = db.prepare('SELECT * FROM price_entries ORDER BY timestamp DESC');
-  const rows = stmt.all() as any[];
+export async function getEntries(page: number = 1, limit: number = 10): Promise<{ entries: PriceEntry[], totalPages: number, totalCount: number }> {
+  const offset = (page - 1) * limit;
   
-  return rows.map(row => ({
+  const stmt = db.prepare('SELECT * FROM price_entries ORDER BY timestamp DESC LIMIT ? OFFSET ?');
+  const rows = stmt.all(limit, offset) as any[];
+  
+  const totalCount = (db.prepare('SELECT COUNT(*) as count FROM price_entries').get() as any).count;
+  
+  const entries = rows.map(row => ({
     ...row,
     timestamp: new Date(row.timestamp),
     isTrusted: Boolean(row.isTrusted)
   }));
+
+  return {
+    entries,
+    totalPages: Math.ceil(totalCount / limit),
+    totalCount
+  };
 }
 
 export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upvotes' | 'downvotes' | 'isTrusted'>) {
@@ -111,27 +121,106 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
 }
 
 export async function processPriceRequest(query: string, deepSearch: boolean = false) {
-  const history = await searchSimilarEntries(query);
-  const webData = await getWebMarketPrices(query, deepSearch);
+  const startTime = Date.now();
+  let status = 'success';
+  let targetPrice = 0;
   
-  const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
-  let extractedPrice = null;
-  if (priceMatch) {
-    const val = priceMatch[1];
-    extractedPrice = parseInt(val.replace(/,/g, ''));
-  }
-  
-  const targetPrice = extractedPrice !== null ? extractedPrice : (history.length > 0 
-    ? history.reduce((acc, curr) => acc + curr.price, 0) / history.length 
-    : 0);
+  try {
+    const history = await searchSimilarEntries(query);
+    const webData = await getWebMarketPrices(query, deepSearch);
+    
+    const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
+    let extractedPrice = null;
+    if (priceMatch) {
+      const val = priceMatch[1];
+      extractedPrice = parseInt(val.replace(/,/g, ''));
+    }
+    
+    if (extractedPrice === null) {
+      return {
+        symbol: query.toUpperCase(),
+        price: 0,
+        analysis: "I found some information, but to give you a precise verdict, please tell me what price you are getting for this product (e.g., 'iPhone 15 for 60000'). Location is optional but helpful!",
+        webData: webData
+      };
+    }
 
-  const analysis = await getExpertOpinionAction(query, targetPrice, history, 'general', webData);
+    targetPrice = extractedPrice;
+
+    // Auto-contribute to DB if price is found in query
+    if (extractedPrice !== null) {
+      const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
+      const location = locationMatch ? locationMatch[1] : "Unknown";
+      const item = query.replace(priceMatch[0], '').replace(locationMatch ? locationMatch[0] : '', '').trim();
+      
+      if (item.length > 2) {
+        await addEntry({
+          item: item,
+          location: location,
+          price: extractedPrice,
+          contributorId: 'auto-logged'
+        });
+      }
+    }
+
+    const analysis = await getExpertOpinionAction(query, targetPrice, history, 'general', webData);
+    
+    const responseTime = Date.now() - startTime;
+    
+    // Log the request
+    db.prepare(`
+      INSERT INTO logs (query, price_result, deep_search, status, response_time)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(query, targetPrice, deepSearch ? 1 : 0, 'success', responseTime);
+
+    // Calculate dynamic confidence score
+    let confidenceScore = 70; // Base confidence
+    if (history.length > 0) confidenceScore += Math.min(history.length * 5, 15);
+    if (webData && webData.length > 100) confidenceScore += 10;
+    if (deepSearch) confidenceScore += 4;
+    confidenceScore = Math.min(confidenceScore, 99);
+
+    return {
+      symbol: query.toUpperCase(),
+      price: targetPrice,
+      analysis: analysis,
+      webData: webData,
+      confidenceScore: confidenceScore
+    };
+  } catch (error) {
+    const responseTime = Date.now() - startTime;
+    db.prepare(`
+      INSERT INTO logs (query, price_result, deep_search, status, response_time)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(query, 0, deepSearch ? 1 : 0, 'error', responseTime);
+    throw error;
+  }
+}
+
+export async function getLogs() {
+  const stmt = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT 100');
+  return stmt.all() as any[];
+}
+
+export async function getStats() {
+  const totalQueries = db.prepare('SELECT COUNT(*) as count FROM logs').get() as any;
+  const avgResponseTime = db.prepare('SELECT AVG(response_time) as avg FROM logs').get() as any;
+  const successRate = db.prepare("SELECT (COUNT(CASE WHEN status = 'success' THEN 1 END) * 100.0 / COUNT(*)) as rate FROM logs").get() as any;
   
+  // Get daily query counts for the last 7 days
+  const dailyQueries = db.prepare(`
+    SELECT date(timestamp) as date, COUNT(*) as count 
+    FROM logs 
+    GROUP BY date(timestamp) 
+    ORDER BY date DESC 
+    LIMIT 7
+  `).all() as any[];
+
   return {
-    symbol: query.toUpperCase(),
-    price: targetPrice,
-    analysis: analysis,
-    webData: webData
+    totalQueries: totalQueries.count,
+    avgResponseTime: Math.round(avgResponseTime.avg || 0),
+    successRate: Math.round(successRate.rate || 0),
+    dailyQueries: dailyQueries.reverse()
   };
 }
 
@@ -149,13 +238,16 @@ export async function getExpertOpinionAction(item: string, price: number, histor
     const systemPrompt = `You are a price transparency expert. 
     Goal: Evaluate if a user's proposed price is a good deal based on historical data.
     
+    CRITICAL LOGIC:
+    - If User's Proposed Price is HIGHER than the Market/Historical Price, it is OVERPRICED.
+    - If User's Proposed Price is LOWER than the Market/Historical Price, it is UNDERPRICED.
+    - If they are similar, it is a FAIR DEAL.
+
     STRICT OUTPUT FORMAT:
     Expected Price Range: ₹X – ₹Y
-    Verdict: Likely Underpriced / Reasonable / Slightly High / Likely Overpriced
+    Verdict: Likely Underpriced / Fair Deal / Slightly High / Likely Overpriced
     Confidence: Low / Medium / High
-    Explanation: (1 line explanation)
-
-    CRITICAL: If the proposed price is extremely low (like 500 for a car), mark it as "Likely Underpriced" and mention it might be a mistake or a scam.`;
+    Explanation: (1 line explanation explaining WHY based on the price difference)`;
 
     const response = await fetch(apiUrl, {
       method: "POST",

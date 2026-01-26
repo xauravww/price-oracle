@@ -29,6 +29,16 @@ db.exec(`
     id TEXT PRIMARY KEY,
     embedding FLOAT[1536]
   );
+
+  CREATE TABLE IF NOT EXISTS logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    query TEXT NOT NULL,
+    price_result REAL,
+    deep_search INTEGER,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status TEXT,
+    response_time INTEGER
+  );
 `);
 
 export default db;

@@ -1,7 +1,7 @@
 "use client";
 
 import { CornerRightUp, Mic } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useAutoResizeTextarea } from "@/components/hooks/use-auto-resize-textarea";
@@ -13,6 +13,7 @@ interface AIInputProps {
   maxHeight?: number
   onSubmit?: (value: string) => void
   className?: string
+  initialValue?: string
 }
 
 export function AIInput({
@@ -21,13 +22,22 @@ export function AIInput({
   minHeight = 52,
   maxHeight = 200,
   onSubmit,
-  className
+  className,
+  initialValue = ""
 }: AIInputProps) {
   const { textareaRef, adjustHeight } = useAutoResizeTextarea({
     minHeight,
     maxHeight,
   });
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(initialValue);
+
+  useEffect(() => {
+    if (initialValue) {
+      setInputValue(initialValue);
+      // Small delay to ensure textarea is rendered before adjusting height
+      setTimeout(() => adjustHeight(), 0);
+    }
+  }, [initialValue, adjustHeight]);
 
   const handleReset = () => {
     if (!inputValue.trim()) return;
