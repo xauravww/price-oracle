@@ -190,9 +190,10 @@ export async function getExpertOpinionAction(item: string, price: number, histor
   } catch (error: any) {
     console.error("AI Error:", error);
     // Return a clean fallback instead of showing the error to the user
+    const confidence = history.length > 5 ? "High" : history.length > 0 ? "Medium" : "Low";
     return `Expected Price Range: ₹${Math.round(price * 0.9)} – ₹${Math.round(price * 1.1)}
 Verdict: Analysis Pending
-Confidence: Medium
+Confidence: ${confidence}
 Explanation: Based on ${history.length} similar market entries in our database.`;
   }
 }
