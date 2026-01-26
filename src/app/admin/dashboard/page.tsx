@@ -4,7 +4,6 @@ import {
   Search, 
   CheckCircle, 
   Clock, 
-  TrendingUp,
   Zap,
   Database
 } from "lucide-react";

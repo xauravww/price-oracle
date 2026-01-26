@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { addEntry, processPriceRequest, searchSimilarEntries, getEntries } from './actions';
+import { addEntry, processPriceRequest, searchSimilarEntries } from './actions';
 import db from './db';
 
 async function runAllTests() {

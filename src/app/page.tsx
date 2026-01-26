@@ -10,8 +10,15 @@ import {
   CheckCircle2
 } from "lucide-react";
 
+interface PriceResult {
+  price: number;
+  analysis: string;
+  confidenceScore?: number;
+  webData?: string;
+}
+
 function PriceOracleContent() {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<PriceResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [deepSearch, setDeepSearch] = useState(false);
   const [initialValue, setInitialValue] = useState("");

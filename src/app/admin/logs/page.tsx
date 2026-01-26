@@ -1,5 +1,4 @@
 
-import { getLogs } from "@/lib/actions";
 import { Activity, Filter, Download } from "lucide-react";
 import Pagination from "@/components/admin/Pagination";
 import db from "@/lib/db";
@@ -15,8 +14,8 @@ export default async function LogsPage({
   const offset = (currentPage - 1) * limit;
 
   // Fetch paginated logs directly for now or we could update actions.ts
-  const logs = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT ? OFFSET ?').all(limit, offset) as any[];
-  const totalCount = (db.prepare('SELECT COUNT(*) as count FROM logs').get() as any).count;
+  const logs = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT ? OFFSET ?').all(limit, offset) as { id: string, timestamp: string, query: string, price_result: number, response_time: number, status: string }[];
+  const totalCount = (db.prepare('SELECT COUNT(*) as count FROM logs').get() as { count: number }).count;
   const totalPages = Math.ceil(totalCount / limit);
 
   return (

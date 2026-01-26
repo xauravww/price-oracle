@@ -7,8 +7,8 @@ export interface AIAdvice {
 export async function getAIPriceAdvice(
   item: string, 
   price: number, 
-  analysis: any, 
-  webContext: any[]
+  analysis: { averagePrice: number, status: string, volatilityIndex: number }, 
+  webContext: { source: string, price: number }[]
 ): Promise<AIAdvice | null> {
   try {
     const prompt = `

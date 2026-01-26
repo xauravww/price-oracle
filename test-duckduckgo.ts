@@ -1,4 +1,4 @@
-const { duckIt } = require('node-duckduckgo');
+import { duckIt } from 'node-duckduckgo';
 
 async function testDuckDuckGoSearch() {
   console.log('Testing DuckDuckGo Search with node-duckduckgo...\n');
@@ -9,7 +9,7 @@ async function testDuckDuckGoSearch() {
     const response1 = await duckIt('JavaScript tutorials');
     const results1 = response1.data.Results || [];
     console.log(`Found ${results1.length} results`);
-    results1.slice(0, 3).forEach((result, index) => {
+    results1.slice(0, 3).forEach((result: any, index: number) => {
       console.log(`${index + 1}. ${result.Text}`);
       console.log(`   URL: ${result.FirstURL}`);
     });
@@ -20,7 +20,7 @@ async function testDuckDuckGoSearch() {
     const response2 = await duckIt('React hooks', { noHtml: true, parentalFilter: 'Moderate' });
     const results2 = response2.data.Results || [];
     console.log(`Found ${results2.length} results`);
-    results2.slice(0, 2).forEach((result, index) => {
+    results2.slice(0, 2).forEach((result: any, index: number) => {
       console.log(`${index + 1}. ${result.Text}`);
     });
     console.log('');
@@ -35,7 +35,7 @@ async function testDuckDuckGoSearch() {
     
     console.log('\n✅ DuckDuckGo search test completed successfully!');
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error during search test:', error.message);
     console.error('Full error:', error);
   }

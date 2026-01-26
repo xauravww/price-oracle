@@ -3,7 +3,6 @@ import {
   LayoutDashboard, 
   History, 
   Database, 
-  Settings, 
   Home,
   LogOut
 } from "lucide-react";

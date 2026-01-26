@@ -14,13 +14,14 @@ export async function getEntries(page: number = 1, limit: number = 10): Promise<
   const stmt = db.prepare('SELECT * FROM price_entries ORDER BY timestamp DESC LIMIT ? OFFSET ?');
   const rows = stmt.all(limit, offset) as any[];
   
-  const totalCount = (db.prepare('SELECT COUNT(*) as count FROM price_entries').get() as any).count;
+  const totalCountResult = db.prepare('SELECT COUNT(*) as count FROM price_entries').get() as { count: number };
+  const totalCount = totalCountResult.count;
   
   const entries = rows.map(row => ({
     ...row,
     timestamp: new Date(row.timestamp),
     isTrusted: Boolean(row.isTrusted)
-  }));
+  })) as PriceEntry[];
 
   return {
     entries,
@@ -48,13 +49,13 @@ export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upv
     `);
     // sqlite-vec expects Float32Array for embeddings
     vecStmt.run(id, new Float32Array(embedding));
-  } catch (e) {
-    console.error("Failed to save embedding:", e);
+  } catch (error) {
+    console.error("Failed to save embedding:", error);
   }
 
   try {
     revalidatePath('/');
-  } catch (e) {
+  } catch {
     // Ignore revalidation error in non-Next.js environments
   }
 }
@@ -81,9 +82,9 @@ export async function searchSimilarEntries(query: string): Promise<PriceEntry[]>
       ...row,
       timestamp: new Date(row.timestamp),
       isTrusted: Boolean(row.isTrusted)
-    }));
-  } catch (e) {
-    console.error("Vector search failed:", e);
+    })) as PriceEntry[];
+  } catch (error) {
+    console.error("Vector search failed:", error);
     return [];
   }
 }
@@ -108,7 +109,7 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
         const text = await response.text();
         // Return a cleaned snippet of the page content (first 2000 chars)
         return `Source: ${r.title}\nURL: ${r.href}\nContent: ${text.substring(0, 2000)}...`;
-      } catch (e) {
+      } catch {
         return `${r.title}: ${r.body}`;
       }
     }));
@@ -122,7 +123,6 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
 
 export async function processPriceRequest(query: string, deepSearch: boolean = false) {
   const startTime = Date.now();
-  let status = 'success';
   let targetPrice = 0;
   
   try {
@@ -130,7 +130,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
     const webData = await getWebMarketPrices(query, deepSearch);
     
     const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
-    let extractedPrice = null;
+    let extractedPrice: number | null = null;
     if (priceMatch) {
       const val = priceMatch[1];
       extractedPrice = parseInt(val.replace(/,/g, ''));
@@ -148,7 +148,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
     targetPrice = extractedPrice;
 
     // Auto-contribute to DB if price is found in query
-    if (extractedPrice !== null) {
+    if (extractedPrice !== null && priceMatch) {
       const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
       const location = locationMatch ? locationMatch[1] : "Unknown";
       const item = query.replace(priceMatch[0], '').replace(locationMatch ? locationMatch[0] : '', '').trim();
@@ -163,7 +163,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
       }
     }
 
-    const analysis = await getExpertOpinionAction(query, targetPrice, history, 'general', webData);
+    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData);
     
     const responseTime = Date.now() - startTime;
     
@@ -199,13 +199,13 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
 export async function getLogs() {
   const stmt = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT 100');
-  return stmt.all() as any[];
+  return stmt.all() as { id: number, query: string, price_result: number, deep_search: number, status: string, response_time: number, timestamp: string }[];
 }
 
 export async function getStats() {
-  const totalQueries = db.prepare('SELECT COUNT(*) as count FROM logs').get() as any;
-  const avgResponseTime = db.prepare('SELECT AVG(response_time) as avg FROM logs').get() as any;
-  const successRate = db.prepare("SELECT (COUNT(CASE WHEN status = 'success' THEN 1 END) * 100.0 / COUNT(*)) as rate FROM logs").get() as any;
+  const totalQueries = db.prepare('SELECT COUNT(*) as count FROM logs').get() as { count: number };
+  const avgResponseTime = db.prepare('SELECT AVG(response_time) as avg FROM logs').get() as { avg: number };
+  const successRate = db.prepare("SELECT (COUNT(CASE WHEN status = 'success' THEN 1 END) * 100.0 / COUNT(*)) as rate FROM logs").get() as { rate: number };
   
   // Get daily query counts for the last 7 days
   const dailyQueries = db.prepare(`
@@ -214,7 +214,7 @@ export async function getStats() {
     GROUP BY date(timestamp) 
     ORDER BY date DESC 
     LIMIT 7
-  `).all() as any[];
+  `).all() as { date: string, count: number }[];
 
   return {
     totalQueries: totalQueries.count,
@@ -226,7 +226,7 @@ export async function getStats() {
 
 
 
-export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], category: string = 'general', webData: string = ''): Promise<string> {
+export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], webData: string = ''): Promise<string> {
   try {
     const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
     const apiKey = process.env.AI_CLIENT_API_KEY;
@@ -277,9 +277,9 @@ export async function getExpertOpinionAction(item: string, price: number, histor
       throw new Error(`API error: ${response.status} ${errorText.substring(0, 100)}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as { choices: { message: { content: string } }[] };
     return data.choices[0].message.content;
-  } catch (error: any) {
+  } catch (error) {
     console.error("AI Error:", error);
     // Return a clean fallback instead of showing the error to the user
     const confidence = history.length > 5 ? "High" : history.length > 0 ? "Medium" : "Low";

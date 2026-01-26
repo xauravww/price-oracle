@@ -24,7 +24,7 @@ export async function fetchWebPriceContext(query: string): Promise<WebPriceConte
     // Extract potential prices using Regex from snippets
     const results: WebPriceContext[] = data.results
       .slice(0, 3)
-      .map((res: any) => {
+      .map((res: { title: string, url: string, content: string }) => {
         const priceMatch = res.content.match(/₹\s?(\d+(?:,\d+)?)/) || res.content.match(/Rs\.?\s?(\d+(?:,\d+)?)/);
         return {
           source: res.title,
@@ -33,7 +33,7 @@ export async function fetchWebPriceContext(query: string): Promise<WebPriceConte
           price: priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : null
         };
       })
-      .filter((res: any) => res.price !== null);
+      .filter((res: WebPriceContext) => res.price !== null);
 
     return results;
   } catch (error) {

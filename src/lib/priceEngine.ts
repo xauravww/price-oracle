@@ -109,7 +109,7 @@ export function calculatePriceClarity(userPrice: number, entries: PriceEntry[]):
   };
 }
 
-export async function getExpertOpinion(item: string, price: number, history: PriceEntry[], category: string = 'general'): Promise<string> {
+export async function getExpertOpinion(item: string, price: number, history: PriceEntry[]): Promise<string> {
   try {
     const systemPrompt = `You are a price transparency expert. 
          Goal: Evaluate if a user's proposed price is a good deal based on historical data.
@@ -140,16 +140,16 @@ export async function getExpertOpinion(item: string, price: number, history: Pri
           },
           {
             role: "user",
-            content: `Category: ${category}, Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Analyze this quote.`
+            content: `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Analyze this quote.`
           }
         ]
       })
     });
     const text = await response.text();
-    let data;
+    let data: { choices: { message: { content: string } }[] };
     try {
       data = JSON.parse(text);
-    } catch (e) {
+    } catch {
       throw new Error(`Failed to parse AI response: ${text.substring(0, 100)}`);
     }
 
@@ -157,8 +157,9 @@ export async function getExpertOpinion(item: string, price: number, history: Pri
       throw new Error(`Invalid API response structure: ${JSON.stringify(data)}`);
     }
     return data.choices[0].message.content;
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'AI Service unavailable';
     console.error("AI Error:", error);
-    return `Analysis: The price of ₹${price} for ${item} is being evaluated against ${history.length} local market entries. (Error: ${error.message || 'AI Service unavailable'})`;
+    return `Analysis: The price of ₹${price} for ${item} is being evaluated against ${history.length} local market entries. (Error: ${errorMessage})`;
   }
 }

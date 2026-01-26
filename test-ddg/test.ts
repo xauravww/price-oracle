@@ -1,4 +1,4 @@
-const { search } = require('duck-duck-scrape');
+import { search } from 'duck-duck-scrape';
 
 async function runTest() {
   try {

@@ -31,13 +31,13 @@ export function AIInput({
   });
   const [inputValue, setInputValue] = useState(initialValue);
 
+
+
   useEffect(() => {
-    if (initialValue) {
-      setInputValue(initialValue);
-      // Small delay to ensure textarea is rendered before adjusting height
-      setTimeout(() => adjustHeight(), 0);
+    if (inputValue) {
+      adjustHeight();
     }
-  }, [initialValue, adjustHeight]);
+  }, [inputValue, adjustHeight]);
 
   const handleReset = () => {
     if (!inputValue.trim()) return;

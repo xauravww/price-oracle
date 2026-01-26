@@ -1,4 +1,4 @@
-const { DDGS } = require('@phukon/duckduckgo-search');
+import { DDGS } from '@phukon/duckduckgo-search';
 
 async function runTest() {
   try {

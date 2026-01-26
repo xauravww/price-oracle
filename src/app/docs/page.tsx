@@ -54,9 +54,9 @@ export default function DocsPage() {
         <section className="space-y-6">
           <h2 className="text-2xl font-bold border-b pb-2">Algorithm Deep Dive</h2>
           <div className="bg-slate-900 text-slate-300 p-8 rounded-[2rem] font-mono text-sm overflow-x-auto">
-            <p className="text-blue-400 mb-4">// Simplified Weighting Formula</p>
+            <p className="text-blue-400 mb-4">{"// Simplified Weighting Formula"}</p>
             <p>FinalWeight = RecencyWeight * ReputationWeight * ConsensusWeight</p>
-            <p className="mt-4 text-blue-400">// Dynamic Range Calculation</p>
+            <p className="mt-4 text-blue-400">{"// Dynamic Range Calculation"}</p>
             <p>RangeMultiplier = 0.15 + (VolatilityIndex * 0.2)</p>
             <p>FairRange = [Average * (1 - Multiplier), Average * (1 + Multiplier)]</p>
           </div>
@@ -67,7 +67,7 @@ export default function DocsPage() {
           <ul className="space-y-4">
             <li className="flex items-start gap-3">
               <span className="text-green-500 font-bold">✓</span>
-              <p className="text-sm text-slate-600"><b>Anomaly Detection:</b> Prices exceeding 1.8x the average are flagged as "Unlikely" to prevent spam.</p>
+              <p className="text-sm text-slate-600"><b>Anomaly Detection:</b> Prices exceeding 1.8x the average are flagged as &quot;Unlikely&quot; to prevent spam.</p>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-green-500 font-bold">✓</span>
