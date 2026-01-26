@@ -13,11 +13,12 @@ import {
 export default function PriceOracle() {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [deepSearch, setDeepSearch] = useState(false);
 
   const handleSubmit = async (value: string) => {
     setLoading(true);
     try {
-      const data = await processPriceRequest(value);
+      const data = await processPriceRequest(value, deepSearch);
       setResult(data);
     } catch (error) {
       console.error("Error:", error);
@@ -43,6 +44,19 @@ export default function PriceOracle() {
 
         {/* Input Section */}
         <div className="max-w-2xl mx-auto mb-16">
+          <div className="flex justify-end mb-4">
+            <button 
+              onClick={() => setDeepSearch(!deepSearch)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                deepSearch 
+                ? "bg-slate-900 text-white shadow-lg" 
+                : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
+              }`}
+            >
+              <div className={`w-2 h-2 rounded-full ${deepSearch ? "bg-blue-400 animate-pulse" : "bg-slate-300"}`}></div>
+              Deep Search {deepSearch ? "ON" : "OFF"}
+            </button>
+          </div>
           <div className="bg-white p-2 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200">
             <AIInput 
               onSubmit={handleSubmit} 
@@ -97,6 +111,18 @@ export default function PriceOracle() {
                   </p>
                 </div>
               </div>
+
+              {result.webData && (
+                <div className="p-8 md:p-12 bg-slate-50/50 border-t border-slate-100">
+                  <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                    Real-time Web Context
+                  </h3>
+                  <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    {result.webData}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

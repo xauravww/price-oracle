@@ -3,7 +3,10 @@
 
 import db, { getEmbedding } from './db';
 import { PriceEntry } from './priceEngine';
+import { DDGS } from '@phukon/duckduckgo-search';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+import { SignJWT } from 'jose';
 
 export async function getEntries(): Promise<PriceEntry[]> {
   const stmt = db.prepare('SELECT * FROM price_entries ORDER BY timestamp DESC');
@@ -75,12 +78,42 @@ export async function searchSimilarEntries(query: string): Promise<PriceEntry[]>
   }
 }
 
-export async function processPriceRequest(query: string) {
-  // This is a simplified version for the UI
-  // In a real app, we'd parse the query to get item/price
+async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<string> {
+  try {
+    const ddgs = new DDGS();
+    const results = await ddgs.text({ keywords: `${query} price in India` });
+    if (!results || results.length === 0) return "No web data found.";
+    
+    if (!deepSearch) {
+      return results.slice(0, 3).map(r => `${r.title}: ${r.body}`).join('\n');
+    }
+
+    // Get top 2 URLs to read deeply
+    const topResults = results.slice(0, 2);
+    const detailedContents = await Promise.all(topResults.map(async (r) => {
+      try {
+        const readerUrl = `https://r.jina.ai/${r.href}`;
+        const response = await fetch(readerUrl);
+        if (!response.ok) return `${r.title}: ${r.body}`;
+        const text = await response.text();
+        // Return a cleaned snippet of the page content (first 2000 chars)
+        return `Source: ${r.title}\nURL: ${r.href}\nContent: ${text.substring(0, 2000)}...`;
+      } catch (e) {
+        return `${r.title}: ${r.body}`;
+      }
+    }));
+    
+    return detailedContents.join('\n\n---\n\n');
+  } catch (error) {
+    console.error("Web search error:", error);
+    return "Web search failed.";
+  }
+}
+
+export async function processPriceRequest(query: string, deepSearch: boolean = false) {
   const history = await searchSimilarEntries(query);
+  const webData = await getWebMarketPrices(query, deepSearch);
   
-  // Improved price extraction: look for numbers preceded by currency or just numbers if they are in a "price context"
   const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
   let extractedPrice = null;
   if (priceMatch) {
@@ -88,21 +121,23 @@ export async function processPriceRequest(query: string) {
     extractedPrice = parseInt(val.replace(/,/g, ''));
   }
   
-  // If no price found via regex, fallback to history average, but prioritize extracted price
   const targetPrice = extractedPrice !== null ? extractedPrice : (history.length > 0 
     ? history.reduce((acc, curr) => acc + curr.price, 0) / history.length 
     : 0);
 
-  const analysis = await getExpertOpinionAction(query, targetPrice, history);
+  const analysis = await getExpertOpinionAction(query, targetPrice, history, 'general', webData);
   
   return {
     symbol: query.toUpperCase(),
     price: targetPrice,
-    analysis: analysis
+    analysis: analysis,
+    webData: webData
   };
 }
 
-export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], category: string = 'general'): Promise<string> {
+
+
+export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], category: string = 'general', webData: string = ''): Promise<string> {
   try {
     const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
     const apiKey = process.env.AI_CLIENT_API_KEY;
@@ -137,7 +172,9 @@ export async function getExpertOpinionAction(item: string, price: number, histor
           },
           {
             role: "user",
-            content: `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}.`
+            content: `Item: ${item}, Proposed Price: ${price}. 
+            Historical data: ${JSON.stringify(history.slice(0, 5))}.
+            Web Market Context: ${webData}`
           }
         ]
       })
@@ -158,4 +195,38 @@ Verdict: Analysis Pending
 Confidence: Medium
 Explanation: Based on ${history.length} similar market entries in our database.`;
   }
+}
+
+export async function adminLogin(formData: FormData) {
+  const username = formData.get('username');
+  const password = formData.get('password');
+
+  if (
+    username === process.env.ADMIN_USERNAME &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    const secret = new TextEncoder().encode(process.env.ADMIN_PASSWORD);
+    const token = await new SignJWT({ username })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('2h')
+      .sign(secret);
+
+    (await cookies()).set('admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7200, // 2 hours
+    });
+
+    return { success: true };
+  }
+
+  return { success: false, error: 'Invalid credentials' };
+}
+
+export async function deleteEntry(id: string) {
+  db.prepare('DELETE FROM price_entries WHERE id = ?').run(id);
+  db.prepare('DELETE FROM vec_items WHERE id = ?').run(id);
+  revalidatePath('/');
+  revalidatePath('/admin');
 }
