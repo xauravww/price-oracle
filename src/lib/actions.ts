@@ -1,4 +1,3 @@
-
 "use server";
 
 import db, { getEmbedding } from './db';
@@ -33,21 +32,18 @@ export async function getEntries(page: number = 1, limit: number = 10): Promise<
 export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upvotes' | 'downvotes' | 'isTrusted'>) {
   const id = Math.random().toString(36).substr(2, 9);
   
-  // 1. Save to main table
   const stmt = db.prepare(`
     INSERT INTO price_entries (id, item, location, price, contributorId)
     VALUES (?, ?, ?, ?, ?)
   `);
   stmt.run(id, entry.item, entry.location, entry.price, entry.contributorId);
 
-  // 2. Generate and save embedding
   try {
     const embedding = await getEmbedding(entry.item);
     const vecStmt = db.prepare(`
       INSERT INTO vec_items (id, embedding)
       VALUES (?, ?)
     `);
-    // sqlite-vec expects Float32Array for embeddings
     vecStmt.run(id, new Float32Array(embedding));
   } catch (error) {
     console.error("Failed to save embedding:", error);
@@ -56,7 +52,6 @@ export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upv
   try {
     revalidatePath('/');
   } catch {
-    // Ignore revalidation error in non-Next.js environments
   }
 }
 
@@ -64,7 +59,6 @@ export async function searchSimilarEntries(query: string): Promise<PriceEntry[]>
   try {
     const queryEmbedding = await getEmbedding(query);
     
-    // Search for top 10 similar items using vector similarity
     const stmt = db.prepare(`
       SELECT 
         p.*,
@@ -99,7 +93,6 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       return results.slice(0, 3).map(r => `${r.title}: ${r.body}`).join('\n');
     }
 
-    // Get top 2 URLs to read deeply
     const topResults = results.slice(0, 2);
     const detailedContents = await Promise.all(topResults.map(async (r) => {
       try {
@@ -107,7 +100,6 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
         const response = await fetch(readerUrl);
         if (!response.ok) return `${r.title}: ${r.body}`;
         const text = await response.text();
-        // Return a cleaned snippet of the page content (first 2000 chars)
         return `Source: ${r.title}\nURL: ${r.href}\nContent: ${text.substring(0, 2000)}...`;
       } catch {
         return `${r.title}: ${r.body}`;
@@ -121,7 +113,7 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
   }
 }
 
-export async function processPriceRequest(query: string, deepSearch: boolean = false) {
+export async function processPriceRequest(query: string, deepSearch: boolean = false, image?: string) {
   const startTime = Date.now();
   let targetPrice = 0;
   
@@ -147,7 +139,6 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
     targetPrice = extractedPrice;
 
-    // Auto-contribute to DB if price is found in query
     if (extractedPrice !== null && priceMatch) {
       const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
       const location = locationMatch ? locationMatch[1] : "Unknown";
@@ -163,18 +154,16 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
       }
     }
 
-    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData);
+    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData, image);
     
     const responseTime = Date.now() - startTime;
     
-    // Log the request
     db.prepare(`
       INSERT INTO logs (query, price_result, deep_search, status, response_time)
       VALUES (?, ?, ?, ?, ?)
     `).run(query, targetPrice, deepSearch ? 1 : 0, 'success', responseTime);
 
-    // Calculate dynamic confidence score
-    let confidenceScore = 70; // Base confidence
+    let confidenceScore = 70;
     if (history.length > 0) confidenceScore += Math.min(history.length * 5, 15);
     if (webData && webData.length > 100) confidenceScore += 10;
     if (deepSearch) confidenceScore += 4;
@@ -207,7 +196,6 @@ export async function getStats() {
   const avgResponseTime = db.prepare('SELECT AVG(response_time) as avg FROM logs').get() as { avg: number };
   const successRate = db.prepare("SELECT (COUNT(CASE WHEN status = 'success' THEN 1 END) * 100.0 / COUNT(*)) as rate FROM logs").get() as { rate: number };
   
-  // Get daily query counts for the last 7 days
   const dailyQueries = db.prepare(`
     SELECT date(timestamp) as date, COUNT(*) as count 
     FROM logs 
@@ -224,9 +212,7 @@ export async function getStats() {
   };
 }
 
-
-
-export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], webData: string = ''): Promise<string> {
+export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], webData: string = '', image?: string): Promise<string> {
   try {
     const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
     const apiKey = process.env.AI_CLIENT_API_KEY;
@@ -237,6 +223,7 @@ export async function getExpertOpinionAction(item: string, price: number, histor
 
     const systemPrompt = `You are a price transparency expert. 
     Goal: Evaluate if a user's proposed price is a good deal based on historical data.
+    ${image ? "An image of the product has been provided. Use it to identify the product and its condition if possible." : ""}
     
     CRITICAL LOGIC:
     - If User's Proposed Price is HIGHER than the Market/Historical Price, it is OVERPRICED.
@@ -248,6 +235,11 @@ export async function getExpertOpinionAction(item: string, price: number, histor
     Verdict: Likely Underpriced / Fair Deal / Slightly High / Likely Overpriced
     Confidence: Low / Medium / High
     Explanation: (1 line explanation explaining WHY based on the price difference)`;
+
+    const userContent: any = image ? [
+      { type: "text", text: `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Web Market Context: ${webData}` },
+      { type: "image_url", image_url: { url: image } }
+    ] : `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Web Market Context: ${webData}`;
 
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -264,9 +256,7 @@ export async function getExpertOpinionAction(item: string, price: number, histor
           },
           {
             role: "user",
-            content: `Item: ${item}, Proposed Price: ${price}. 
-            Historical data: ${JSON.stringify(history.slice(0, 5))}.
-            Web Market Context: ${webData}`
+            content: userContent
           }
         ]
       })
@@ -281,7 +271,6 @@ export async function getExpertOpinionAction(item: string, price: number, histor
     return data.choices[0].message.content;
   } catch (error) {
     console.error("AI Error:", error);
-    // Return a clean fallback instead of showing the error to the user
     const confidence = history.length > 5 ? "High" : history.length > 0 ? "Medium" : "Low";
     return `Expected Price Range: ₹${Math.round(price * 0.9)} – ₹${Math.round(price * 1.1)}
 Verdict: Analysis Pending
@@ -308,7 +297,7 @@ export async function adminLogin(formData: FormData) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7200, // 2 hours
+      maxAge: 7200,
     });
 
     return { success: true };
@@ -322,4 +311,62 @@ export async function deleteEntry(id: string) {
   db.prepare('DELETE FROM vec_items WHERE id = ?').run(id);
   revalidatePath('/');
   revalidatePath('/admin');
+}
+
+export async function getTrustedSources() {
+  return db.prepare('SELECT * FROM trusted_sources ORDER BY category ASC, name ASC').all() as any[];
+}
+
+export async function addTrustedSource(name: string, url: string, category: string) {
+  try {
+    const trimmedName = name.trim();
+    const trimmedUrl = url.trim().toLowerCase();
+    const trimmedCategory = category.trim();
+
+    if (!trimmedName || !trimmedUrl || !trimmedCategory) {
+      return { success: false, error: "All fields are required" };
+    }
+
+    // Ensure URL is valid
+    try {
+      new URL(trimmedUrl);
+    } catch {
+      return { success: false, error: "Invalid URL format" };
+    }
+
+    // Check for duplicates
+    const existing = db.prepare('SELECT id FROM trusted_sources WHERE url = ?').get(trimmedUrl);
+    if (existing) {
+      return { success: false, error: "A source with this URL already exists" };
+    }
+
+    const stmt = db.prepare('INSERT INTO trusted_sources (name, url, category, isActive) VALUES (?, ?, ?, ?)');
+    stmt.run(trimmedName, trimmedUrl, trimmedCategory, 1);
+    
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error: any) {
+    console.error("Add source error:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteTrustedSource(id: number) {
+  try {
+    db.prepare('DELETE FROM trusted_sources WHERE id = ?').run(id);
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function toggleSourceStatus(id: number, isActive: boolean) {
+  try {
+    db.prepare('UPDATE trusted_sources SET isActive = ? WHERE id = ?').run(isActive ? 1 : 0, id);
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
 }
