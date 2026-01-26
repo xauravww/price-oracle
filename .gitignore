@@ -8,4 +8,4 @@ node_modules
 dist
 .next
 out
-build
+buildtest-ddg/
