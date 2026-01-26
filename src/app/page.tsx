@@ -24,11 +24,11 @@ function PriceOracleContent() {
   const [initialValue, setInitialValue] = useState("");
   const searchParams = useSearchParams();
 
-  const handleSubmit = async (value: string) => {
-    if (!value.trim()) return;
+  const handleSubmit = async (value: string, image?: string) => {
+    if (!value.trim() && !image) return;
     setLoading(true);
     try {
-      const data = await processPriceRequest(value, deepSearch);
+      const data = await processPriceRequest(value, deepSearch, image);
       setResult(data);
     } catch (error) {
       console.error("Error:", error);
@@ -73,7 +73,7 @@ function PriceOracleContent() {
               Deep Search {deepSearch ? "ON" : "OFF"}
             </button>
           </div>
-          <div className="bg-white p-2 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200">
+          <div className="bg-white p-2 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <AIInput 
               onSubmit={handleSubmit} 
               placeholder="Describe your project or product requirements..."
