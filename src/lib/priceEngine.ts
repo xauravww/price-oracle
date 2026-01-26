@@ -111,33 +111,54 @@ export function calculatePriceClarity(userPrice: number, entries: PriceEntry[]):
 
 export async function getExpertOpinion(item: string, price: number, history: PriceEntry[], category: string = 'general'): Promise<string> {
   try {
-    const response = await fetch(process.env.AI_SERVICE_URL || "http://localhost:3010/v1/chat/completions", {
+    const systemPrompt = `You are a price transparency expert. 
+         Goal: Evaluate if a user's proposed price is a good deal based on historical data.
+         
+         STRICT OUTPUT FORMAT:
+         Expected Price Range: ₹X – ₹Y
+         Verdict: Likely Underpriced / Reasonable / Slightly High / Likely Overpriced
+         Confidence: Low / Medium / High
+         Explanation: (1 line explanation)
+
+         CRITICAL: If the proposed price is extremely low (like 500 for a car), mark it as "Likely Underpriced" and mention it might be a mistake or a scam in the explanation.`;
+
+    const apiUrl = process.env.AI_SERVICE_URL || "http://127.0.0.1:3010/v1/chat/completions";
+    const apiKey = process.env.AI_CLIENT_API_KEY;
+
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.AI_CLIENT_API_KEY}`
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
-            content: `You are a local price expert specializing in ${category}. Analyze the given price against historical data and give a concise verdict with practical advice.`
+            content: systemPrompt
           },
           {
             role: "user",
-            content: `Category: ${category}, Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}`
+            content: `Category: ${category}, Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Analyze this quote.`
           }
         ]
       })
     });
-    const data = await response.json();
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error(`Failed to parse AI response: ${text.substring(0, 100)}`);
+    }
+
     if (!data.choices || !data.choices[0]) {
-      throw new Error(`Invalid API response: ${JSON.stringify(data)}`);
+      throw new Error(`Invalid API response structure: ${JSON.stringify(data)}`);
     }
     return data.choices[0].message.content;
-  } catch (error) {
+  } catch (error: any) {
     console.error("AI Error:", error);
-    return `Analysis: The price of ₹${price} for ${item} is being evaluated against ${history.length} local market entries. (AI Service temporarily unavailable)`;
+    return `Analysis: The price of ₹${price} for ${item} is being evaluated against ${history.length} local market entries. (Error: ${error.message || 'AI Service unavailable'})`;
   }
 }
