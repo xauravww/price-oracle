@@ -42,8 +42,8 @@ async function runAllTests() {
   const result2 = await processPriceRequest(query2);
   console.log(`   Query: "${query2}"`);
   console.log(`   Extracted Price: ₹${result2.price}`);
-  console.log(`   AI Analysis:\n${result2.analysis}`);
-  if (result2.price === 125000 && result2.analysis.includes("Reasonable")) {
+  console.log(`   AI Analysis:\n${JSON.stringify(result2.analysis, null, 2)}`);
+  if (result2.price === 125000 && (result2.analysis.verdict.includes("Fair") || result2.analysis.verdict.includes("Underpriced"))) {
     console.log("   ✅ PASS: Correct price extraction and reasonable verdict");
   } else {
     console.log("   ⚠️ NOTE: Check AI output for verdict consistency");
@@ -54,8 +54,8 @@ async function runAllTests() {
   const query3 = "Sony headphones for 45000";
   const result3 = await processPriceRequest(query3);
   console.log(`   Query: "${query3}"`);
-  console.log(`   AI Analysis:\n${result3.analysis}`);
-  if (result3.analysis.toLowerCase().includes("high") || result3.analysis.toLowerCase().includes("overpriced")) {
+  console.log(`   AI Analysis:\n${JSON.stringify(result3.analysis, null, 2)}`);
+  if (result3.analysis.verdict.toLowerCase().includes("high") || result3.analysis.verdict.toLowerCase().includes("overpriced")) {
     console.log("   ✅ PASS: Correctly identified high price");
   }
 
@@ -64,7 +64,7 @@ async function runAllTests() {
   const query4 = "Honda City 2023 for 14 lakhs";
   const result4 = await processPriceRequest(query4);
   console.log(`   Query: "${query4}"`);
-  console.log(`   AI Analysis:\n${result4.analysis}`);
+  console.log(`   AI Analysis:\n${JSON.stringify(result4.analysis, null, 2)}`);
   
   console.log("\n✨ All tests completed.");
 }

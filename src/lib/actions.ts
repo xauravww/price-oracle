@@ -83,37 +83,172 @@ export async function searchSimilarEntries(query: string): Promise<PriceEntry[]>
   }
 }
 
-async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<string> {
+function wordWrap(text: string, width: number = 80): string {
+  const words = text.split(' ');
+  let lines = [];
+  let currentLine = '';
+
+  words.forEach(word => {
+    if ((currentLine + word).length > width) {
+      lines.push(currentLine.trim());
+      currentLine = word + ' ';
+    } else {
+      currentLine += word + ' ';
+    }
+  });
+  lines.push(currentLine.trim());
+  return lines.join('\n');
+}
+
+export interface WebSearchResult {
+  title: string;
+  body: string;
+  source: string;
+  url: string;
+  date: string;
+  price?: string;
+}
+
+async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<WebSearchResult[]> {
   try {
     const ddgs = new DDGS();
-    const results = await ddgs.text({ keywords: `${query} price in India` });
-    if (!results || results.length === 0) return "No web data found.";
     
-    if (!deepSearch) {
-      return results.slice(0, 3).map(r => `${r.title}: ${r.body}`).join('\n');
+    // 1. Get Trusted Sources
+    const sources = db.prepare('SELECT url FROM trusted_sources WHERE isActive = 1').all() as { url: string }[];
+    
+    // 2. Define Search Promises
+    const searchPromises: Promise<any[]>[] = [];
+    
+    // A. Priority Search (Trusted Sources)
+    if (sources.length > 0) {
+      const sourceQuery = ` (${sources.map(s => `site:${new URL(s.url).hostname}`).join(' OR ')})`;
+      const trustedKeywords = `${query} current market price India${sourceQuery}`;
+      searchPromises.push(ddgs.text({ keywords: trustedKeywords }));
+    } else {
+      searchPromises.push(Promise.resolve([]));
     }
 
-    const topResults = results.slice(0, 2);
+    // B. General Web Search (Broader Context)
+    const generalKeywords = `${query} price India`;
+    searchPromises.push(ddgs.text({ keywords: generalKeywords }));
+
+    // 3. Execute Searches in Parallel
+    const [trustedResults, generalResults] = await Promise.all(searchPromises);
+    
+    // 4. Combine & Deduplicate (Trusted First)
+    const combinedRawResults = [...(trustedResults || []), ...(generalResults || [])];
+    
+    if (combinedRawResults.length === 0) return [];
+    
+    const validResults = combinedRawResults.filter(r => r.href && r.href.startsWith('http'));
+
+    const seenUrls = new Set();
+    const uniqueResults = validResults.filter(r => {
+      if (seenUrls.has(r.href)) return false;
+      seenUrls.add(r.href);
+      return true;
+    });
+
+    const currentDate = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    // 5. Process Results (Deep Search or Standard)
+    if (!deepSearch) {
+      // Create a map to track domains and ensure diversity
+      const domainCount = new Map<string, number>();
+      
+      const mixedResults = uniqueResults.reduce((acc, r) => {
+        let hostname = 'Source';
+        try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) {}
+        
+        // Limit to 2 results per domain to ensure variety ("extra sources")
+        const currentCount = domainCount.get(hostname) || 0;
+        if (currentCount >= 2) return acc;
+        
+        domainCount.set(hostname, currentCount + 1);
+        
+        // Extract Price
+        const priceMatch = r.title.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i) || 
+                           r.body.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
+        const price = priceMatch ? `₹${priceMatch[1]}` : undefined;
+
+        acc.push({
+          title: r.title,
+          body: r.body.replace(/\s\s+/g, ' ').trim(),
+          source: hostname,
+          url: r.href,
+          date: currentDate,
+          price: price
+        });
+        return acc;
+      }, [] as WebSearchResult[]);
+
+      return mixedResults.slice(0, 8);
+    }
+
+    // Deep Search Logic
+    const topResults = uniqueResults.slice(0, 4);
     const detailedContents = await Promise.all(topResults.map(async (r) => {
+      let hostname = 'Source';
+      try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) {}
+      
+      let price = undefined;
+      // Initial price check on title/snippet before deep fetch
+      const initialMatch = r.title.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i) || 
+                           r.body.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
+      if (initialMatch) price = `₹${initialMatch[1]}`;
+
       try {
         const readerUrl = `https://r.jina.ai/${r.href}`;
         const response = await fetch(readerUrl);
-        if (!response.ok) return `${r.title}: ${r.body}`;
-        const text = await response.text();
-        return `Source: ${r.title}\nURL: ${r.href}\nContent: ${text.substring(0, 2000)}...`;
+        let content = !response.ok ? r.body : await response.text();
+        
+        // Try to extract price from full content if not found yet
+        if (!price) {
+           const contentMatch = content.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
+           if (contentMatch) price = `₹${contentMatch[1]}`;
+        }
+
+        content = content
+          .replace(/\s\s+/g, ' ')
+          .replace(/\n\s*\n/g, ' ')
+          .trim()
+          .substring(0, 300);
+
+        return {
+          title: r.title,
+          body: content + "...",
+          source: hostname,
+          url: r.href,
+          date: currentDate,
+          price: price
+        };
       } catch {
-        return `${r.title}: ${r.body}`;
+        return {
+          title: r.title,
+          body: r.body.replace(/\s\s+/g, ' ').trim(),
+          source: hostname,
+          url: r.href,
+          date: currentDate,
+          price: price
+        };
       }
     }));
     
-    return detailedContents.join('\n\n---\n\n');
+    return detailedContents;
   } catch (error) {
     console.error("Web search error:", error);
-    return "Web search failed.";
+    return [];
   }
 }
 
-export async function processPriceRequest(query: string, deepSearch: boolean = false, image?: string) {
+export interface AnalysisResult {
+  expectedPriceRange: string;
+  verdict: "Likely Underpriced" | "Fair Deal" | "Slightly High" | "Likely Overpriced" | "Analysis Pending";
+  confidence: "Low" | "Medium" | "High";
+  explanation: string;
+}
+
+export async function processPriceRequest(query: string, deepSearch: boolean = false) {
   const startTime = Date.now();
   let targetPrice = 0;
   
@@ -132,7 +267,12 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
       return {
         symbol: query.toUpperCase(),
         price: 0,
-        analysis: "I found some information, but to give you a precise verdict, please tell me what price you are getting for this product (e.g., 'iPhone 15 for 60000'). Location is optional but helpful!",
+        analysis: {
+          expectedPriceRange: "N/A",
+          verdict: "Analysis Pending",
+          confidence: "Low",
+          explanation: "I found some information, but to give you a precise verdict, please tell me what price you are getting for this product."
+        } as AnalysisResult,
         webData: webData
       };
     }
@@ -154,7 +294,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
       }
     }
 
-    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData, image);
+    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData);
     
     const responseTime = Date.now() - startTime;
     
@@ -165,7 +305,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
     let confidenceScore = 70;
     if (history.length > 0) confidenceScore += Math.min(history.length * 5, 15);
-    if (webData && webData.length > 100) confidenceScore += 10;
+    if (webData && webData.length > 0) confidenceScore += 10;
     if (deepSearch) confidenceScore += 4;
     confidenceScore = Math.min(confidenceScore, 99);
 
@@ -212,7 +352,7 @@ export async function getStats() {
   };
 }
 
-export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], webData: string = '', image?: string): Promise<string> {
+export async function getExpertOpinionAction(item: string, price: number, history: PriceEntry[], webData: WebSearchResult[] = []): Promise<AnalysisResult> {
   try {
     const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
     const apiKey = process.env.AI_CLIENT_API_KEY;
@@ -223,23 +363,22 @@ export async function getExpertOpinionAction(item: string, price: number, histor
 
     const systemPrompt = `You are a price transparency expert. 
     Goal: Evaluate if a user's proposed price is a good deal based on historical data.
-    ${image ? "An image of the product has been provided. Use it to identify the product and its condition if possible." : ""}
     
     CRITICAL LOGIC:
     - If User's Proposed Price is HIGHER than the Market/Historical Price, it is OVERPRICED.
     - If User's Proposed Price is LOWER than the Market/Historical Price, it is UNDERPRICED.
     - If they are similar, it is a FAIR DEAL.
 
-    STRICT OUTPUT FORMAT:
-    Expected Price Range: ₹X – ₹Y
-    Verdict: Likely Underpriced / Fair Deal / Slightly High / Likely Overpriced
-    Confidence: Low / Medium / High
-    Explanation: (1 line explanation explaining WHY based on the price difference)`;
+    STRICT JSON OUTPUT FORMAT ONLY:
+    {
+      "expectedPriceRange": "₹X – ₹Y",
+      "verdict": "Likely Underpriced" | "Fair Deal" | "Slightly High" | "Likely Overpriced",
+      "confidence": "Low" | "Medium" | "High",
+      "explanation": "1 short sentence explaining WHY."
+    }`;
 
-    const userContent: any = image ? [
-      { type: "text", text: `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Web Market Context: ${webData}` },
-      { type: "image_url", image_url: { url: image } }
-    ] : `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Web Market Context: ${webData}`;
+    const webContextStr = webData.map(w => `${w.title} (${w.price || 'N/A'})`).join('; ');
+    const userContent = `Item: ${item}, Proposed Price: ${price}. Historical data: ${JSON.stringify(history.slice(0, 5))}. Web Market Context: ${webContextStr}`;
 
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -258,24 +397,26 @@ export async function getExpertOpinionAction(item: string, price: number, histor
             role: "user",
             content: userContent
           }
-        ]
+        ],
+        response_format: { type: "json_object" }
       })
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API error: ${response.status} ${errorText.substring(0, 100)}`);
+      throw new Error(`API error: ${response.status}`);
     }
 
     const data = await response.json() as { choices: { message: { content: string } }[] };
-    return data.choices[0].message.content;
+    return JSON.parse(data.choices[0].message.content) as AnalysisResult;
   } catch (error) {
     console.error("AI Error:", error);
     const confidence = history.length > 5 ? "High" : history.length > 0 ? "Medium" : "Low";
-    return `Expected Price Range: ₹${Math.round(price * 0.9)} – ₹${Math.round(price * 1.1)}
-Verdict: Analysis Pending
-Confidence: ${confidence}
-Explanation: Based on ${history.length} similar market entries in our database.`;
+    return {
+      expectedPriceRange: `₹${Math.round(price * 0.9)} – ₹${Math.round(price * 1.1)}`,
+      verdict: "Analysis Pending",
+      confidence: confidence as any,
+      explanation: `Based on ${history.length} similar market entries in our database.`
+    };
   }
 }
 

@@ -10,9 +10,9 @@ async function testIntegration() {
     const result = await processPriceRequest(query);
     console.log('\n--- Result ---');
     console.log('Extracted Price:', result.price);
-    console.log('AI Analysis:\n', result.analysis);
+    console.log('AI Analysis:\n', JSON.stringify(result.analysis, null, 2));
     
-    if (result.analysis.includes('Verdict:')) {
+    if (result.analysis.verdict) {
       console.log('\n✅ SUCCESS: Received a structured response from AI.');
     } else {
       console.log('\n⚠️ WARNING: Response might be a fallback.');

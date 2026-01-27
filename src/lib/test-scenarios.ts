@@ -40,7 +40,7 @@ async function runTests() {
   console.log(`   Query: "${query}"`);
   const result = await processPriceRequest(query);
   console.log(`   Predicted Price: ₹${result.price}`);
-  console.log(`   Analysis:\n${result.analysis}`);
+  console.log(`   Analysis:\n${JSON.stringify(result.analysis, null, 2)}`);
 
   console.log("\n🔍 Scenario 3: Multi-Location Product Check");
   const multiLocationProduct = "Sony WH-1000XM5";
@@ -63,12 +63,12 @@ async function runTests() {
 
   const multiResult = await processPriceRequest(`What is the average price for ${multiLocationProduct} across India?`);
   console.log(`   Predicted Price: ₹${multiResult.price}`);
-  console.log(`   Analysis:\n${multiResult.analysis}`);
+  console.log(`   Analysis:\n${JSON.stringify(multiResult.analysis, null, 2)}`);
 
   console.log("\n🔍 Scenario 4: Car Market Check");
   const carResult = await processPriceRequest("Honda City price in Delhi");
   console.log(`   Predicted Price: ₹${carResult.price}`);
-  console.log(`   Analysis:\n${carResult.analysis}`);
+  console.log(`   Analysis:\n${JSON.stringify(carResult.analysis, null, 2)}`);
 
   console.log("\n✅ Tests completed.");
 }

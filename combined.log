@@ -130,3 +130,173 @@
 {"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:32:58.447Z","url":"https://lite.duckduckgo.com/lite"}
 {"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:32:59.346Z"}
 {"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:32:59.347Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:51:30.541Z","verify":true}
+{"backend":"auto","keywords":"car price price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:51:30.543Z"}
+{"keywords":"car price price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:51:30.544Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:51:30.544Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T11:51:31.767Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T11:51:31.768Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:51:52.713Z","verify":true}
+{"backend":"auto","keywords":"car datsun in 150000 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:51:52.714Z"}
+{"keywords":"car datsun in 150000 rs price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:51:52.715Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:51:52.715Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T11:51:53.702Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T11:51:53.703Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T11:54:34.541Z","verify":true}
+{"backend":"auto","keywords":"redmi note 14 pro in 18000 rs price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T11:54:34.542Z"}
+{"keywords":"redmi note 14 pro in 18000 rs price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T11:54:34.543Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T11:54:34.543Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T11:54:35.713Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T11:54:35.714Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T12:48:28.718Z","verify":true}
+{"backend":"auto","keywords":"do price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T12:48:28.721Z"}
+{"keywords":"do price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T12:48:28.722Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T12:48:28.723Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T12:48:30.083Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T12:48:30.085Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T12:48:53.309Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 pro price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T12:48:53.311Z"}
+{"keywords":"iphone 15 pro price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T12:48:53.311Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T12:48:53.311Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T12:48:54.554Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T12:48:54.555Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T12:49:07.924Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 pro in 7 lakhs only price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T12:49:07.925Z"}
+{"keywords":"iphone 15 pro in 7 lakhs only price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T12:49:07.925Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T12:49:07.925Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T12:49:09.115Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T12:49:09.116Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T12:49:41.137Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 pro in 700000 rs only price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T12:49:41.138Z"}
+{"keywords":"iphone 15 pro in 700000 rs only price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T12:49:41.139Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T12:49:41.139Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T12:49:42.487Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T12:49:42.488Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T12:50:34.887Z","verify":true}
+{"backend":"auto","keywords":"5 kg potatoes in 500 rs  price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T12:50:34.888Z"}
+{"keywords":"5 kg potatoes in 500 rs  price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T12:50:34.889Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T12:50:34.889Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T12:50:36.099Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T12:50:36.100Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T14:18:16.641Z","verify":true}
+{"backend":"auto","keywords":"iPhone 16 for 75000 in Delhi price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T14:18:16.644Z"}
+{"keywords":"iPhone 16 for 75000 in Delhi price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T14:18:16.644Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T14:18:16.645Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T14:18:17.733Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T14:18:17.734Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T14:19:09.764Z","verify":true}
+{"backend":"auto","keywords":"gaming console in 200 price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T14:19:09.768Z"}
+{"keywords":"gaming console in 200 price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T14:19:09.769Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T14:19:09.769Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T14:19:11.241Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T14:19:11.242Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T14:19:22.385Z","verify":true}
+{"backend":"auto","keywords":"gaming console in 2000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T14:19:22.386Z"}
+{"keywords":"gaming console in 2000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T14:19:22.387Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T14:19:22.387Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T14:19:23.362Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T14:19:23.364Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T14:57:30.858Z","verify":true}
+{"backend":"auto","keywords":"iphone in 15000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T14:57:30.861Z"}
+{"keywords":"iphone in 15000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T14:57:30.862Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T14:57:30.863Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T14:57:32.080Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T14:57:32.081Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:05:37.311Z","verify":true}
+{"backend":"auto","keywords":"iphone uner 18000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:05:37.314Z"}
+{"keywords":"iphone uner 18000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:05:37.314Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:05:37.315Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:05:38.289Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:05:38.290Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:07:06.141Z","verify":true}
+{"backend":"auto","keywords":"samsung under 5000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:07:06.144Z"}
+{"keywords":"samsung under 5000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:07:06.144Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:07:06.145Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:07:08.118Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:07:08.119Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:08:55.391Z","verify":true}
+{"backend":"auto","keywords":"samsung under 5000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:08:55.394Z"}
+{"keywords":"samsung under 5000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:08:55.394Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:08:55.395Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"warn","message":"Ratelimit hit","status":202,"timestamp":"2026-01-26T15:08:57.251Z","url":"https://lite.duckduckgo.com/lite"}
+{"error":"https://lite.duckduckgo.com/lite 202 Ratelimit","level":"error","message":"Error searching using lite backend","timestamp":"2026-01-26T15:08:57.252Z"}
+{"keywords":"samsung under 5000 rs price in India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:08:57.252Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:08:57.253Z","url":"https://html.duckduckgo.com/html"}
+{"level":"warn","message":"Ratelimit hit","status":202,"timestamp":"2026-01-26T15:08:58.326Z","url":"https://html.duckduckgo.com/html"}
+{"error":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"Error searching using html backend","timestamp":"2026-01-26T15:08:58.327Z"}
+{"lastError":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"All backends failed","timestamp":"2026-01-26T15:08:58.327Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:10:10.789Z","verify":true}
+{"backend":"auto","keywords":"samsung under 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:10:10.792Z"}
+{"keywords":"samsung under 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:10.792Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:10.793Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"warn","message":"Ratelimit hit","status":202,"timestamp":"2026-01-26T15:10:11.161Z","url":"https://lite.duckduckgo.com/lite"}
+{"error":"https://lite.duckduckgo.com/lite 202 Ratelimit","level":"error","message":"Error searching using lite backend","timestamp":"2026-01-26T15:10:11.162Z"}
+{"keywords":"samsung under 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:11.162Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:11.163Z","url":"https://html.duckduckgo.com/html"}
+{"level":"warn","message":"Ratelimit hit","status":202,"timestamp":"2026-01-26T15:10:12.329Z","url":"https://html.duckduckgo.com/html"}
+{"error":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"Error searching using html backend","timestamp":"2026-01-26T15:10:12.330Z"}
+{"lastError":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"All backends failed","timestamp":"2026-01-26T15:10:12.330Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:10:44.394Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:10:44.402Z"}
+{"keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:44.404Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:44.406Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:10:44.559Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:10:44.568Z"}
+{"keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:44.569Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:44.570Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:10:46.296Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:10:46.300Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:10:46.424Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:10:46.428Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:10:47.159Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:10:47.169Z"}
+{"keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:47.170Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:47.171Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:10:47.192Z","verify":true}
+{"backend":"auto","keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:10:47.199Z"}
+{"keywords":"iPhone 15 price in India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:10:47.200Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:10:47.201Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-26T15:10:48.938Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-26T15:10:48.942Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:10:49.176Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:10:49.181Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-26T15:11:40.689Z","verify":true}
+{"backend":"auto","keywords":"samsung under 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-26T15:11:40.691Z"}
+{"keywords":"samsung under 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-26T15:11:40.692Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-26T15:11:40.692Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-26T15:11:42.185Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-26T15:11:42.186Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T06:08:44.735Z","verify":true}
+{"backend":"auto","keywords":"5 kg potato in 50 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:08:44.737Z"}
+{"keywords":"5 kg potato in 50 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:08:44.738Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:08:44.738Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T06:08:45.870Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T06:08:45.872Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T06:17:28.226Z","verify":true}
+{"backend":"auto","keywords":"redmi note 10 pro in 400 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:17:28.229Z"}
+{"keywords":"redmi note 10 pro in 400 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:17:28.230Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:17:28.230Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T06:17:29.464Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T06:17:29.467Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T06:22:52.829Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in 24000 rs  current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:22:52.832Z"}
+{"keywords":"iqoo neo 7 in 24000 rs  current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:22:52.833Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:22:52.834Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 7 in 24000 rs  price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:22:52.835Z"}
+{"keywords":"iqoo neo 7 in 24000 rs  price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:22:52.836Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:22:52.836Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T06:22:53.956Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T06:22:53.958Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T06:22:54.795Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T06:22:54.797Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T06:27:20.060Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 20000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:27:20.063Z"}
+{"keywords":"iqoo neo 7 pro in 20000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:27:20.064Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:27:20.065Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 20000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T06:27:20.065Z"}
+{"keywords":"iqoo neo 7 pro in 20000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T06:27:20.066Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T06:27:20.066Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T06:27:21.133Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T06:27:21.134Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T06:27:21.968Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T06:27:21.970Z"}

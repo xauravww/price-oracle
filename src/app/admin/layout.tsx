@@ -1,10 +1,10 @@
-
 import { 
   LayoutDashboard, 
   History, 
   Database, 
   Home,
-  LogOut
+  LogOut,
+  Globe
 } from "lucide-react";
 import Link from "next/link";
 
@@ -17,6 +17,7 @@ export default function AdminLayout({
     { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
     { icon: History, label: "Logs", href: "/admin/logs" },
     { icon: Database, label: "Database", href: "/admin/database" },
+    { icon: Globe, label: "Sources", href: "/admin/sources" },
   ];
 
   return (

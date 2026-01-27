@@ -39,6 +39,15 @@ db.exec(`
     status TEXT,
     response_time INTEGER
   );
+
+  CREATE TABLE IF NOT EXISTS trusted_sources (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    url TEXT NOT NULL UNIQUE,
+    category TEXT NOT NULL,
+    isActive INTEGER DEFAULT 1,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 export default db;

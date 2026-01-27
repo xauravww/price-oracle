@@ -1,2 +1,8 @@
 {"level":"error","message":"No keywords provided","timestamp":"2026-01-26T10:39:59.248Z"}
 {"level":"error","message":"No keywords provided","timestamp":"2026-01-26T10:40:02.351Z"}
+{"error":"https://lite.duckduckgo.com/lite 202 Ratelimit","level":"error","message":"Error searching using lite backend","timestamp":"2026-01-26T15:08:57.252Z"}
+{"error":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"Error searching using html backend","timestamp":"2026-01-26T15:08:58.327Z"}
+{"lastError":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"All backends failed","timestamp":"2026-01-26T15:08:58.327Z"}
+{"error":"https://lite.duckduckgo.com/lite 202 Ratelimit","level":"error","message":"Error searching using lite backend","timestamp":"2026-01-26T15:10:11.162Z"}
+{"error":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"Error searching using html backend","timestamp":"2026-01-26T15:10:12.330Z"}
+{"lastError":"https://html.duckduckgo.com/html 202 Ratelimit","level":"error","message":"All backends failed","timestamp":"2026-01-26T15:10:12.330Z"}

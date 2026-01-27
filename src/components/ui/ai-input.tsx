@@ -1,7 +1,7 @@
 "use client";
 
-import { CornerRightUp, Mic, Image as ImageIcon, X } from "lucide-react";
-import { useState, useRef } from "react";
+import { CornerRightUp, Mic } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface AIInputProps {
@@ -9,7 +9,7 @@ interface AIInputProps {
   placeholder?: string
   minHeight?: number
   maxHeight?: number
-  onSubmit?: (value: string, image?: string) => void
+  onSubmit?: (value: string) => void
   className?: string
   initialValue?: string
 }
@@ -24,40 +24,15 @@ export function AIInput({
   initialValue = ""
 }: AIInputProps) {
   const [inputValue, setInputValue] = useState(initialValue);
-  const [image, setImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleReset = () => {
-    if (!inputValue.trim() && !image) return;
-    onSubmit?.(inputValue, image || undefined);
+    if (!inputValue.trim()) return;
+    onSubmit?.(inputValue);
     setInputValue("");
-    setImage(null);
   };
 
   return (
     <div className={cn("relative max-w-xl w-full mx-auto", className)}>
-      {image && (
-        <div className="absolute bottom-full mb-2 left-0 p-2 bg-white rounded-xl border border-gray-200 shadow-sm flex items-center gap-2">
-          <img src={image} alt="Preview" className="w-12 h-12 object-cover rounded-lg" />
-          <button 
-            onClick={() => setImage(null)}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-4 h-4 text-gray-500" />
-          </button>
-        </div>
-      )}
       
       <div 
         className={cn(
@@ -95,27 +70,10 @@ export function AIInput({
           )}
         />
 
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center z-10">
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-          />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
-          >
-            <ImageIcon className="w-5 h-5 text-gray-400" />
-          </button>
-        </div>
-
         <div
           className={cn(
             "absolute top-1/2 -translate-y-1/2 rounded-xl bg-gray-100 py-1 px-1 transition-all duration-200 z-10",
-            inputValue || image ? "right-10" : "right-3"
+            inputValue ? "right-10" : "right-3"
           )}
         >
           <Mic className="w-4 h-4 text-gray-600" />
@@ -128,7 +86,7 @@ export function AIInput({
             "absolute top-1/2 -translate-y-1/2 right-3 z-10",
             "rounded-xl bg-gray-100 py-1 px-1",
             "transition-all duration-200",
-            inputValue || image
+            inputValue
               ? "opacity-100 scale-100"
               : "opacity-0 scale-95 pointer-events-none"
           )}
