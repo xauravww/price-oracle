@@ -300,3 +300,146 @@
 {"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T06:27:21.134Z"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T06:27:21.968Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T06:27:21.970Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:27:18.480Z","verify":true}
+{"backend":"auto","keywords":"zebronics gaming mouse in 200 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:27:18.487Z"}
+{"keywords":"zebronics gaming mouse in 200 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:27:18.488Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:27:18.489Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"zebronics gaming mouse in 200 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:27:18.490Z"}
+{"keywords":"zebronics gaming mouse in 200 rs price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:27:18.490Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:27:18.491Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:27:19.969Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:27:19.984Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:27:20.458Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:27:20.460Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:38:02.774Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:38:02.777Z"}
+{"keywords":"iqoo neo 7 in 5000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:38:02.778Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:38:02.778Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"iqoo neo 7 in 5000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:38:02.779Z"}
+{"keywords":"iqoo neo 7 in 5000 rs price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:38:02.780Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:38:02.780Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:38:03.689Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:38:03.690Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:38:04.911Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:38:04.912Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:43:02.700Z","verify":true}
+{"backend":"auto","keywords":"iqooo neo 7 in 1300 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:43:02.703Z"}
+{"keywords":"iqooo neo 7 in 1300 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:43:02.704Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:43:02.704Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqooo neo 7 in 1300 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:43:02.705Z"}
+{"keywords":"iqooo neo 7 in 1300 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:43:02.705Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:43:02.705Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:43:03.925Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:43:03.927Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:43:04.628Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:43:04.630Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:43:23.642Z","verify":true}
+{"backend":"auto","keywords":"iqooo neo 7 in 1300 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:43:23.644Z"}
+{"keywords":"iqooo neo 7 in 1300 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:43:23.644Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:43:23.644Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqooo neo 7 in 1300 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:43:23.645Z"}
+{"keywords":"iqooo neo 7 in 1300 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:43:23.645Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:43:23.645Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:43:24.696Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:43:24.697Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:43:25.544Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:43:25.545Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:53:07.657Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 6 in 30000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:53:07.660Z"}
+{"keywords":"iqoo neo 6 in 30000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:53:07.661Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:53:07.661Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 6 in 30000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:53:07.662Z"}
+{"keywords":"iqoo neo 6 in 30000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:53:07.662Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:53:07.662Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:53:08.819Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:53:08.820Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:53:09.562Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:53:09.563Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:53:40.220Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 6 in 30000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:53:40.223Z"}
+{"keywords":"iqoo neo 6 in 30000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:53:40.223Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:53:40.223Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 6 in 30000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:53:40.224Z"}
+{"keywords":"iqoo neo 6 in 30000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:53:40.224Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:53:40.224Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:53:41.287Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:53:41.288Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:53:41.966Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:53:41.967Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:57:58.809Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 15000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:57:58.813Z"}
+{"keywords":"iqoo neo 7 pro in 15000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:57:58.814Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:57:58.814Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 15000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:57:58.815Z"}
+{"keywords":"iqoo neo 7 pro in 15000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:57:58.816Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:57:58.816Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:57:59.861Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:57:59.862Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:58:00.836Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:58:00.838Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T08:58:26.819Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 15000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:58:26.820Z"}
+{"keywords":"iqoo neo 7 pro in 15000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:58:26.820Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:58:26.820Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"iqoo neo 7 pro in 15000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T08:58:26.821Z"}
+{"keywords":"iqoo neo 7 pro in 15000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T08:58:26.821Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T08:58:26.822Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T08:58:27.792Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T08:58:27.794Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T08:58:28.641Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T08:58:28.646Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T09:09:49.056Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in 16000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:09:49.059Z"}
+{"keywords":"iqoo neo 7 in 16000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:09:49.060Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:09:49.060Z","url":"https://lite.duckduckgo.com/lite"}
+{"backend":"auto","keywords":"iqoo neo 7 in 16000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:09:49.061Z"}
+{"keywords":"iqoo neo 7 in 16000 rs price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:09:49.062Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:09:49.062Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T09:09:50.025Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T09:09:50.026Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:09:51.253Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:09:51.254Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T09:10:11.311Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in 16000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:10:11.312Z"}
+{"keywords":"iqoo neo 7 in 16000 rs current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:10:11.312Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:10:11.313Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 7 in 16000 rs price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:10:11.313Z"}
+{"keywords":"iqoo neo 7 in 16000 rs price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:10:11.313Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:10:11.314Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:10:12.196Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:10:12.198Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-27T09:10:13.186Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-27T09:10:13.187Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T09:16:44.612Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:16:44.616Z"}
+{"keywords":"iqoo neo 7 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:16:44.617Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:16:44.617Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 7 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:16:44.618Z"}
+{"keywords":"iqoo neo 7 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:16:44.619Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:16:44.619Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:16:46.181Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:16:46.183Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:16:46.716Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:16:46.717Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T09:17:13.861Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:17:13.862Z"}
+{"keywords":"iqoo neo 7 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:17:13.863Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:17:13.863Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 7 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:17:13.863Z"}
+{"keywords":"iqoo neo 7 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:17:13.863Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:17:13.863Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:17:14.795Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:17:14.796Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:17:15.959Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:17:15.960Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-27T09:23:48.878Z","verify":true}
+{"backend":"auto","keywords":"iqoo neo 7 pro in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:23:48.881Z"}
+{"keywords":"iqoo neo 7 pro in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:23:48.882Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:23:48.882Z","url":"https://html.duckduckgo.com/html"}
+{"backend":"auto","keywords":"iqoo neo 7 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-27T09:23:48.883Z"}
+{"keywords":"iqoo neo 7 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-27T09:23:48.883Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-27T09:23:48.884Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:23:49.860Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:23:49.862Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-27T09:23:50.670Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-27T09:23:50.671Z"}

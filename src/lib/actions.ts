@@ -5,6 +5,7 @@ import { PriceEntry } from './priceEngine';
 import { DDGS } from '@phukon/duckduckgo-search';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { SignJWT } from 'jose';
 
 export async function getEntries(page: number = 1, limit: number = 10): Promise<{ entries: PriceEntry[], totalPages: number, totalCount: number }> {
@@ -109,6 +110,63 @@ export interface WebSearchResult {
   price?: string;
 }
 
+async function extractPricesWithAI(query: string, results: { title: string; body: string }[]): Promise<(string | undefined)[]> {
+  try {
+    const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
+    const apiKey = process.env.AI_CLIENT_API_KEY;
+
+    if (!apiKey) return new Array(results.length).fill(undefined);
+
+    const itemsStr = results.map((r, i) => `[${i}] Title: ${r.title}\nSnippet: ${r.body}`).join('\n\n');
+
+    const systemPrompt = `You are a data extraction engine.
+Goal: Extract the exact price of the item '${query}' from the provided search snippets.
+
+Rules:
+1. Extract ONLY the numeric price with currency symbol (e.g., ₹24,999, $500).
+2. Clean up joined or doubled prices (e.g., if you see '₹34,774₹34,774', return '₹34,774').
+3. Ignore 'Save ₹...', '...off', 'EMI start at...', 'Delivery...', 'Exchange up to...', 'Price, product page'.
+4. CRITICAL: Ignore prices mentioned as 'Under ₹...', 'Below ₹...', 'Budget ₹...' in titles. These are category labels, not the actual product price.
+5. If the item is 'Currently unavailable', 'Sold out', or no price is listed, return null.
+6. If multiple prices exist, pick the main selling price (usually the largest number that isn't a crossed-out MRP).
+
+Output JSON format:
+{
+  "prices": [
+    "₹24,999",
+    null,
+    "₹25,500"
+  ]
+}
+The array order MUST match the input indices.`;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: process.env.AI_SERVICE_URL ? "meta/llama-3.1-8b-instruct" : "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: itemsStr }
+        ],
+        response_format: { type: "json_object" }
+      })
+    });
+
+    if (!response.ok) return new Array(results.length).fill(undefined);
+
+    const data = await response.json();
+    const parsed = JSON.parse(data.choices[0].message.content);
+    return parsed.prices;
+  } catch (e) {
+    console.error("AI Price Extraction Error:", e);
+    return new Array(results.length).fill(undefined);
+  }
+}
+
 async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<WebSearchResult[]> {
   try {
     const ddgs = new DDGS();
@@ -166,48 +224,37 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
         
         domainCount.set(hostname, currentCount + 1);
         
-        // Extract Price
-        const priceMatch = r.title.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i) || 
-                           r.body.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
-        const price = priceMatch ? `₹${priceMatch[1]}` : undefined;
-
         acc.push({
           title: r.title,
           body: r.body.replace(/\s\s+/g, ' ').trim(),
           source: hostname,
           url: r.href,
           date: currentDate,
-          price: price
+          price: undefined // To be filled by AI
         });
         return acc;
       }, [] as WebSearchResult[]);
 
-      return mixedResults.slice(0, 8);
+      const finalResults = mixedResults.slice(0, 16); // Fetch more results
+      const extractedPrices = await extractPricesWithAI(query, finalResults);
+      
+      return finalResults.map((r: WebSearchResult, i: number) => ({
+        ...r,
+        price: extractedPrices[i] || undefined
+      }));
     }
 
     // Deep Search Logic
-    const topResults = uniqueResults.slice(0, 4);
+    const topResults = uniqueResults.slice(0, 8); // Fetch more for deep search too
     const detailedContents = await Promise.all(topResults.map(async (r) => {
       let hostname = 'Source';
       try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) {}
       
-      let price = undefined;
-      // Initial price check on title/snippet before deep fetch
-      const initialMatch = r.title.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i) || 
-                           r.body.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
-      if (initialMatch) price = `₹${initialMatch[1]}`;
-
       try {
         const readerUrl = `https://r.jina.ai/${r.href}`;
         const response = await fetch(readerUrl);
         let content = !response.ok ? r.body : await response.text();
         
-        // Try to extract price from full content if not found yet
-        if (!price) {
-           const contentMatch = content.match(/(?:₹|Rs\.?|INR)\s?(\d{1,3}(?:,\d{2,3})*)/i);
-           if (contentMatch) price = `₹${contentMatch[1]}`;
-        }
-
         content = content
           .replace(/\s\s+/g, ' ')
           .replace(/\n\s*\n/g, ' ')
@@ -220,7 +267,7 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
           source: hostname,
           url: r.href,
           date: currentDate,
-          price: price
+          price: undefined
         };
       } catch {
         return {
@@ -229,9 +276,15 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
           source: hostname,
           url: r.href,
           date: currentDate,
-          price: price
+          price: undefined
         };
       }
+    }));
+
+    const extractedPrices = await extractPricesWithAI(query, detailedContents);
+    return detailedContents.map((r, i) => ({
+      ...r,
+      price: extractedPrices[i] || undefined
     }));
     
     return detailedContents;
@@ -253,10 +306,65 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
   let targetPrice = 0;
   
   try {
-    const history = await searchSimilarEntries(query);
-    const webData = await getWebMarketPrices(query, deepSearch);
+    // Check if query is a direct URL
+    const isUrl = /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(query.trim());
     
+    if (isUrl) {
+      const url = query.trim();
+      let hostname = new URL(url).hostname.replace('www.', '');
+      
+      try {
+        const readerUrl = `https://r.jina.ai/${url}`;
+        const response = await fetch(readerUrl);
+        let content = await response.text();
+        
+        const titleMatch = content.match(/^Title: (.*)$/m);
+        const title = titleMatch ? titleMatch[1] : hostname;
+        
+        const snippet = content
+          .replace(/\s\s+/g, ' ')
+          .replace(/\n\s*\n/g, ' ')
+          .trim()
+          .substring(0, 500);
+
+        const extractedPrices = await extractPricesWithAI(title, [{ title, body: snippet }]);
+        const price = extractedPrices[0];
+
+        const webResult: WebSearchResult = {
+          title,
+          body: snippet + "...",
+          source: hostname,
+          url,
+          date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+          price
+        };
+
+        return {
+          symbol: hostname.toUpperCase(),
+          price: 0,
+          analysis: {
+            expectedPriceRange: price || "N/A",
+            verdict: "Analysis Pending",
+            confidence: "Medium",
+            explanation: `Direct analysis of ${hostname}. ${price ? `Detected price: ${price}.` : "No price detected on this page."}`
+          } as AnalysisResult,
+          webData: [webResult]
+        };
+      } catch (e) {
+        console.error("Direct URL fetch failed:", e);
+      }
+    }
+
+    const history = await searchSimilarEntries(query);
+    
+    // Extract Item Name early
     const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
+    const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
+    const item = priceMatch ? query.replace(priceMatch[0], '').replace(locationMatch ? locationMatch[0] : '', '').trim() : query;
+
+    // Use item name for cleaner web search context
+    const webData = await getWebMarketPrices(item, deepSearch);
+    
     let extractedPrice: number | null = null;
     if (priceMatch) {
       const val = priceMatch[1];
@@ -279,22 +387,17 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
     targetPrice = extractedPrice;
 
-    if (extractedPrice !== null && priceMatch) {
-      const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
+    if (item.length > 2) {
       const location = locationMatch ? locationMatch[1] : "Unknown";
-      const item = query.replace(priceMatch[0], '').replace(locationMatch ? locationMatch[0] : '', '').trim();
-      
-      if (item.length > 2) {
-        await addEntry({
-          item: item,
-          location: location,
-          price: extractedPrice,
-          contributorId: 'auto-logged'
-        });
-      }
+      await addEntry({
+        item: item,
+        location: location,
+        price: extractedPrice,
+        contributorId: 'auto-logged'
+      });
     }
 
-    const analysis = await getExpertOpinionAction(query, targetPrice, history, webData);
+    const analysis = await getExpertOpinionAction(item, targetPrice, history, webData);
     
     const responseTime = Date.now() - startTime;
     
@@ -303,18 +406,33 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
       VALUES (?, ?, ?, ?, ?)
     `).run(query, targetPrice, deepSearch ? 1 : 0, 'success', responseTime);
 
-    let confidenceScore = 70;
-    if (history.length > 0) confidenceScore += Math.min(history.length * 5, 15);
-    if (webData && webData.length > 0) confidenceScore += 10;
-    if (deepSearch) confidenceScore += 4;
-    confidenceScore = Math.min(confidenceScore, 99);
+    let confidenceScore = 60; // Lower base score
+    if (history.length > 0) confidenceScore += Math.min(history.length * 5, 20); // History matters
+    
+    // Web data only boosts confidence if it has PRICE data
+    if (webData && webData.length > 0) {
+      const entriesWithPrice = webData.filter(w => w.price).length;
+      confidenceScore += (entriesWithPrice * 3); // 3 points per valid price source
+    }
+    
+    if (deepSearch) confidenceScore += 5;
+    
+    confidenceScore = Math.min(confidenceScore, 95); // Cap at 95% unless perfect
+
+    // Mask the contributorId for privacy
+    const safeHistory = history.map(h => ({
+      ...h,
+      contributorId: undefined, // Remove ID
+      location: h.location || "Unknown Location"
+    })).slice(0, 5); // Limit to 5 entries
 
     return {
       symbol: query.toUpperCase(),
       price: targetPrice,
       analysis: analysis,
       webData: webData,
-      confidenceScore: confidenceScore
+      confidenceScore: confidenceScore,
+      relatedEntries: safeHistory
     };
   } catch (error) {
     const responseTime = Date.now() - startTime;
@@ -510,4 +628,33 @@ export async function toggleSourceStatus(id: number, isActive: boolean) {
   } catch (error: any) {
     return { success: false, error: error.message };
   }
+}
+
+export async function reportUnparsedUrl(url: string, title: string, query: string) {
+  try {
+    db.prepare('INSERT INTO reported_urls (url, title, query) VALUES (?, ?, ?)').run(url, title, query);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Report URL error:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getReportedUrls() {
+  return db.prepare('SELECT * FROM reported_urls ORDER BY timestamp DESC').all() as any[];
+}
+
+export async function deleteReportedUrl(id: number) {
+  try {
+    db.prepare('DELETE FROM reported_urls WHERE id = ?').run(id);
+    revalidatePath('/admin/reports');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function adminLogout() {
+  (await cookies()).delete('admin_token');
+  redirect('/admin/login');
 }

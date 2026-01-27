@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AIInput } from "@/components/ui/ai-input";
+import { CreativeLoader } from "@/components/ui/creative-loader";
 import { processPriceRequest } from "@/lib/actions";
 import { 
   BarChart3, 
@@ -10,8 +11,14 @@ import {
   CheckCircle2,
   Calendar,
   ExternalLink,
-  ArrowRight
+  ArrowRight,
+  User,
+  MapPin,
+  Clock,
+  AlertCircle
 } from "lucide-react";
+import { reportUnparsedUrl } from "@/lib/actions";
+import { toast, Toaster } from "react-hot-toast";
 
 interface WebSearchResult {
   title: string;
@@ -20,6 +27,15 @@ interface WebSearchResult {
   url: string;
   date: string;
   price?: string;
+}
+
+interface PriceEntry {
+  id: string;
+  item: string;
+  location: string;
+  price: number;
+  timestamp: Date | string;
+  isTrusted: boolean;
 }
 
 interface AnalysisResult {
@@ -34,6 +50,7 @@ interface PriceResult {
   analysis: AnalysisResult;
   confidenceScore?: number;
   webData?: WebSearchResult[];
+  relatedEntries?: PriceEntry[];
   timestamp?: string;
 }
 
@@ -42,19 +59,47 @@ function PriceOracleContent() {
   const [loading, setLoading] = useState(false);
   const [deepSearch, setDeepSearch] = useState(false);
   const [initialValue, setInitialValue] = useState("");
+  const [currentQuery, setCurrentQuery] = useState("");
+  const [showMoreWeb, setShowMoreWeb] = useState(false);
   const searchParams = useSearchParams();
 
-  const handleSubmit = async (value: string) => {
+  const handleSubmit = async (value: string, forceDeep?: boolean) => {
     if (!value.trim()) return;
+    
+    setCurrentQuery(value);
+    setShowMoreWeb(false); // Reset on new search
+    
+    const isDeep = forceDeep !== undefined ? forceDeep : deepSearch;
+    if (forceDeep) setDeepSearch(true);
+
     setLoading(true);
     setResult(null); // Clear previous result to avoid confusion
     try {
-      const data = await processPriceRequest(value, deepSearch);
+      const data = await processPriceRequest(value, isDeep);
       setResult(data as unknown as PriceResult);
     } catch (error) {
       console.error("Error:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeepRecheck = () => {
+    if (currentQuery) {
+      handleSubmit(currentQuery, true);
+    } else if (initialValue) {
+      handleSubmit(initialValue, true);
+    }
+  };
+
+  const handleReport = async (e: React.MouseEvent, item: WebSearchResult) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const res = await reportUnparsedUrl(item.url, item.title, currentQuery);
+    if (res.success) {
+      toast.success("URL reported for analysis");
+    } else {
+      toast.error("Failed to report URL");
     }
   };
 
@@ -112,12 +157,7 @@ function PriceOracleContent() {
         </div>
 
         {/* Results Display */}
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-12 animate-in fade-in duration-500">
-            <div className="w-12 h-12 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin mb-4"></div>
-            <p className="text-slate-500 font-medium">Analyzing market variables...</p>
-          </div>
-        )}
+        {loading && <CreativeLoader />}
 
         {result && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
@@ -149,6 +189,15 @@ function PriceOracleContent() {
                       <div className="text-xs font-medium text-slate-400">
                         Confidence Score: {result.confidenceScore || 98.4}%
                       </div>
+                      {!deepSearch && (
+                        <button 
+                          onClick={handleDeepRecheck}
+                          className="mt-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5"
+                        >
+                          Not satisfied? Check Deeply
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -189,6 +238,46 @@ function PriceOracleContent() {
                   </div>
                 </div>
 
+                {result.relatedEntries && result.relatedEntries.length > 0 && (
+                  <div className="p-8 md:p-12 bg-white border-t border-slate-100">
+                    <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                      Related Anonymous Results
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {result.relatedEntries.map((entry, index) => (
+                        <div 
+                          key={index}
+                          className="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-purple-200 transition-colors"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-semibold text-slate-900 line-clamp-1">{entry.item}</h4>
+                            <span className="text-xs font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200">
+                              ₹{entry.price.toLocaleString()}
+                            </span>
+                          </div>
+                          
+                          <div className="flex flex-col gap-1.5 mt-3">
+                            <div className="flex items-center gap-2 text-xs text-slate-500">
+                              <MapPin className="w-3 h-3" />
+                              <span className="truncate">{entry.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-slate-400">
+                              <Clock className="w-3 h-3" />
+                              <span>{new Date(entry.timestamp).toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-slate-400">
+                              <User className="w-3 h-3" />
+                              <span>Anonymous Contributor</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {result.webData && result.webData.length > 0 && (
                   <div className="p-8 md:p-12 bg-slate-50/50 border-t border-slate-100">
                     <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
@@ -197,7 +286,7 @@ function PriceOracleContent() {
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {result.webData.map((item, index) => (
+                      {(showMoreWeb ? result.webData : result.webData.slice(0, 4)).map((item, index) => (
                         <a 
                           key={index}
                           href={item.url}
@@ -218,15 +307,36 @@ function PriceOracleContent() {
                             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                               {item.source}
                             </span>
-                            {item.price && (
+                            {item.price ? (
                               <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
                                 {item.price}
                               </span>
+                            ) : (
+                              <button
+                                onClick={(e) => handleReport(e, item)}
+                                className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md hover:bg-amber-100 transition-colors flex items-center gap-1"
+                                title="Report unparsed price"
+                              >
+                                <AlertCircle className="w-2.5 h-2.5" />
+                                Report Missing Price
+                              </button>
                             )}
                           </div>
                         </a>
                       ))}
                     </div>
+
+                    {result.webData.length > 4 && !showMoreWeb && (
+                      <div className="mt-8 flex justify-center">
+                        <button 
+                          onClick={() => setShowMoreWeb(true)}
+                          className="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-sm"
+                        >
+                          Show more results
+                          <ArrowRight className="w-4 h-4 rotate-90" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
