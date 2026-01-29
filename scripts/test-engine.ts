@@ -1,5 +1,5 @@
-import { addEntry, searchSimilarEntries } from './src/lib/actions';
-import { calculatePriceClarity, getExpertOpinion } from './src/lib/priceEngine';
+import { addEntry, searchSimilarEntries } from '@/lib/actions';
+import { calculatePriceClarity, getExpertOpinion } from '@/lib/priceEngine';
 
 async function runTest() {
   console.log('--- Starting Test Scenario ---');
@@ -17,10 +17,10 @@ async function runTest() {
     console.log('Analyzing price: ₹50 for auto in delhi...');
     const entries = await searchSimilarEntries('auto');
     console.log(`Found ${entries.length} similar entries.`);
-    
+
     const analysisFair = calculatePriceClarity(50, entries);
     console.log('Engine Result:', JSON.stringify(analysisFair, null, 2));
-    
+
     console.log('Fetching AI Expert Opinion...');
     const opinion = await getExpertOpinion('auto', 50, entries);
     console.log('AI Opinion:', opinion);

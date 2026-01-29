@@ -1,4 +1,4 @@
-import { processPriceRequest } from './src/lib/actions';
+import { processPriceRequest } from '@/lib/actions';
 
 async function test() {
   console.log("Testing query: 'iPhone 16 for 75000 in Delhi' with deepSearch=true");
