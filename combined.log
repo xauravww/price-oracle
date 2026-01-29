@@ -540,3 +540,51 @@
 {"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:03:22.086Z","url":"https://html.duckduckgo.com/html"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:03:23.404Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:03:23.407Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:10:40.136Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:10:40.349Z"}
+{"keywords":"iphone 15 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:10:40.350Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:10:40.351Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:10:42.100Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:10:42.103Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:17:10.831Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:17:11.013Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:17:11.015Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:17:11.016Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T13:17:12.583Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T13:17:12.586Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:22:21.198Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:22:21.379Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:22:21.380Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:22:21.382Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:22:22.868Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:22:22.870Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:25:01.540Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:25:01.727Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:25:01.728Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:25:01.728Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T13:25:02.969Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T13:25:02.972Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:25:36.811Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:25:37.003Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:25:37.004Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:25:37.004Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T13:25:38.239Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T13:25:38.241Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:26:44.327Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:26:44.513Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:26:44.514Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:26:44.514Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:26:45.728Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:26:45.730Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:27:56.377Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:27:56.557Z"}
+{"keywords":"iphone 12 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:27:56.558Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:27:56.558Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:27:57.779Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:27:57.781Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:29:13.414Z","verify":true}
+{"backend":"auto","keywords":"ps5 slim digital edition price price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:29:13.601Z"}
+{"keywords":"ps5 slim digital edition price price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:29:13.602Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:29:13.602Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T13:29:14.867Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T13:29:14.869Z"}

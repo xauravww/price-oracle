@@ -196,7 +196,6 @@ The array order MUST match input.`;
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: process.env.AI_SERVICE_URL ? "meta/llama-3.1-8b-instruct" : "gpt-4o-mini",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: itemsStr }
@@ -291,10 +290,51 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       const finalResults = mixedResults.slice(0, 16); // Fetch more results
       const extractions = await extractPricesWithAI(query, finalResults);
 
-      return finalResults.map((r: WebSearchResult, i: number) => ({
-        ...r,
-        price: extractions[i]?.price || undefined
+      // --- SMART FALLBACK LOGIC ---
+      // If we missed prices for important domains, do a quick fetch
+      const highValueDomains = ['flipkart', 'amazon', 'reliance', 'croma', 'tatacliq', 'jiomart'];
+
+      const resultsWithFallback = await Promise.all(finalResults.map(async (r: WebSearchResult, i: number) => {
+        let price = extractions[i]?.price || undefined;
+        let suggestedUrl = extractions[i]?.suggestedUrl;
+
+        // Condition: No price found AND (High Value Domain OR AI suggested a better link)
+        const isHighValue = highValueDomains.some(d => r.source.toLowerCase().includes(d));
+
+        if (!price && (isHighValue || suggestedUrl)) {
+          try {
+            // Prefer suggested URL if available, else original
+            const targetUrl = (suggestedUrl && suggestedUrl.startsWith('http')) ? suggestedUrl : r.url;
+
+            // Quick fetch using Jina
+            const readerUrl = `https://r.jina.ai/${targetUrl}`;
+            const response = await fetch(readerUrl, { signal: AbortSignal.timeout(4000) }); // 4s timeout
+
+            if (response.ok) {
+              const content = await response.text();
+              const cleanContent = content.replace(/\s\s+/g, ' ').substring(0, 1500); // 1.5k chars context
+
+              const fallbackExtraction = await extractPricesWithAI(query, [{
+                title: r.title,
+                body: cleanContent
+              }]);
+
+              if (fallbackExtraction[0]?.price) {
+                price = fallbackExtraction[0].price;
+              }
+            }
+          } catch (e) {
+            // Fallback failed, stick to original (null)
+          }
+        }
+
+        return {
+          ...r,
+          price: price
+        };
       }));
+
+      return resultsWithFallback;
     }
 
     // Deep Search Logic
@@ -623,7 +663,6 @@ export async function getExpertOpinionAction(item: string, price: number, histor
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: process.env.AI_SERVICE_URL ? "meta/llama-3.1-8b-instruct" : "gpt-4o-mini",
         messages: [
           {
             role: "system",
