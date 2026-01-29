@@ -36,18 +36,19 @@ export function AIInput({
   };
 
   return (
-    <div className={cn("relative max-w-xl w-full mx-auto", className)}>
+    <div className={cn("relative rounded-full max-w-xl w-full mx-auto", className)}>
       <div
         className={cn(
-          "relative flex items-center justify-center w-full bg-white rounded-[32px] border border-slate-200 transition-all duration-300 ease-out shadow-sm",
+          "relative rounded-full flex items-center justify-center w-full bg-white rounded-[32px] border border-slate-200 transition-all duration-300 ease-out shadow-sm",
           "focus-within:border-slate-400 focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.03)]",
-          "min-h-[52px]"
+          "min-h-[52px]",
+          "overflow-hidden"
         )}
         style={{ minHeight: `${minHeight}px` }}
       >
         {/* Ghost element to drive height */}
         <div
-          className="w-full px-6 py-4 text-center invisible whitespace-pre-wrap break-words leading-relaxed text-slate-900 font-medium text-[15px]"
+          className="w-full rounded-full px-6 py-4 text-center invisible whitespace-pre-wrap break-words leading-relaxed text-slate-900 font-medium text-[15px]"
           aria-hidden="true"
           style={{ minHeight: `${minHeight}px`, maxHeight: `${maxHeight}px` }}
         >
@@ -70,7 +71,8 @@ export function AIInput({
             "text-slate-900 text-center resize-none overflow-hidden placeholder:text-slate-400",
             "focus:outline-none font-medium text-[15px]",
             "flex items-center justify-center",
-            "leading-relaxed"
+            "leading-relaxed",
+            "rounded-[32px]"
           )}
         />
 

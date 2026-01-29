@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { AIInput } from "@/components/ui/ai-input";
 import { CreativeLoader } from "@/components/ui/creative-loader";
 import { processPriceRequest } from "@/lib/actions";
-import { 
-  BarChart3, 
+import {
+  BarChart3,
   Layers,
   CheckCircle2,
   Calendar,
@@ -66,11 +66,11 @@ function PriceOracleContent() {
 
   const handleSubmit = async (value: string, forceDeep?: boolean) => {
     if (!value.trim()) return;
-    
+
     setCurrentQuery(value);
     setShowMoreWeb(false); // Reset on new search
     setReportedUrls(new Set()); // Reset reported status on new search
-    
+
     const isDeep = forceDeep !== undefined ? forceDeep : deepSearch;
     if (forceDeep) setDeepSearch(true);
 
@@ -115,255 +115,272 @@ function PriceOracleContent() {
 
   return (
     <div className="max-w-5xl w-full">
-        {/* Hero Section - Automatically hides/shrinks when result is shown if needed, but for now keeps static */}
-        <div className={`text-center mb-12 relative z-10 transition-all duration-500 ${result ? "mt-8 mb-8" : "mb-12"}`}>
-          <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2"></span>
-            Real-time Market Intelligence
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
-            Precision Pricing <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-800">Powered by Intelligence.</span>
-          </h1>
-          {!result && (
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4">
-              The industry standard for real-time market analysis. 
-              Enter your requirements below to generate an instant quote.
-            </p>
-          )}
+      {/* Hero Section - Automatically hides/shrinks when result is shown if needed, but for now keeps static */}
+      <div className={`text-center mb-12 relative z-10 transition-all duration-500 ${result ? "mt-8 mb-8" : "mb-12"}`}>
+        <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium mb-6">
+          <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2"></span>
+          Real-time Market Intelligence
+        </div>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
+          Precision Pricing <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-800">Powered by Intelligence.</span>
+        </h1>
+        {!result && (
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4">
+            The industry standard for real-time market analysis.
+            Enter your requirements below to generate an instant quote.
+          </p>
+        )}
+      </div>
+
+      {/* Input Section */}
+      <div className="max-w-2xl mx-auto mb-16 relative z-10">
+        <div className="mb-6">
+          <AIInput
+            onSubmit={handleSubmit}
+            placeholder="Describe your project or product requirements..."
+            initialValue={initialValue}
+            className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
+          />
         </div>
 
-        {/* Input Section */}
-        <div className="max-w-2xl mx-auto mb-16 relative z-10">
-          <div className="mb-6">
-            <AIInput 
-              onSubmit={handleSubmit} 
-              placeholder="Describe your project or product requirements..."
-              initialValue={initialValue}
-              className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
-            />
-          </div>
-          
-          <div className="flex justify-center">
-            <button 
-              onClick={() => setDeepSearch(!deepSearch)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
-                deepSearch 
-                ? "bg-slate-900 text-white shadow-md scale-105" 
-                : "bg-white/50 text-slate-500 hover:bg-white hover:text-slate-700 border border-transparent hover:border-slate-200"
+        <div className="flex justify-center">
+          <button
+            onClick={() => setDeepSearch(!deepSearch)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${deepSearch
+              ? "bg-slate-900 text-white shadow-md scale-105"
+              : "bg-white/50 text-slate-500 hover:bg-white hover:text-slate-700 border border-transparent hover:border-slate-200"
               }`}
-            >
-              <div className={`w-1.5 h-1.5 rounded-full ${deepSearch ? "bg-blue-400 animate-pulse" : "bg-slate-300"}`}></div>
-              Deep Search {deepSearch ? "ON" : "OFF"}
-            </button>
-          </div>
+          >
+            <div className={`w-1.5 h-1.5 rounded-full ${deepSearch ? "bg-blue-400 animate-pulse" : "bg-slate-300"}`}></div>
+            Deep Search {deepSearch ? "ON" : "OFF"}
+          </button>
         </div>
+      </div>
 
-        {/* Results Display */}
-        {loading && <CreativeLoader />}
+      {/* Results Display */}
+      {loading && <CreativeLoader />}
 
-        {result && !loading && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-            {result.price > 0 ? (
-              <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="p-8 md:p-12 border-b border-slate-100 bg-slate-50/30">
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div>
-                      <div className="flex items-center gap-2 text-slate-400 mb-2">
-                        <Calendar className="w-4 h-4" />
-                        <span className="text-xs font-bold uppercase tracking-widest">
-                          {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-                        </span>
-                      </div>
-                      <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-2">Estimated Valuation</h2>
-                      <div className="text-6xl font-bold text-slate-900 tracking-tight">
-                        ₹{result.price.toLocaleString()}
-                      </div>
+      {result && !loading && (
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+          {result.price > 0 ? (
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="p-8 md:p-12 border-b border-slate-100 bg-slate-50/30">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div>
+                    <div className="flex items-center gap-2 text-slate-400 mb-2">
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-xs font-bold uppercase tracking-widest">
+                        {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </span>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${
-                        result.analysis.verdict.includes("Fair") || result.analysis.verdict.includes("Underpriced") 
-                          ? "bg-emerald-50 text-emerald-600" 
-                          : "bg-amber-50 text-amber-600"
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-2">Estimated Valuation</h2>
+                    <div className="text-6xl font-bold text-slate-900 tracking-tight">
+                      ₹{result.price.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${result.analysis.verdict.includes("Fair") || result.analysis.verdict.includes("Underpriced")
+                      ? "bg-emerald-50 text-emerald-600"
+                      : "bg-amber-50 text-amber-600"
                       }`}>
-                        <CheckCircle2 className="w-4 h-4" />
-                        {result.analysis.verdict}
-                      </div>
-                      <div className="text-xs font-medium text-slate-400">
-                        Confidence Score: {result.confidenceScore || 98.4}%
-                      </div>
-                      {!deepSearch && (
-                        <button 
-                          onClick={handleDeepRecheck}
-                          className="mt-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5"
-                        >
-                          Not satisfied? Check Deeply
-                          <ArrowRight className="w-3 h-3" />
-                        </button>
-                      )}
+                      <CheckCircle2 className="w-4 h-4" />
+                      {result.analysis.verdict}
                     </div>
+                    <div className="text-xs font-medium text-slate-400">
+                      Confidence Score: {result.confidenceScore || 98.4}%
+                    </div>
+                    {!deepSearch && (
+                      <button
+                        onClick={handleDeepRecheck}
+                        className="mt-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5"
+                      >
+                        Not satisfied? Check Deeply
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    )}
                   </div>
                 </div>
-                
-                <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-                  <div className="p-8">
-                    <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
-                      <BarChart3 className="w-5 h-5 text-slate-600" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 mb-4">Market Analysis</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Expected Price Range</div>
-                        <div className="text-lg font-semibold text-slate-900">{result.analysis.expectedPriceRange}</div>
-                      </div>
-                      
-                      <div>
-                        <div className="text-sm font-medium text-slate-900 mb-1">Expert Explanation</div>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                          {result.analysis.explanation}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
-                      <Layers className="w-5 h-5 text-slate-600" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 mb-4">Data Integrity</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                      Analysis based on real-time vector search of local market entries and AI-driven verification against live web sources.
-                    </p>
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                      Verified against {result.webData?.length || 0} active sources
-                    </div>
-                  </div>
-                </div>
+              </div>
 
-                {result.relatedEntries && result.relatedEntries.length > 0 && (
-                  <div className="p-8 md:p-12 bg-white border-t border-slate-100">
-                    <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                      Related Anonymous Results
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {result.relatedEntries.map((entry, index) => (
-                        <div 
-                          key={index}
-                          className="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-purple-200 transition-colors"
-                        >
-                          <div className="flex justify-between items-start mb-2">
-                            <h4 className="font-semibold text-slate-900 line-clamp-1">{entry.item}</h4>
-                            <span className="text-xs font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200">
-                              ₹{entry.price.toLocaleString()}
-                            </span>
+              <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <div className="p-8">
+                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
+                    <BarChart3 className="w-5 h-5 text-slate-600" />
+                  </div>
+                  <h3 className="font-bold text-slate-900 mb-4">Market Analysis</h3>
+
+                  <div className="space-y-4">
+                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                      <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Expected Price Range</div>
+                      <div className="text-lg font-semibold text-slate-900">{result.analysis.expectedPriceRange}</div>
+                    </div>
+
+                    <div>
+                      <div className="text-sm font-medium text-slate-900 mb-1">Expert Explanation</div>
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        {result.analysis.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-8">
+                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
+                    <Layers className="w-5 h-5 text-slate-600" />
+                  </div>
+                  <h3 className="font-bold text-slate-900 mb-4">Data Integrity</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                    Analysis based on real-time vector search of local market entries and AI-driven verification against live web sources.
+                  </p>
+                  <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    Verified against {result.webData?.length || 0} active sources
+                  </div>
+                </div>
+              </div>
+
+              {result.relatedEntries && result.relatedEntries.length > 0 && (
+                <div className="p-8 md:p-12 bg-white border-t border-slate-100">
+                  <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                    Related Anonymous Results
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {result.relatedEntries.map((entry, index) => (
+                      <div
+                        key={index}
+                        className="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-purple-200 transition-colors"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-semibold text-slate-900 line-clamp-1">{entry.item}</h4>
+                          <span className="text-xs font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200">
+                            ₹{entry.price.toLocaleString()}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5 mt-3">
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <MapPin className="w-3 h-3" />
+                            <span className="truncate">{entry.location}</span>
                           </div>
-                          
-                          <div className="flex flex-col gap-1.5 mt-3">
-                            <div className="flex items-center gap-2 text-xs text-slate-500">
-                              <MapPin className="w-3 h-3" />
-                              <span className="truncate">{entry.location}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-slate-400">
-                              <Clock className="w-3 h-3" />
-                              <span>{new Date(entry.timestamp).toLocaleDateString()}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-slate-400">
-                              <User className="w-3 h-3" />
-                              <span>Anonymous Contributor</span>
-                            </div>
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
+                            <Clock className="w-3 h-3" />
+                            <span>{new Date(entry.timestamp).toLocaleDateString()}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
+                            <User className="w-3 h-3" />
+                            <span>Anonymous Contributor</span>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
-                {result.webData && result.webData.length > 0 && (
-                  <div className="p-8 md:p-12 bg-slate-50/50 border-t border-slate-100">
-                    <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                      Real-time Web Context
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {(showMoreWeb ? result.webData : result.webData.slice(0, 4)).map((item, index) => (
-                        <a 
-                          key={index}
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group block p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
-                        >
-                          <div className="flex justify-between items-start gap-4 mb-2">
-                            <h4 className="text-sm font-semibold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
-                              {item.title}
-                            </h4>
-                            <ExternalLink className="w-3 h-3 text-slate-400 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                          <p className="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">
-                            {item.body}
-                          </p>
-                          <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-50">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                              {item.source}
-                            </span>
-                            {item.price ? (
+              {result.webData && result.webData.length > 0 && (
+                <div className="p-8 md:p-12 bg-slate-50/50 border-t border-slate-100">
+                  <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                    Real-time Web Context
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(showMoreWeb ? result.webData : result.webData.slice(0, 4)).map((item, index) => (
+                      <a
+                        key={index}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group block p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
+                      >
+                        <div className="flex justify-between items-start gap-4 mb-2">
+                          <h4 className="text-sm font-semibold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                            {item.title}
+                          </h4>
+                          <ExternalLink className="w-3 h-3 text-slate-400 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <p className="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">
+                          {item.body}
+                        </p>
+                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-50">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            {item.source}
+                          </span>
+                          {item.price ? (
+                            <div className="flex items-center gap-2">
                               <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
                                 {item.price}
                               </span>
-                            ) : reportedUrls.has(item.url) ? (
-                              <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
-                                Reported
-                              </span>
-                            ) : (
+                              {/* Report button for priced items - minimal icon only */}
                               <button
                                 onClick={(e) => handleReport(e, item)}
-                                className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md hover:bg-amber-100 transition-colors flex items-center gap-1"
-                                title="Report unparsed price"
+                                className={`p-1 rounded-md transition-colors ${reportedUrls.has(item.url)
+                                    ? "text-emerald-500 bg-emerald-50 cursor-default"
+                                    : "text-slate-300 hover:text-amber-600 hover:bg-amber-50"
+                                  }`}
+                                title={reportedUrls.has(item.url) ? "Reported" : "Report incorrect price"}
+                                disabled={reportedUrls.has(item.url)}
                               >
-                                <AlertCircle className="w-2.5 h-2.5" />
-                                Report Missing Price
+                                {reportedUrls.has(item.url) ? (
+                                  <CheckCircle2 className="w-3 h-3" />
+                                ) : (
+                                  <AlertCircle className="w-3 h-3" />
+                                )}
                               </button>
-                            )}
-                          </div>
-                        </a>
-                      ))}
-                    </div>
+                            </div>
+                          ) : reportedUrls.has(item.url) ? (
+                            <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
+                              Reported
+                            </span>
+                          ) : (
+                            <button
+                              onClick={(e) => handleReport(e, item)}
+                              className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md hover:bg-amber-100 transition-colors flex items-center gap-1"
+                              title="Report unparsed price"
+                            >
+                              <AlertCircle className="w-2.5 h-2.5" />
+                              Report Missing Price
+                            </button>
+                          )}
+                        </div>
+                      </a>
+                    ))}
+                  </div>
 
-                    {result.webData.length > 4 && !showMoreWeb && (
-                      <div className="mt-8 flex justify-center">
-                        <button 
-                          onClick={() => setShowMoreWeb(true)}
-                          className="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-sm"
-                        >
-                          Show more results
-                          <ArrowRight className="w-4 h-4 rotate-90" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 md:p-12">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-amber-100 rounded-xl">
-                    <CheckCircle2 className="w-5 h-5 text-amber-600" />
-                  </div>
-                  <h3 className="font-bold text-slate-900">Action Required</h3>
+                  {result.webData.length > 4 && !showMoreWeb && (
+                    <div className="mt-8 flex justify-center">
+                      <button
+                        onClick={() => setShowMoreWeb(true)}
+                        className="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-sm"
+                      >
+                        Show more results
+                        <ArrowRight className="w-4 h-4 rotate-90" />
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <p className="text-slate-600 leading-relaxed">
-                  {typeof result.analysis === 'string' ? result.analysis : result.analysis.explanation}
-                </p>
+              )}
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 md:p-12">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-amber-100 rounded-xl">
+                  <CheckCircle2 className="w-5 h-5 text-amber-600" />
+                </div>
+                <h3 className="font-bold text-slate-900">Action Required</h3>
               </div>
-            )}
-          </div>
-        )}
-    </div>
+              <p className="text-slate-600 leading-relaxed">
+                {typeof result.analysis === 'string' ? result.analysis : result.analysis.explanation}
+              </p>
+            </div>
+          )}
+        </div>
+      )
+      }
+    </div >
   );
 }
 
@@ -376,7 +393,7 @@ export default function PriceOracle() {
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-3xl opacity-60"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-100/30 rounded-full blur-3xl opacity-60"></div>
       </div>
-      
+
       <Suspense fallback={<div>Loading...</div>}>
         <PriceOracleContent />
       </Suspense>

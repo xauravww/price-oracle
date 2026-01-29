@@ -143,6 +143,63 @@ function parseAIResponse<T>(content: string): T {
   }
 }
 
+/**
+ * Heuristic-based regex parser to extract prices from snippets when AI fails.
+ * Targets common Indian currency formats and filters out EMI/Discount false positives.
+ */
+function extractPriceWithRegex(text: string): string | undefined {
+  if (!text) return undefined;
+
+  // Patterns for price extraction
+  // 1. Standalone large numbers with commas (e.g., 1,19,999)
+  // 2. Prefix-based (₹, Rs, INR)
+  // 3. Suffix-based (rs, rupees, inr)
+  // 4. Lakh/k/m suffixes
+  // 5. Plain large numbers (e.g., 119999) if > 5000
+  const regexes = [
+    /\b(\d{1,3}(?:,\d{3})+)\b/g,
+    /(?:₹|Rs\.?|rs\.?|INR)\s?(\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s?[kKmMbB]?)/gi,
+    /(\d+(?:,\d+)*(?:\.\d+)?|\d+(?:\.\d+)?\s?[kKmMbB]?)\s?(?:rs|rupees|inr|bucks)/gi,
+    /(\d+(?:\.\d+)?)\s?(?:Lakh|lakh|cr|Cr)/gi,
+    /\b(\d{5,})\b/g
+  ];
+
+  const negativeKeywords = [
+    'save', 'off', 'emi', 'under', 'upto', 'up to', 'discount', 'exchange',
+    'results', 'items', 'models', 'products', 'reviews', 'ratings', 'more than', 'over'
+  ];
+
+  const checkContext = (match: RegExpExecArray, fullText: string) => {
+    const start = Math.max(0, match.index - 50);
+    const end = Math.min(fullText.length, match.index + match[0].length + 50);
+    const context = fullText.substring(start, end).toLowerCase();
+
+    if (context.includes('emi') || context.includes('exchange')) return false;
+
+    // Strictness for standalone numbers
+    if (match[0].length > 4 && !match[0].includes(',') && !fullText.match(/(?:₹|Rs|rs|inr)/i)) {
+      const val = parseInt(match[0]);
+      if (val < 5000) return false;
+    }
+
+    return !negativeKeywords.some(word => context.includes(word));
+  };
+
+  for (const regex of regexes) {
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      if (checkContext(match, text)) {
+        let val = match[1] || match[0];
+        val = val.trim();
+        if (match[0].toLowerCase().includes('lakh')) val += " Lakh";
+        return `₹${val}`;
+      }
+    }
+  }
+
+  return undefined;
+}
+
 export interface WebSearchResult {
   title: string;
   body: string;
@@ -297,22 +354,36 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       const resultsWithFallback = await Promise.all(finalResults.map(async (r: WebSearchResult, i: number) => {
         let price = extractions[i]?.price || undefined;
         let suggestedUrl = extractions[i]?.suggestedUrl;
-
-        // Condition: No price found AND (High Value Domain OR AI suggested a better link)
         const isHighValue = highValueDomains.some(d => r.source.toLowerCase().includes(d));
 
-        if (!price && (isHighValue || suggestedUrl)) {
+        // REACH NEAR 100%: If we miss a price, try a quick fetch for ANY result or suggested link
+        if (!price || price.length < 7) {
           try {
-            // Prefer suggested URL if available, else original
             const targetUrl = (suggestedUrl && suggestedUrl.startsWith('http')) ? suggestedUrl : r.url;
 
-            // Quick fetch using Jina
             const readerUrl = `https://r.jina.ai/${targetUrl}`;
-            const response = await fetch(readerUrl, { signal: AbortSignal.timeout(4000) }); // 4s timeout
+            let content = '';
 
-            if (response.ok) {
-              const content = await response.text();
-              const cleanContent = content.replace(/\s\s+/g, ' ').substring(0, 1500); // 1.5k chars context
+            try {
+              const response = await fetch(readerUrl, { signal: AbortSignal.timeout(10000) }); // 10s timeout
+              if (response.ok) {
+                content = await response.text();
+              }
+            } catch (jinaError) {
+              // Jina failed, try custom reader
+            }
+
+            if (!content) {
+              try {
+                const { readUrlContent } = await import('./urlReader');
+                content = await readUrlContent(targetUrl, { timeoutMs: 15000 });
+              } catch (customError) {
+                // Both readers failed
+              }
+            }
+
+            if (content) {
+              const cleanContent = content.replace(/\s\s+/g, ' ').substring(0, 3000); // More context
 
               const fallbackExtraction = await extractPricesWithAI(query, [{
                 title: r.title,
@@ -321,16 +392,21 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
 
               if (fallbackExtraction[0]?.price) {
                 price = fallbackExtraction[0].price;
+              } else {
+                const regexPrice = extractPriceWithRegex(cleanContent);
+                if (regexPrice) {
+                  price = regexPrice;
+                }
               }
             }
-          } catch (e) {
-            // Fallback failed, stick to original (null)
+          } catch (e: any) {
+            // Fallback failed
           }
         }
 
         return {
           ...r,
-          price: price
+          price: price || extractPriceWithRegex(r.title) || extractPriceWithRegex(r.body)
         };
       }));
 
@@ -404,7 +480,7 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       }
       return {
         ...r,
-        price: ext?.price || undefined
+        price: ext?.price || extractPriceWithRegex(r.title) || extractPriceWithRegex(r.body)
       };
     }));
 
@@ -449,7 +525,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
           .substring(0, 500);
 
         const extractedPrices = await extractPricesWithAI(title, [{ title, body: snippet }]);
-        const price = extractedPrices[0]?.price || undefined;
+        const price = extractedPrices[0]?.price ?? undefined;
 
         const webResult: WebSearchResult = {
           title,
