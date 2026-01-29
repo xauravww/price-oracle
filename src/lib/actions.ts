@@ -1,6 +1,6 @@
 "use server";
 
-import db, { getEmbedding } from './db';
+import prisma, { getEmbedding } from './db';
 import { PriceEntry } from './priceEngine';
 import { DDGS } from '@phukon/duckduckgo-search';
 import { revalidatePath } from 'next/cache';
@@ -10,21 +10,18 @@ import { SignJWT } from 'jose';
 
 export async function getEntries(page: number = 1, limit: number = 10): Promise<{ entries: PriceEntry[], totalPages: number, totalCount: number }> {
   const offset = (page - 1) * limit;
-  
-  const stmt = db.prepare('SELECT * FROM price_entries ORDER BY timestamp DESC LIMIT ? OFFSET ?');
-  const rows = stmt.all(limit, offset) as any[];
-  
-  const totalCountResult = db.prepare('SELECT COUNT(*) as count FROM price_entries').get() as { count: number };
-  const totalCount = totalCountResult.count;
-  
-  const entries = rows.map(row => ({
-    ...row,
-    timestamp: new Date(row.timestamp),
-    isTrusted: Boolean(row.isTrusted)
-  })) as PriceEntry[];
+
+  const [entries, totalCount] = await Promise.all([
+    prisma.priceEntry.findMany({
+      orderBy: { timestamp: 'desc' },
+      skip: offset,
+      take: limit,
+    }),
+    prisma.priceEntry.count(),
+  ]);
 
   return {
-    entries,
+    entries: entries as PriceEntry[],
     totalPages: Math.ceil(totalCount / limit),
     totalCount
   };
@@ -32,20 +29,26 @@ export async function getEntries(page: number = 1, limit: number = 10): Promise<
 
 export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upvotes' | 'downvotes' | 'isTrusted'>) {
   const id = Math.random().toString(36).substr(2, 9);
-  
-  const stmt = db.prepare(`
-    INSERT INTO price_entries (id, item, location, price, contributorId)
-    VALUES (?, ?, ?, ?, ?)
-  `);
-  stmt.run(id, entry.item, entry.location, entry.price, entry.contributorId);
+
+  await prisma.priceEntry.create({
+    data: {
+      id,
+      item: entry.item,
+      location: entry.location,
+      price: entry.price,
+      contributorId: entry.contributorId,
+    },
+  });
 
   try {
     const embedding = await getEmbedding(entry.item);
-    const vecStmt = db.prepare(`
-      INSERT INTO vec_items (id, embedding)
-      VALUES (?, ?)
-    `);
-    vecStmt.run(id, new Float32Array(embedding));
+    const embeddingString = `[${embedding.join(',')}]`;
+
+    await prisma.$executeRawUnsafe(
+      `INSERT INTO vec_items (id, embedding) VALUES ($1, $2::vector)`,
+      id,
+      embeddingString
+    );
   } catch (error) {
     console.error("Failed to save embedding:", error);
   }
@@ -59,21 +62,28 @@ export async function addEntry(entry: Omit<PriceEntry, 'id' | 'timestamp' | 'upv
 export async function searchSimilarEntries(query: string): Promise<PriceEntry[]> {
   try {
     const queryEmbedding = await getEmbedding(query);
-    
-    const stmt = db.prepare(`
+    const embeddingString = `[${queryEmbedding.join(',')}]`;
+
+    // Using pgvector cosine distance operator <=>
+    const results = (await prisma.$queryRawUnsafe(`
       SELECT 
-        p.*,
-        v.distance
+        p.id,
+        p.item,
+        p.location,
+        p.price,
+        p.timestamp,
+        p.upvotes,
+        p.downvotes,
+        p."isTrusted",
+        p."contributorId",
+        (v.embedding <=> $1::vector) as distance
       FROM vec_items v
       JOIN price_entries p ON v.id = p.id
-      WHERE v.embedding MATCH ?
-        AND k = 10
       ORDER BY distance
-    `);
-    
-    const rows = stmt.all(new Float32Array(queryEmbedding)) as any[];
-    
-    return rows.map(row => ({
+      LIMIT 10
+    `, embeddingString)) as any[];
+
+    return results.map((row: any) => ({
       ...row,
       timestamp: new Date(row.timestamp),
       isTrusted: Boolean(row.isTrusted)
@@ -110,35 +120,39 @@ export interface WebSearchResult {
   price?: string;
 }
 
-async function extractPricesWithAI(query: string, results: { title: string; body: string }[]): Promise<(string | undefined)[]> {
+interface ExtractionResult {
+  price: string | null;
+  suggestedUrl: string | null;
+}
+
+async function extractPricesWithAI(query: string, results: { title: string; body: string }[]): Promise<ExtractionResult[]> {
   try {
     const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
     const apiKey = process.env.AI_CLIENT_API_KEY;
 
-    if (!apiKey) return new Array(results.length).fill(undefined);
+    if (!apiKey) return new Array(results.length).fill({ price: null, suggestedUrl: null });
 
     const itemsStr = results.map((r, i) => `[${i}] Title: ${r.title}\nSnippet: ${r.body}`).join('\n\n');
 
     const systemPrompt = `You are a data extraction engine.
-Goal: Extract the exact price of the item '${query}' from the provided search snippets.
+Goal: Extract the exact price of the item '${query}' from search snippets.
 
 Rules:
-1. Extract ONLY the numeric price with currency symbol (e.g., ₹24,999, $500).
+1. price: Extract ONLY the numeric price with currency (e.g., ₹24,999).
 2. Clean up joined or doubled prices (e.g., if you see '₹34,774₹34,774', return '₹34,774').
-3. Ignore 'Save ₹...', '...off', 'EMI start at...', 'Delivery...', 'Exchange up to...', 'Price, product page'.
-4. CRITICAL: Ignore prices mentioned as 'Under ₹...', 'Below ₹...', 'Budget ₹...' in titles. These are category labels, not the actual product price.
-5. If the item is 'Currently unavailable', 'Sold out', or no price is listed, return null.
-6. If multiple prices exist, pick the main selling price (usually the largest number that isn't a crossed-out MRP).
+3. suggestedUrl: If the snippet looks like a SEARCH RESULT or LISTING page (e.g. multiple items) and NO specific price is found, look for a 'Direct Product Link' for the item.
+4. Ignore 'Save ₹...', '...off', 'EMI start at...', 'Delivery...', 'Exchange up to...', 'Price, product page'.
+5. Ignore category labels like 'Under ₹16,000'.
+6. If multiple prices exist on a listing, return null for price but provide the 'suggestedUrl' of the most relevant product.
 
 Output JSON format:
 {
-  "prices": [
-    "₹24,999",
-    null,
-    "₹25,500"
+  "results": [
+    { "price": "₹24,999", "suggestedUrl": null },
+    { "price": null, "suggestedUrl": "https://amazon.in/direct-link-to-product" }
   ]
 }
-The array order MUST match the input indices.`;
+The array order MUST match input.`;
 
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -156,30 +170,33 @@ The array order MUST match the input indices.`;
       })
     });
 
-    if (!response.ok) return new Array(results.length).fill(undefined);
+    if (!response.ok) return new Array(results.length).fill({ price: null, suggestedUrl: null });
 
     const data = await response.json();
     const parsed = JSON.parse(data.choices[0].message.content);
-    return parsed.prices;
+    return parsed.results;
   } catch (e) {
     console.error("AI Price Extraction Error:", e);
-    return new Array(results.length).fill(undefined);
+    return new Array(results.length).fill({ price: null, suggestedUrl: null });
   }
 }
 
 async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<WebSearchResult[]> {
   try {
     const ddgs = new DDGS();
-    
+
     // 1. Get Trusted Sources
-    const sources = db.prepare('SELECT url FROM trusted_sources WHERE isActive = 1').all() as { url: string }[];
-    
+    const sources = await prisma.trustedSource.findMany({
+      where: { isActive: true },
+      select: { url: true },
+    });
+
     // 2. Define Search Promises
     const searchPromises: Promise<any[]>[] = [];
-    
+
     // A. Priority Search (Trusted Sources)
     if (sources.length > 0) {
-      const sourceQuery = ` (${sources.map(s => `site:${new URL(s.url).hostname}`).join(' OR ')})`;
+      const sourceQuery = ` (${sources.map((s: any) => `site:${new URL(s.url).hostname}`).join(' OR ')})`;
       const trustedKeywords = `${query} current market price India${sourceQuery}`;
       searchPromises.push(ddgs.text({ keywords: trustedKeywords }));
     } else {
@@ -192,12 +209,12 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
 
     // 3. Execute Searches in Parallel
     const [trustedResults, generalResults] = await Promise.all(searchPromises);
-    
+
     // 4. Combine & Deduplicate (Trusted First)
     const combinedRawResults = [...(trustedResults || []), ...(generalResults || [])];
-    
+
     if (combinedRawResults.length === 0) return [];
-    
+
     const validResults = combinedRawResults.filter(r => r.href && r.href.startsWith('http'));
 
     const seenUrls = new Set();
@@ -213,17 +230,17 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
     if (!deepSearch) {
       // Create a map to track domains and ensure diversity
       const domainCount = new Map<string, number>();
-      
+
       const mixedResults = uniqueResults.reduce((acc, r) => {
         let hostname = 'Source';
-        try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) {}
-        
+        try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) { }
+
         // Limit to 2 results per domain to ensure variety ("extra sources")
         const currentCount = domainCount.get(hostname) || 0;
         if (currentCount >= 2) return acc;
-        
+
         domainCount.set(hostname, currentCount + 1);
-        
+
         acc.push({
           title: r.title,
           body: r.body.replace(/\s\s+/g, ' ').trim(),
@@ -236,30 +253,30 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       }, [] as WebSearchResult[]);
 
       const finalResults = mixedResults.slice(0, 16); // Fetch more results
-      const extractedPrices = await extractPricesWithAI(query, finalResults);
-      
+      const extractions = await extractPricesWithAI(query, finalResults);
+
       return finalResults.map((r: WebSearchResult, i: number) => ({
         ...r,
-        price: extractedPrices[i] || undefined
+        price: extractions[i]?.price || undefined
       }));
     }
 
     // Deep Search Logic
     const topResults = uniqueResults.slice(0, 8); // Fetch more for deep search too
-    const detailedContents = await Promise.all(topResults.map(async (r) => {
+    let detailedContents = await Promise.all(topResults.map(async (r) => {
       let hostname = 'Source';
-      try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) {}
-      
+      try { hostname = new URL(r.href).hostname.replace('www.', ''); } catch (e) { }
+
       try {
         const readerUrl = `https://r.jina.ai/${r.href}`;
         const response = await fetch(readerUrl);
         let content = !response.ok ? r.body : await response.text();
-        
+
         content = content
           .replace(/\s\s+/g, ' ')
           .replace(/\n\s*\n/g, ' ')
           .trim()
-          .substring(0, 300);
+          .substring(0, 800); // More context for deep search
 
         return {
           title: r.title,
@@ -281,13 +298,41 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
       }
     }));
 
-    const extractedPrices = await extractPricesWithAI(query, detailedContents);
-    return detailedContents.map((r, i) => ({
-      ...r,
-      price: extractedPrices[i] || undefined
+    const extractions = await extractPricesWithAI(query, detailedContents);
+
+    // DRILL DOWN LOGIC
+    const finalDeepResults = await Promise.all(detailedContents.map(async (r, i) => {
+      const ext = extractions[i];
+      if (!ext.price && ext.suggestedUrl) {
+        // AI found a better link on a listing page, drill down!
+        try {
+          const drillDownUrl = ext.suggestedUrl.startsWith('http') ? ext.suggestedUrl : new URL(ext.suggestedUrl, r.url).href;
+          const response = await fetch(`https://r.jina.ai/${drillDownUrl}`);
+          if (response.ok) {
+            const content = await response.text();
+            const deepExtractions = await extractPricesWithAI(query, [{
+              title: r.title,
+              body: content.substring(0, 1000)
+            }]);
+
+            return {
+              ...r,
+              url: drillDownUrl,
+              body: content.substring(0, 300) + "...",
+              price: deepExtractions[0]?.price || undefined
+            };
+          }
+        } catch (err) {
+          console.error("Drill down failed:", err);
+        }
+      }
+      return {
+        ...r,
+        price: ext?.price || undefined
+      };
     }));
-    
-    return detailedContents;
+
+    return finalDeepResults;
   } catch (error) {
     console.error("Web search error:", error);
     return [];
@@ -304,23 +349,23 @@ export interface AnalysisResult {
 export async function processPriceRequest(query: string, deepSearch: boolean = false) {
   const startTime = Date.now();
   let targetPrice = 0;
-  
+
   try {
     // Check if query is a direct URL
     const isUrl = /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(query.trim());
-    
+
     if (isUrl) {
       const url = query.trim();
       let hostname = new URL(url).hostname.replace('www.', '');
-      
+
       try {
         const readerUrl = `https://r.jina.ai/${url}`;
         const response = await fetch(readerUrl);
         let content = await response.text();
-        
+
         const titleMatch = content.match(/^Title: (.*)$/m);
         const title = titleMatch ? titleMatch[1] : hostname;
-        
+
         const snippet = content
           .replace(/\s\s+/g, ' ')
           .replace(/\n\s*\n/g, ' ')
@@ -328,7 +373,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
           .substring(0, 500);
 
         const extractedPrices = await extractPricesWithAI(title, [{ title, body: snippet }]);
-        const price = extractedPrices[0];
+        const price = extractedPrices[0]?.price || undefined;
 
         const webResult: WebSearchResult = {
           title,
@@ -356,7 +401,7 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
     }
 
     const history = await searchSimilarEntries(query);
-    
+
     // Extract Item Name early
     const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
     const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
@@ -364,13 +409,13 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
     // Use item name for cleaner web search context
     const webData = await getWebMarketPrices(item, deepSearch);
-    
+
     let extractedPrice: number | null = null;
     if (priceMatch) {
       const val = priceMatch[1];
       extractedPrice = parseInt(val.replace(/,/g, ''));
     }
-    
+
     if (extractedPrice === null) {
       return {
         symbol: query.toUpperCase(),
@@ -398,25 +443,30 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
     }
 
     const analysis = await getExpertOpinionAction(item, targetPrice, history, webData);
-    
+
     const responseTime = Date.now() - startTime;
-    
-    db.prepare(`
-      INSERT INTO logs (query, price_result, deep_search, status, response_time)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(query, targetPrice, deepSearch ? 1 : 0, 'success', responseTime);
+
+    await prisma.log.create({
+      data: {
+        query,
+        priceResult: targetPrice,
+        deepSearch,
+        status: 'success',
+        responseTime,
+      },
+    });
 
     let confidenceScore = 60; // Lower base score
     if (history.length > 0) confidenceScore += Math.min(history.length * 5, 20); // History matters
-    
+
     // Web data only boosts confidence if it has PRICE data
     if (webData && webData.length > 0) {
       const entriesWithPrice = webData.filter(w => w.price).length;
       confidenceScore += (entriesWithPrice * 3); // 3 points per valid price source
     }
-    
+
     if (deepSearch) confidenceScore += 5;
-    
+
     confidenceScore = Math.min(confidenceScore, 95); // Cap at 95% unless perfect
 
     // Mask the contributorId for privacy
@@ -436,37 +486,53 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
     };
   } catch (error) {
     const responseTime = Date.now() - startTime;
-    db.prepare(`
-      INSERT INTO logs (query, price_result, deep_search, status, response_time)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(query, 0, deepSearch ? 1 : 0, 'error', responseTime);
+    await prisma.log.create({
+      data: {
+        query,
+        priceResult: 0,
+        deepSearch,
+        status: 'error',
+        responseTime,
+      },
+    });
     throw error;
   }
 }
 
 export async function getLogs() {
-  const stmt = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT 100');
-  return stmt.all() as { id: number, query: string, price_result: number, deep_search: number, status: string, response_time: number, timestamp: string }[];
+  return await prisma.log.findMany({
+    orderBy: { timestamp: 'desc' },
+    take: 100,
+  });
 }
 
 export async function getStats() {
-  const totalQueries = db.prepare('SELECT COUNT(*) as count FROM logs').get() as { count: number };
-  const avgResponseTime = db.prepare('SELECT AVG(response_time) as avg FROM logs').get() as { avg: number };
-  const successRate = db.prepare("SELECT (COUNT(CASE WHEN status = 'success' THEN 1 END) * 100.0 / COUNT(*)) as rate FROM logs").get() as { rate: number };
-  
-  const dailyQueries = db.prepare(`
-    SELECT date(timestamp) as date, COUNT(*) as count 
-    FROM logs 
-    GROUP BY date(timestamp) 
-    ORDER BY date DESC 
-    LIMIT 7
-  `).all() as { date: string, count: number }[];
+  const [totalQueries, avgResponseTime, successCount, totalCount, dailyQueries] = await Promise.all([
+    prisma.log.count(),
+    prisma.log.aggregate({
+      _avg: { responseTime: true },
+    }),
+    prisma.log.count({ where: { status: 'success' } }),
+    prisma.log.count(),
+    (prisma.$queryRaw`
+      SELECT DATE(timestamp) as date, COUNT(*) as count
+      FROM logs
+      GROUP BY DATE(timestamp)
+      ORDER BY date DESC
+      LIMIT 7
+    `) as Promise<{ date: string; count: bigint }[]>,
+  ]);
+
+  const successRate = totalCount > 0 ? (successCount * 100.0 / totalCount) : 0;
 
   return {
-    totalQueries: totalQueries.count,
-    avgResponseTime: Math.round(avgResponseTime.avg || 0),
-    successRate: Math.round(successRate.rate || 0),
-    dailyQueries: dailyQueries.reverse()
+    totalQueries,
+    avgResponseTime: Math.round(avgResponseTime._avg.responseTime || 0),
+    successRate: Math.round(successRate),
+    dailyQueries: dailyQueries.reverse().map((dq: any) => ({
+      date: dq.date,
+      count: Number(dq.count),
+    })),
   };
 }
 
@@ -500,7 +566,7 @@ export async function getExpertOpinionAction(item: string, price: number, histor
 
     const response = await fetch(apiUrl, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${apiKey}`
       },
@@ -566,14 +632,23 @@ export async function adminLogin(formData: FormData) {
 }
 
 export async function deleteEntry(id: string) {
-  db.prepare('DELETE FROM price_entries WHERE id = ?').run(id);
-  db.prepare('DELETE FROM vec_items WHERE id = ?').run(id);
+  try {
+    await prisma.vecItem.delete({ where: { id } });
+  } catch {
+    // Vec item might not exist, that's okay
+  }
+  await prisma.priceEntry.delete({ where: { id } });
   revalidatePath('/');
   revalidatePath('/admin');
 }
 
 export async function getTrustedSources() {
-  return db.prepare('SELECT * FROM trusted_sources ORDER BY category ASC, name ASC').all() as any[];
+  return await prisma.trustedSource.findMany({
+    orderBy: [
+      { category: 'asc' },
+      { name: 'asc' },
+    ],
+  });
 }
 
 export async function addTrustedSource(name: string, url: string, category: string) {
@@ -594,14 +669,23 @@ export async function addTrustedSource(name: string, url: string, category: stri
     }
 
     // Check for duplicates
-    const existing = db.prepare('SELECT id FROM trusted_sources WHERE url = ?').get(trimmedUrl);
+    const existing = await prisma.trustedSource.findUnique({
+      where: { url: trimmedUrl },
+    });
+
     if (existing) {
       return { success: false, error: "A source with this URL already exists" };
     }
 
-    const stmt = db.prepare('INSERT INTO trusted_sources (name, url, category, isActive) VALUES (?, ?, ?, ?)');
-    stmt.run(trimmedName, trimmedUrl, trimmedCategory, 1);
-    
+    await prisma.trustedSource.create({
+      data: {
+        name: trimmedName,
+        url: trimmedUrl,
+        category: trimmedCategory,
+        isActive: true,
+      },
+    });
+
     revalidatePath('/admin/sources');
     return { success: true };
   } catch (error: any) {
@@ -612,7 +696,7 @@ export async function addTrustedSource(name: string, url: string, category: stri
 
 export async function deleteTrustedSource(id: number) {
   try {
-    db.prepare('DELETE FROM trusted_sources WHERE id = ?').run(id);
+    await prisma.trustedSource.delete({ where: { id } });
     revalidatePath('/admin/sources');
     return { success: true };
   } catch (error: any) {
@@ -622,7 +706,10 @@ export async function deleteTrustedSource(id: number) {
 
 export async function toggleSourceStatus(id: number, isActive: boolean) {
   try {
-    db.prepare('UPDATE trusted_sources SET isActive = ? WHERE id = ?').run(isActive ? 1 : 0, id);
+    await prisma.trustedSource.update({
+      where: { id },
+      data: { isActive },
+    });
     revalidatePath('/admin/sources');
     return { success: true };
   } catch (error: any) {
@@ -632,7 +719,9 @@ export async function toggleSourceStatus(id: number, isActive: boolean) {
 
 export async function reportUnparsedUrl(url: string, title: string, query: string) {
   try {
-    db.prepare('INSERT INTO reported_urls (url, title, query) VALUES (?, ?, ?)').run(url, title, query);
+    await prisma.reportedUrl.create({
+      data: { url, title, query },
+    });
     return { success: true };
   } catch (error: any) {
     console.error("Report URL error:", error);
@@ -641,12 +730,14 @@ export async function reportUnparsedUrl(url: string, title: string, query: strin
 }
 
 export async function getReportedUrls() {
-  return db.prepare('SELECT * FROM reported_urls ORDER BY timestamp DESC').all() as any[];
+  return await prisma.reportedUrl.findMany({
+    orderBy: { timestamp: 'desc' },
+  });
 }
 
 export async function deleteReportedUrl(id: number) {
   try {
-    db.prepare('DELETE FROM reported_urls WHERE id = ?').run(id);
+    await prisma.reportedUrl.delete({ where: { id } });
     revalidatePath('/admin/reports');
     return { success: true };
   } catch (error: any) {

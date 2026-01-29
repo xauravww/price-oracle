@@ -1,9 +1,11 @@
 
+export const dynamic = 'force-dynamic';
+
 import { getStats } from "@/lib/actions";
-import { 
-  Search, 
-  CheckCircle, 
-  Clock, 
+import {
+  Search,
+  CheckCircle,
+  Clock,
   Zap,
   Database
 } from "lucide-react";
@@ -20,7 +22,7 @@ export default async function DashboardPage() {
           <p className="text-slate-500 mt-2 text-lg">Real-time system performance and analytics</p>
         </div>
         <div className="flex gap-3">
-          <a 
+          <a
             href="/admin/database"
             className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-200"
           >

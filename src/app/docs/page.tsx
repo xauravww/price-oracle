@@ -1,9 +1,9 @@
-import { 
-  ShieldCheck, 
-  Zap, 
-  Database, 
-  Search, 
-  BarChart4, 
+import {
+  ShieldCheck,
+  Zap,
+  Database,
+  Search,
+  BarChart4,
   Globe2,
   ArrowRight,
   Code2,
@@ -68,7 +68,7 @@ export default function DocsPage() {
               How PriceOracle Works
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              A transparent, step-by-step breakdown of our hybrid valuation engine. 
+              A transparent, step-by-step breakdown of our hybrid valuation engine.
               We combine local vector memory with live web intelligence to deliver verified price verdicts.
             </p>
           </section>
@@ -79,7 +79,7 @@ export default function DocsPage() {
               <Network className="w-8 h-8 text-primary" />
               The Pipeline
             </h2>
-            
+
             <div className="bg-slate-50 border rounded-2xl p-8 mb-8 overflow-x-auto">
               <div className="min-w-[700px] flex flex-col gap-8">
                 {/* Step 1 */}
@@ -100,7 +100,7 @@ export default function DocsPage() {
                   <div className="bg-blue-50 border-blue-200 border px-4 py-4 rounded-xl shadow-sm w-64 text-center">
                     <span className="font-bold text-blue-900 block mb-1">2A. Historical Check</span>
                     <span className="text-[10px] text-blue-700 block">
-                      Local SQLite Vector DB search for similar past entries
+                      PostgreSQL Vector DB search using pgvector for similar past entries
                     </span>
                   </div>
                   <div className="bg-emerald-50 border-emerald-200 border px-4 py-4 rounded-xl shadow-sm w-64 text-center">
@@ -113,10 +113,10 @@ export default function DocsPage() {
 
                 {/* Connecting Lines */}
                 <div className="flex justify-center -my-4 relative z-0">
-                   <div className="w-64 h-8 border-b-2 border-l-2 border-r-2 border-slate-300 rounded-b-xl"></div>
+                  <div className="w-64 h-8 border-b-2 border-l-2 border-r-2 border-slate-300 rounded-b-xl"></div>
                 </div>
                 <div className="flex justify-center -mt-4">
-                   <div className="w-0.5 h-8 bg-slate-300"></div>
+                  <div className="w-0.5 h-8 bg-slate-300"></div>
                 </div>
 
                 {/* Step 3 */}
@@ -124,7 +124,7 @@ export default function DocsPage() {
                   <div className="bg-purple-50 border-purple-200 border px-6 py-4 rounded-xl shadow-sm text-center w-80">
                     <span className="font-bold text-purple-900 block mb-2">3. AI Synthesis (External API)</span>
                     <span className="text-xs text-purple-700 block">
-                      Aggregated Context + Logic Prompt <br/> sent to Llama 3.1 (via Groq/OpenAI)
+                      Aggregated Context + Logic Prompt <br /> sent to Llama 3.1 (via Groq/OpenAI)
                     </span>
                   </div>
                 </div>
@@ -147,7 +147,7 @@ export default function DocsPage() {
 
           {/* Detailed Steps */}
           <div className="space-y-24">
-            
+
             {/* Step 1: Input Analysis */}
             <section id="input-analysis" className="scroll-mt-24">
               <div className="flex items-center gap-4 mb-6">
@@ -177,37 +177,37 @@ export default function DocsPage() {
                 </div>
 
                 <div className="mt-8 bg-amber-50/50 border border-amber-100 rounded-xl p-6">
-                   <h4 className="font-bold text-sm mb-3 flex items-center gap-2 text-amber-900">
-                      <AlertCircle className="w-4 h-4 text-amber-600" />
-                      Edge Case: Missing Price Input
-                   </h4>
-                   <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-                      If a user searches for <i>"iPhone 15 Pro"</i> without specifying a price (e.g., omitting <i>"for ₹1,20,000"</i>), the system adapts its response strategy:
-                   </p>
-                   <div className="grid md:grid-cols-2 gap-4">
-                      <div className="bg-white border rounded-lg p-4 shadow-sm">
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Action</span>
-                          <p className="text-sm text-slate-700">
-                            The system <b>skips the Verdict generation</b> since there is no baseline to compare against.
-                          </p>
+                  <h4 className="font-bold text-sm mb-3 flex items-center gap-2 text-amber-900">
+                    <AlertCircle className="w-4 h-4 text-amber-600" />
+                    Edge Case: Missing Price Input
+                  </h4>
+                  <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                    If a user searches for <i>"iPhone 15 Pro"</i> without specifying a price (e.g., omitting <i>"for ₹1,20,000"</i>), the system adapts its response strategy:
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-white border rounded-lg p-4 shadow-sm">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Action</span>
+                      <p className="text-sm text-slate-700">
+                        The system <b>skips the Verdict generation</b> since there is no baseline to compare against.
+                      </p>
+                    </div>
+                    <div className="bg-white border rounded-lg p-4 shadow-sm">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Output</span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span>Verdict:</span>
+                          <span className="font-mono text-amber-600">"Analysis Pending"</span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span>Web Data:</span>
+                          <span className="font-mono text-emerald-600">Displayed</span>
+                        </div>
+                        <div className="text-xs text-slate-500 italic mt-1 border-t pt-2">
+                          "Please tell me what price you are getting..."
+                        </div>
                       </div>
-                      <div className="bg-white border rounded-lg p-4 shadow-sm">
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Output</span>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-xs">
-                                <span>Verdict:</span>
-                                <span className="font-mono text-amber-600">"Analysis Pending"</span>
-                            </div>
-                            <div className="flex justify-between text-xs">
-                                <span>Web Data:</span>
-                                <span className="font-mono text-emerald-600">Displayed</span>
-                            </div>
-                            <div className="text-xs text-slate-500 italic mt-1 border-t pt-2">
-                                "Please tell me what price you are getting..."
-                            </div>
-                          </div>
-                      </div>
-                   </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -220,7 +220,7 @@ export default function DocsPage() {
               </div>
               <div className="pl-14">
                 <p className="text-muted-foreground mb-4">
-                  We maintain a local SQLite database powered by <code>sqlite-vec</code>. Every time a user gets a valuation or contributes data, it's embedded into a 384-dimensional vector.
+                  We maintain a PostgreSQL database powered by <code>pgvector</code>. Every time a user gets a valuation or contributes data, it's embedded into a 1536-dimensional vector.
                 </p>
                 <ul className="space-y-3 text-sm text-foreground/80 list-disc list-outside ml-4">
                   <li>
@@ -243,7 +243,7 @@ export default function DocsPage() {
                 <p className="text-muted-foreground mb-6">
                   We perform a real-time crawl using DuckDuckGo's API, running two parallel search strategies to ensure coverage and accuracy.
                 </p>
-                
+
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div className="border p-5 rounded-xl">
                     <h4 className="font-bold mb-2 flex items-center gap-2">
@@ -307,17 +307,17 @@ export default function DocsPage() {
                 <div className="bg-slate-900 text-slate-300 p-6 rounded-xl font-mono text-xs overflow-x-auto">
                   <div className="text-slate-500 mb-2">// System Prompt Structure</div>
                   <p className="mb-4">
-                    You are a price transparency expert.<br/>
+                    You are a price transparency expert.<br />
                     Goal: Evaluate if a user's proposed price is a good deal based on historical data.
                   </p>
                   <p className="mb-4">
-                    <span className="text-purple-400">CRITICAL LOGIC:</span><br/>
-                    - If User Price &gt; Market Price -&gt; <span className="text-red-400">OVERPRICED</span><br/>
-                    - If User Price &lt; Market Price -&gt; <span className="text-emerald-400">UNDERPRICED</span><br/>
+                    <span className="text-purple-400">CRITICAL LOGIC:</span><br />
+                    - If User Price &gt; Market Price -&gt; <span className="text-red-400">OVERPRICED</span><br />
+                    - If User Price &lt; Market Price -&gt; <span className="text-emerald-400">UNDERPRICED</span><br />
                     - If Similar -&gt; <span className="text-blue-400">FAIR DEAL</span>
                   </p>
                   <p>
-                    <span className="text-purple-400">STRICT JSON OUTPUT:</span><br/>
+                    <span className="text-purple-400">STRICT JSON OUTPUT:</span><br />
                     {"{ expectedPriceRange, verdict, confidence, explanation }"}
                   </p>
                 </div>
@@ -332,8 +332,8 @@ export default function DocsPage() {
             <div className="flex flex-wrap gap-3">
               <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Next.js 15</span>
               <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">TypeScript</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">SQLite (better-sqlite3)</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">sqlite-vec</span>
+              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">PostgreSQL + Prisma</span>
+              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">pgvector</span>
               <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">DuckDuckGo API</span>
               <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Jina Reader</span>
               <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Groq / OpenAI API</span>

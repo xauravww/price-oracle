@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "framework": "nextjs",
+    "buildCommand": "prisma generate && next build",
+    "installCommand": "npm install",
+    "env": {
+        "DATABASE_URL": {
+            "description": "PostgreSQL connection string (required)",
+            "required": true
+        },
+        "AI_CLIENT_API_KEY": {
+            "description": "API key for AI service",
+            "required": true
+        },
+        "AI_SERVICE_URL": {
+            "description": "URL for AI service endpoint"
+        },
+        "ADMIN_USERNAME": {
+            "description": "Admin username for authentication",
+            "required": true
+        },
+        "ADMIN_PASSWORD": {
+            "description": "Admin password for authentication",
+            "required": true
+        }
+    }
+}

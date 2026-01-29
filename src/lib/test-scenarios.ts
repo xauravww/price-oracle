@@ -1,5 +1,5 @@
 import { addEntry, searchSimilarEntries, processPriceRequest } from './actions';
-import db from './db';
+import prisma from './db';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,8 +8,8 @@ async function runTests() {
   console.log("🚀 Starting Price Oracle Test Scenarios...\n");
 
   // 1. Clear existing test data
-  db.prepare('DELETE FROM price_entries').run();
-  db.prepare('DELETE FROM vec_items').run();
+  await prisma.vecItem.deleteMany({});
+  await prisma.priceEntry.deleteMany({});
 
   const testData = [
     { item: "iPhone 15 Pro 128GB", price: 120000, location: "Mumbai" },

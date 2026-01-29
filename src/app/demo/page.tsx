@@ -61,6 +61,7 @@ function PriceOracleContent() {
   const [initialValue, setInitialValue] = useState("");
   const [currentQuery, setCurrentQuery] = useState("");
   const [showMoreWeb, setShowMoreWeb] = useState(false);
+  const [reportedUrls, setReportedUrls] = useState<Set<string>>(new Set());
   const searchParams = useSearchParams();
 
   const handleSubmit = async (value: string, forceDeep?: boolean) => {
@@ -68,6 +69,7 @@ function PriceOracleContent() {
     
     setCurrentQuery(value);
     setShowMoreWeb(false); // Reset on new search
+    setReportedUrls(new Set()); // Reset reported status on new search
     
     const isDeep = forceDeep !== undefined ? forceDeep : deepSearch;
     if (forceDeep) setDeepSearch(true);
@@ -97,6 +99,7 @@ function PriceOracleContent() {
     e.stopPropagation();
     const res = await reportUnparsedUrl(item.url, item.title, currentQuery);
     if (res.success) {
+      setReportedUrls(prev => new Set(prev).add(item.url));
       toast.success("URL reported for analysis");
     } else {
       toast.error("Failed to report URL");
@@ -311,6 +314,11 @@ function PriceOracleContent() {
                               <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
                                 {item.price}
                               </span>
+                            ) : reportedUrls.has(item.url) ? (
+                              <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
+                                Reported
+                              </span>
                             ) : (
                               <button
                                 onClick={(e) => handleReport(e, item)}
@@ -362,6 +370,7 @@ function PriceOracleContent() {
 export default function PriceOracle() {
   return (
     <main className="min-h-[calc(100vh-5rem)] bg-[#fafafa] text-slate-900 selection:bg-slate-200 flex flex-col items-center justify-center p-6 relative overflow-y-auto">
+      <Toaster position="top-right" />
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none fixed">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-3xl opacity-60"></div>

@@ -1,36 +1,176 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Price Oracle
+
+A Next.js AI-powered price transparency engine that helps users verify if they're getting fair deals by cross-referencing historical data, live web intelligence, and semantic search.
+
+## Features
+
+- **Intelligent Price Analysis**: Ask natural language questions like "Is iPhone 15 Pro for ₹120,000 a good deal?"
+- **Vector Semantic Search**: Find similar products using PostgreSQL pgvector extension
+- **Live Web Scraping**: Real-time market data from trusted sources via DuckDuckGo
+- **AI-Powered Verdicts**: Get instant analysis from Llama/GPT models
+- **Admin Dashboard**: Manage trusted sources, view logs, and system analytics
+
+## Tech Stack
+
+- **Framework**: Next.js 16 with React 19
+- **Language**: TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Vector Search**: pgvector extension
+- **Web Search**: DuckDuckGo API, Jina Reader
+- **AI**: Groq (Llama 3.1) / OpenAI API
+- **Styling**: Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 20+
+- PostgreSQL database (with pgvector extension)
+  - Recommended providers: [Neon](https://neon.tech), [Supabase](https://supabase.com), [Railway](https://railway.app), or Vercel Postgres
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd price-oracle
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a `.env` file in the root directory:
+   ```bash
+   # Database
+   DATABASE_URL=postgresql://user:password@host:5432/database?schema=public
+
+   # AI Service
+   AI_CLIENT_API_KEY=your_api_key_here
+   AI_SERVICE_URL=http://localhost:3010/v1/chat/completions
+
+   # Admin Credentials (for production deployment)
+   ADMIN_USERNAME=admin
+   ADMIN_PASSWORD=your_secure_password_here
+   ```
+
+4. Set up the database:
+   ```bash
+   # Generate Prisma Client
+   npx prisma generate
+
+   # Push schema to database (creates tables)
+   npx prisma db push
+
+   # Optional: Open Prisma Studio to view database
+   npx prisma studio
+   ```
+
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Database Setup
+
+This project uses PostgreSQL with the pgvector extension for vector similarity search. You have several options:
+
+### Option 1: Neon (Recommended)
+1. Sign up at [neon.tech](https://neon.tech)
+2. Create a new project
+3. Copy the connection string and add it to your `.env` as `DATABASE_URL`
+4. Neon includes pgvector by default
+
+### Option 2: Supabase
+1. Create a project at [supabase.com](https://supabase.com)
+2. Enable the pgvector extension in SQL Editor:
+   ```sql
+   create extension if not exists vector;
+   ```
+3. Copy the connection string from Settings > Database
+
+### Option 3: Railway
+1. Create a PostgreSQL database at [railway.app](https://railway.app)
+2. Install pgvector extension
+3. Use the provided connection string
+
+### Option 4: Vercel Postgres
+1. Add Vercel Postgres to your project
+2. The extension is automatically available
+
+## Deployment to Vercel
+
+1. Push your code to GitHub
+
+2. Import your repository to Vercel
+
+3. Configure environment variables in Vercel dashboard:
+   - `DATABASE_URL` - Your PostgreSQL connection string
+   - `AI_CLIENT_API_KEY` - Your AI service API key
+   - `AI_SERVICE_URL` - AI service endpoint
+   - `ADMIN_USERNAME` - Admin username
+   - `ADMIN_PASSWORD` - Secure admin password
+
+4. Deploy! Vercel will automatically:
+   - Run `prisma generate`
+   - Build your Next.js app
+   - Deploy to production
+
+The `vercel.json` configuration is already set up to handle Prisma generation during build.
+
+## API Endpoints
+
+- `GET/POST /` - Main price query interface
+- `/api/*` - Server actions for database operations
+- `/admin/login` - Admin authentication
+- `/admin/dashboard` - System analytics
+- `/admin/sources` - Manage trusted web sources
+- `/admin/logs` - Query logs and performance
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npx prisma studio` - Open database GUI
+- `npx prisma db push` - Push schema changes to database
+- `npx prisma migrate dev` - Create and apply migrations (for production)
+
+## Project Structure
+
+```
+├── prisma/
+│   └── schema.prisma       # Database schema
+├── src/
+│   ├── app/                # Next.js app router pages
+│   │   ├── admin/          # Admin dashboard routes
+│   │   ├── demo/           # Demo page
+│   │   └── docs/           # Documentation
+│   ├── components/         # React components
+│   │   ├── admin/          # Admin-specific components
+│   │   └── ui/             # Reusable UI components
+│   └── lib/
+│       ├── actions.ts      # Server actions & database queries
+│       ├── db.ts           # Prisma client & vector embeddings
+│       ├── priceEngine.ts  # Core price analysis logic
+│       └── searchService.ts# Web search utilities
+├── public/                 # Static assets
+└── vercel.json            # Vercel deployment config
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Contributions are welcome! Please feel free to submit issues or pull requests.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## License
 
-## Learn More
+MIT
 
-To learn more about Next.js, take a look at the following resources:
+## Support
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For questions or issues, please open a GitHub issue.

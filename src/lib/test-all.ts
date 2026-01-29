@@ -1,14 +1,14 @@
 import 'dotenv/config';
 import { addEntry, processPriceRequest, searchSimilarEntries } from './actions';
-import db from './db';
+import prisma from './db';
 
 async function runAllTests() {
   console.log("🧪 Running Comprehensive Price Oracle Tests...\n");
 
   // 1. Reset Database for clean test
   console.log("🧹 Resetting database...");
-  db.prepare('DELETE FROM price_entries').run();
-  db.prepare('DELETE FROM vec_items').run();
+  await prisma.vecItem.deleteMany({});
+  await prisma.priceEntry.deleteMany({});
 
   // 2. Seed Data
   console.log("📝 Seeding diverse test data...");
@@ -65,7 +65,7 @@ async function runAllTests() {
   const result4 = await processPriceRequest(query4);
   console.log(`   Query: "${query4}"`);
   console.log(`   AI Analysis:\n${JSON.stringify(result4.analysis, null, 2)}`);
-  
+
   console.log("\n✨ All tests completed.");
 }
 

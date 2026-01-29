@@ -1,7 +1,9 @@
 
+export const dynamic = 'force-dynamic';
+
 import { Activity, Filter, Download } from "lucide-react";
 import Pagination from "@/components/admin/Pagination";
-import db from "@/lib/db";
+import prisma from "@/lib/db";
 
 export default async function LogsPage({
   searchParams,
@@ -13,9 +15,16 @@ export default async function LogsPage({
   const limit = 15;
   const offset = (currentPage - 1) * limit;
 
-  // Fetch paginated logs directly for now or we could update actions.ts
-  const logs = db.prepare('SELECT * FROM logs ORDER BY timestamp DESC LIMIT ? OFFSET ?').all(limit, offset) as { id: string, timestamp: string, query: string, price_result: number, response_time: number, status: string }[];
-  const totalCount = (db.prepare('SELECT COUNT(*) as count FROM logs').get() as { count: number }).count;
+  // Fetch paginated logs using Prisma
+  const [logs, totalCount] = await Promise.all([
+    prisma.log.findMany({
+      orderBy: { timestamp: 'desc' },
+      skip: offset,
+      take: limit,
+    }),
+    prisma.log.count(),
+  ]);
+
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
@@ -48,7 +57,7 @@ export default async function LogsPage({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {logs.map((log) => (
+              {logs.map((log: any) => (
                 <tr key={log.id} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="px-8 py-5">
                     <div className="text-sm font-bold text-slate-900">
@@ -71,7 +80,7 @@ export default async function LogsPage({
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-2">
                       <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className={`h-full rounded-full ${log.response_time > 1000 ? 'bg-amber-400' : 'bg-emerald-400'}`}
                           style={{ width: `${Math.min((log.response_time / 2000) * 100, 100)}%` }}
                         />
@@ -80,11 +89,10 @@ export default async function LogsPage({
                     </div>
                   </td>
                   <td className="px-8 py-5">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                      log.status === 'success' 
-                        ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' 
-                        : 'bg-red-50 text-red-600 border border-red-100'
-                    }`}>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${log.status === 'success'
+                      ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                      : 'bg-red-50 text-red-600 border border-red-100'
+                      }`}>
                       {log.status}
                     </span>
                   </td>

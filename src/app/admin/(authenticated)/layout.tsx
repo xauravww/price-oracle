@@ -3,7 +3,8 @@ import {
   History, 
   Database, 
   Home,
-  Globe
+  Globe,
+  FileWarning
 } from "lucide-react";
 import Link from "next/link";
 import LogoutButton from "@/components/admin/LogoutButton";
@@ -18,6 +19,7 @@ export default function AdminLayout({
     { icon: History, label: "Logs", href: "/admin/logs" },
     { icon: Database, label: "Database", href: "/admin/database" },
     { icon: Globe, label: "Sources", href: "/admin/sources" },
+    { icon: FileWarning, label: "Reports", href: "/admin/reports" },
   ];
 
   return (
