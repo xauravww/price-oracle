@@ -1,6 +1,6 @@
 "use client";
 
-import { CornerRightUp } from "lucide-react";
+import { CornerRightUp, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +28,10 @@ export function AIInput({
   const handleReset = () => {
     if (!inputValue.trim()) return;
     onSubmit?.(inputValue);
+    // Removed setInputValue("") to keep query persistent
+  };
+
+  const handleClear = () => {
     setInputValue("");
   };
 
@@ -81,20 +85,31 @@ export function AIInput({
         </div>
         */}
 
-        <button
-          onClick={handleReset}
-          type="button"
-          className={cn(
-            "absolute top-1/2 -translate-y-1/2 right-3 z-10",
-            "rounded-xl bg-gray-100 py-1 px-1",
-            "transition-all duration-200",
-            inputValue
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
+        <div className="flex items-center gap-1 absolute top-1/2 -translate-y-1/2 right-3 z-10">
+          {inputValue && (
+            <button
+              onClick={handleClear}
+              type="button"
+              className="p-1 px-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-200 text-gray-400 hover:text-gray-600"
+              title="Clear input"
+            >
+              <X className="w-4 h-4" />
+            </button>
           )}
-        >
-          <CornerRightUp className="w-4 h-4 text-gray-600" />
-        </button>
+
+          <button
+            onClick={handleReset}
+            type="button"
+            className={cn(
+              "rounded-xl bg-slate-900 py-1 px-1.5 transition-all duration-200",
+              inputValue
+                ? "opacity-100 scale-100 shadow-sm"
+                : "opacity-0 scale-95 pointer-events-none"
+            )}
+          >
+            <CornerRightUp className="w-4 h-4 text-white" />
+          </button>
+        </div>
       </div>
     </div>
   );

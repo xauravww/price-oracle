@@ -534,3 +534,9 @@
 {"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T12:57:22.529Z","url":"https://html.duckduckgo.com/html"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T12:57:24.524Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T12:57:24.528Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T13:03:21.866Z","verify":true}
+{"backend":"auto","keywords":"iphoe 16 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T13:03:22.083Z"}
+{"keywords":"iphoe 16 in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T13:03:22.085Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T13:03:22.086Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T13:03:23.404Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T13:03:23.407Z"}

@@ -438,19 +438,33 @@ export async function processPriceRequest(query: string, deepSearch: boolean = f
 
     const history = await searchSimilarEntries(query);
 
-    // Extract Item Name early
-    const priceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) || query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks)/i);
+    // Extract Item Name and Price with support for k, m suffixes
+    const priceWithSuffixMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:\.\d+)?)\s?(k|K|m|M)\b/i) ||
+      query.match(/(\d+(?:\.\d+)?)\s?(k|K|m|M)\s?(?:rs|rupees|bucks|inr)/i);
+
+    const standardPriceMatch = query.match(/(?:₹|Rs\.?|rs\.?|\$|for|at)\s?(\d+(?:,\d+)*)/i) ||
+      query.match(/(\d+(?:,\d+)*)\s?(?:rs|rupees|bucks|inr)/i);
+
+    let extractedPrice: number | null = null;
+    let matchToRemove: string | null = null;
+
+    if (priceWithSuffixMatch) {
+      const val = parseFloat(priceWithSuffixMatch[1]);
+      const suffix = priceWithSuffixMatch[2].toLowerCase();
+      const multiplier = suffix === 'k' ? 1000 : 1000000;
+      extractedPrice = Math.round(val * multiplier);
+      matchToRemove = priceWithSuffixMatch[0];
+    } else if (standardPriceMatch) {
+      const val = standardPriceMatch[1];
+      extractedPrice = parseInt(val.replace(/,/g, ''));
+      matchToRemove = standardPriceMatch[0];
+    }
+
     const locationMatch = query.match(/(?:in|at|near)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
-    const item = priceMatch ? query.replace(priceMatch[0], '').replace(locationMatch ? locationMatch[0] : '', '').trim() : query;
+    const item = matchToRemove ? query.replace(matchToRemove, '').replace(locationMatch ? locationMatch[0] : '', '').trim() : query;
 
     // Use item name for cleaner web search context
     const webData = await getWebMarketPrices(item, deepSearch);
-
-    let extractedPrice: number | null = null;
-    if (priceMatch) {
-      const val = priceMatch[1];
-      extractedPrice = parseInt(val.replace(/,/g, ''));
-    }
 
     if (extractedPrice === null) {
       return {

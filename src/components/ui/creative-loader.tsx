@@ -1,81 +1,88 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Search, BarChart, Database, Zap, Globe } from "lucide-react";
+import { Loader2, Sparkles, Wand2 } from "lucide-react";
 
-const steps = [
-  { icon: Search, text: "Analyzing query parameters..." },
-  { icon: Database, text: "Scanning historical price data..." },
-  { icon: Globe, text: "Fetching real-time global benchmarks..." },
-  { icon: Zap, text: "Verifying market signals..." },
-  { icon: BarChart, text: "Synthesizing final valuation report..." },
-];
-
+/**
+ * A more professional, high-end loader for the Price Oracle.
+ */
 export function CreativeLoader() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
-    }, 800);
-
+      setProgress((prev) => (prev < 95 ? prev + Math.random() * 5 : prev));
+    }, 400);
     return () => clearInterval(interval);
   }, []);
 
-  const StepIcon = steps[currentStep].icon;
-
   return (
-    <div className="flex flex-col items-center justify-center py-12 animate-in fade-in duration-500 max-w-md mx-auto">
-      <div className="relative mb-8">
-        <div className="absolute inset-0 bg-blue-100 rounded-full blur-xl animate-pulse"></div>
-        <div className="relative w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center border border-slate-100">
-          <StepIcon className="w-8 h-8 text-blue-600 animate-bounce" />
+    <div className="flex flex-col items-center justify-center py-20 px-6 max-w-lg mx-auto w-full animate-in fade-in duration-700">
+      {/* High-end Visual Indicator */}
+      <div className="relative mb-12">
+        {/* Animated Glow Rings */}
+        <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-3xl scale-150 animate-pulse"></div>
+        <div className="absolute inset-0 bg-emerald-500/5 rounded-full blur-2xl scale-125 animate-pulse delay-700"></div>
+
+        {/* Central Icon Container */}
+        <div className="relative w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] flex items-center justify-center border border-slate-100 overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-emerald-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+          <div className="relative">
+            <Wand2 className="w-10 h-10 text-slate-800 animate-pulse" />
+            <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-blue-500 animate-bounce" />
+          </div>
+
+          {/* Circular Progress Border */}
+          <svg className="absolute inset-0 w-full h-full -rotate-90">
+            <circle
+              cx="48"
+              cy="48"
+              r="46"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="text-slate-50"
+            />
+            <circle
+              cx="48"
+              cy="48"
+              r="46"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeDasharray={2 * Math.PI * 46}
+              strokeDashoffset={2 * Math.PI * 46 * (1 - progress / 100)}
+              strokeLinecap="round"
+              className="text-blue-600 transition-all duration-500 ease-out"
+            />
+          </svg>
         </div>
       </div>
-      
-      <div className="space-y-4 w-full px-6">
-        <h3 className="text-xl font-bold text-slate-900 text-center mb-6">
-          Price Oracle AI is working
-        </h3>
-        
-        <div className="space-y-3">
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            const isActive = index === currentStep;
-            const isCompleted = index < currentStep;
-            
-            return (
-              <div 
-                key={index}
-                className={`flex items-center gap-3 transition-all duration-500 ${
-                  isActive || isCompleted ? "opacity-100 translate-x-0" : "opacity-30 translate-x-4"
-                }`}
-              >
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center border transition-colors duration-300 ${
-                  isCompleted 
-                    ? "bg-emerald-500 border-emerald-500 text-white" 
-                    : isActive 
-                      ? "border-blue-500 text-blue-500 bg-blue-50"
-                      : "border-slate-200 text-slate-300"
-                }`}>
-                  {isCompleted ? (
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : isActive ? (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  ) : (
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
-                  )}
-                </div>
-                <span className={`text-sm font-medium transition-colors ${
-                  isActive ? "text-slate-900" : isCompleted ? "text-slate-500" : "text-slate-400"
-                }`}>
-                  {step.text}
-                </span>
-              </div>
-            );
-          })}
+
+      <div className="text-center space-y-4 w-full">
+        <div className="space-y-1">
+          <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+            Consulting the Oracle
+          </h3>
+          <p className="text-slate-400 font-medium text-sm">
+            Scanning thousands of data points for the best valuation...
+          </p>
+        </div>
+
+        {/* Professional Stealth Progress Bar */}
+        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-6 border border-slate-50">
+          <div
+            className="h-full bg-gradient-to-r from-blue-600 to-emerald-500 transition-all duration-500 ease-out rounded-full shadow-[0_0_10px_rgba(37,99,235,0.3)]"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        <div className="flex items-center justify-center gap-2 mt-4">
+          <Loader2 className="w-3 h-3 text-blue-500 animate-spin" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            AI Analysis In Progress
+          </span>
         </div>
       </div>
     </div>
