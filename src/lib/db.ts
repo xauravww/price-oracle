@@ -8,16 +8,27 @@ const globalForPrisma = globalThis as unknown as {
 // Handle missing DATABASE_URL during build time
 const connectionString = process.env.DATABASE_URL || "postgresql://dummy:dummy@localhost:5432/dummy";
 
+// Prevent multiple connections in development (HMR) by adding a connection limit
+const isDev = process.env.NODE_ENV === 'development';
+const url = isDev && !connectionString.includes('connection_limit')
+  ? `${connectionString}${connectionString.includes('?') ? '&' : '?'}connection_limit=10`
+  : connectionString;
+
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   datasources: {
     db: {
-      url: connectionString,
+      url,
     },
   },
-  log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  log: isDev ? ['error', 'warn'] : ['error'],
 });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = prisma;
+    console.log('⚡ Initialized new Prisma Client');
+  }
+}
 
 export default prisma;
 

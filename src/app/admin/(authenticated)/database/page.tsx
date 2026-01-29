@@ -15,10 +15,10 @@ export default async function DatabasePage({
   const { entries, totalPages, totalCount } = await getEntries(currentPage, 10);
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto overflow-x-hidden px-4 md:px-0">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
-          <h1 className="text-4xl md:text-6xl font-doto font-black text-black uppercase tracking-tighter leading-none">Price<br />Database<span className="text-emerald-500">.</span></h1>
+          <h1 className="text-3xl md:text-6xl font-doto font-black text-black uppercase tracking-tighter leading-none">Price<br />Database<span className="text-emerald-500">.</span></h1>
           <p className="text-gray-500 font-bold uppercase tracking-widest mt-4 text-xs border-l-4 border-black pl-4">Manage and curate {totalCount} market price entries</p>
         </div>
         <Link href="/" className="group flex items-center gap-3 px-8 py-4 bg-black border-2 border-black text-white hover:bg-white hover:text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
@@ -39,7 +39,7 @@ export default async function DatabasePage({
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-black text-white border-b-2 border-black">
                 <th className="px-8 py-6 text-xs font-bold uppercase tracking-[0.2em] font-doto">Item Details</th>

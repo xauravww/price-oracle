@@ -3,7 +3,6 @@ import { Error404 } from "@/components/ui/pixelated-not-found"
 export default function NotFound() {
     return (
         <Error404
-            postcardImage="/statue-of-liberty-oil-pastel.jpg"
             postcardAlt="Price Oracle System Offline"
             curvedTextTop="Price Oracle System"
             curvedTextBottom="Market Intelligence"

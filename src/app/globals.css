@@ -138,3 +138,23 @@
   border: 1px solid hsla(var(--foreground), 0.08);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(var(--foreground), 0.2);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--foreground), 0.4);
+}

@@ -14,7 +14,7 @@ interface Error404Props {
 }
 
 export function Error404({
-    postcardImage = "/statue-of-liberty-oil-pastel.jpg",
+    postcardImage,
     postcardAlt = "New York City Postcard",
     curvedTextTop = "The General Intelligence",
     curvedTextBottom = "Company of New York",
@@ -48,44 +48,46 @@ export function Error404({
                         </text>
                     </svg>
 
-                    <div className="relative z-10">
-                        <div
-                            className="relative p-3 shadow-2xl rotate-[4deg] hover:rotate-0 transition-transform duration-300 bg-white"
-                        >
-                            <div className="relative overflow-hidden bg-white">
-                                <img
-                                    src={postcardImage || "/placeholder.svg"}
-                                    alt={postcardAlt}
-                                    className="w-[360px] h-[220px] object-cover"
-                                />
+                    {postcardImage && (
+                        <div className="relative z-10">
+                            <div
+                                className="relative p-3 shadow-2xl rotate-[4deg] hover:rotate-0 transition-transform duration-300 bg-white"
+                            >
+                                <div className="relative overflow-hidden bg-white">
+                                    <img
+                                        src={postcardImage}
+                                        alt={postcardAlt}
+                                        className="w-[360px] h-[220px] object-cover"
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Postal cancellation marks */}
-                        <svg className="absolute -right-16 top-1/2 -translate-y-1/2 w-28 h-20" viewBox="0 0 100 60">
-                            <path
-                                d="M 10 15 Q 20 10 30 15 Q 40 20 50 15 Q 60 10 70 15 Q 80 20 90 15"
-                                stroke="#888"
-                                strokeWidth="1.5"
-                                fill="none"
-                                opacity="0.6"
-                            />
-                            <path
-                                d="M 10 25 Q 20 20 30 25 Q 40 30 50 25 Q 60 20 70 25 Q 80 30 90 25"
-                                stroke="#888"
-                                strokeWidth="1.5"
-                                fill="none"
-                                opacity="0.6"
-                            />
-                            <path
-                                d="M 10 35 Q 20 30 30 35 Q 40 40 50 35 Q 60 30 70 35 Q 80 40 90 35"
-                                stroke="#888"
-                                strokeWidth="1.5"
-                                fill="none"
-                                opacity="0.6"
-                            />
-                        </svg>
-                    </div>
+                            {/* Postal cancellation marks */}
+                            <svg className="absolute -right-16 top-1/2 -translate-y-1/2 w-28 h-20" viewBox="0 0 100 60">
+                                <path
+                                    d="M 10 15 Q 20 10 30 15 Q 40 20 50 15 Q 60 10 70 15 Q 80 20 90 15"
+                                    stroke="#888"
+                                    strokeWidth="1.5"
+                                    fill="none"
+                                    opacity="0.6"
+                                />
+                                <path
+                                    d="M 10 25 Q 20 20 30 25 Q 40 30 50 25 Q 60 20 70 25 Q 80 30 90 25"
+                                    stroke="#888"
+                                    strokeWidth="1.5"
+                                    fill="none"
+                                    opacity="0.6"
+                                />
+                                <path
+                                    d="M 10 35 Q 20 30 30 35 Q 40 40 50 35 Q 60 30 70 35 Q 80 40 90 35"
+                                    stroke="#888"
+                                    strokeWidth="1.5"
+                                    fill="none"
+                                    opacity="0.6"
+                                />
+                            </svg>
+                        </div>
+                    )}
                 </div>
 
                 <div className="text-center max-w-2xl">

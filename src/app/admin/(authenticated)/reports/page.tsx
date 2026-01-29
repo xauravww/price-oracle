@@ -64,11 +64,11 @@ export default function ReportsPage() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto font-sans text-black">
+    <div className="max-w-7xl mx-auto font-sans text-black overflow-x-hidden px-4 md:px-0">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b-4 border-black pb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12 border-b-4 border-black pb-8">
         <div>
-          <h1 className="text-5xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-[0.9] mb-4">
+          <h1 className="text-3xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-[0.9] mb-4">
             Reported<br />Issues
           </h1>
           <p className="text-lg font-medium text-gray-500 max-w-xl border-l-4 border-black pl-4">
@@ -81,7 +81,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="bg-white border-2 border-black p-1 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <div className="bg-white border-2 border-black p-1 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mr-3 md:mr-0">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-6 bg-slate-50 border border-black/10 m-2">
             <Loader2 className="w-12 h-12 animate-spin text-black" />
@@ -99,32 +99,32 @@ export default function ReportsPage() {
           </div>
         ) : (
           <div className="space-y-4 p-4">
-            <div className="grid gap-4">
+            <div className="">
               {paginatedReports.map((report) => (
                 <div
                   key={report.id}
-                  className="group relative bg-white border-2 border-black p-6 hover:bg-black hover:text-white transition-colors duration-200"
+                  className="group relative bg-white border-2 border-black p-4 md:p-6 hover:bg-black hover:text-white transition-colors duration-200"
                 >
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                    <div className="space-y-3 min-w-0 flex-1">
+                    <div className="space-y-3 min-w-0 flex-1 w-full">
                       <div className="flex items-center gap-3">
                         <span className="font-doto font-bold text-sm text-gray-400 group-hover:text-gray-600">#{report.id}</span>
-                        <h4 className="font-bold text-lg truncate font-doto uppercase tracking-tight">{report.title || 'Untitled Source'}</h4>
-                        <div className="px-2 py-0.5 border border-black text-[10px] font-bold uppercase tracking-wider bg-yellow-300 text-black group-hover:bg-white group-hover:border-white">
+                        <h4 className="font-bold text-lg truncate font-doto uppercase tracking-tight flex-1 min-w-0">{report.title || 'Untitled Source'}</h4>
+                        <div className="px-2 py-0.5 border border-black text-[10px] font-bold uppercase tracking-wider bg-yellow-300 text-black group-hover:bg-white group-hover:border-white shrink-0">
                           {report.status}
                         </div>
                       </div>
 
                       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-gray-500 group-hover:text-gray-300">
-                        <div className="flex items-center gap-2 truncate max-w-md">
+                        <div className="flex items-center gap-2 truncate max-w-[140px] sm:max-w-[180px] md:max-w-md">
                           <ExternalLink className="w-4 h-4 shrink-0" />
                           <a href={report.url} target="_blank" rel="noopener noreferrer" className="truncate hover:underline decoration-2 underline-offset-4">
                             {report.url}
                           </a>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Search className="w-4 h-4" />
-                          <span>Query: <span className="font-bold text-black group-hover:text-white">{report.query}</span></span>
+                        <div className="flex items-start gap-2">
+                          <Search className="w-4 h-4 mt-0.5 shrink-0" />
+                          <span className="break-words w-full">Query: <span className="font-bold text-black group-hover:text-white">{report.query}</span></span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />

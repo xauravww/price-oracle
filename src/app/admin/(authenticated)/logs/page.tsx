@@ -28,10 +28,10 @@ export default async function LogsPage({
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto overflow-x-hidden px-4 md:px-0">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b-4 border-black pb-8">
         <div>
-          <h1 className="text-5xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-none mb-4">System<br />Logs</h1>
+          <h1 className="text-3xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-none mb-4">System<br />Logs</h1>
           <div className="flex items-center gap-3">
             <Terminal className="w-5 h-5 text-gray-400" />
             <p className="font-mono text-sm text-gray-500">{totalCount} recorded operations</p>
@@ -49,7 +49,7 @@ export default async function LogsPage({
 
       <div className="bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-black text-white border-b-2 border-black">
                 <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Timestamp</th>

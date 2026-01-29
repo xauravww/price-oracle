@@ -38,8 +38,8 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[95vw]">
-      <div className="flex items-center gap-2 p-2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-full overflow-x-auto no-scrollbar mx-auto">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[350px] sm:max-w-md md:w-auto md:max-w-4xl px-4">
+      <div className="flex items-center gap-2 p-2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-full overflow-x-auto mx-auto w-full md:w-auto justify-between md:justify-start">
 
         {/* Brand / Home Trigger */}
         <Link

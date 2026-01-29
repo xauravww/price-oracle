@@ -102,10 +102,10 @@ export default function SourcesPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-12">
+    <div className="max-w-6xl mx-auto space-y-8 md:space-y-12 overflow-x-hidden px-4 md:px-0">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="flex flex-col gap-4">
-          <h1 className="text-4xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-none">Trusted<br /><span className="text-emerald-600">Sources</span>.</h1>
+          <h1 className="text-3xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-none">Trusted<br /><span className="text-emerald-600">Sources</span>.</h1>
           <p className="text-gray-500 font-bold uppercase tracking-widest text-xs border-l-4 border-black pl-4">
             Manage verified marketplaces used by the Price Engine.
           </p>
@@ -224,9 +224,9 @@ export default function SourcesPage() {
                 {paginatedSources.map((source) => (
                   <div
                     key={source.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-2 border-black bg-white hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all group gap-6"
+                    className="flex flex-col md:flex-row md:items-center justify-between p-6 border-2 border-black bg-white hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all group gap-6 mr-2 md:mr-0"
                   >
-                    <div className="flex items-start sm:items-center gap-6 min-w-0">
+                    <div className="flex items-start md:items-center gap-4 md:gap-6 min-w-0 w-full">
                       <div className={`p-4 border-2 border-black shrink-0 ${source.isActive ? 'bg-emerald-400 text-black' : 'bg-gray-100 text-gray-400'}`}>
                         <ShieldCheck className="w-8 h-8" />
                       </div>

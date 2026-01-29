@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white overflow-x-hidden">
       {/* Decorative Postal Marks (Fixed Background) */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <svg className="absolute top-20 right-10 w-32 h-20 opacity-[0.03] rotate-12" viewBox="0 0 100 60">
@@ -206,9 +206,9 @@ export default function DocsPage() {
                 {/* Step 1 */}
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                   <div className="w-16 h-16 border-2 border-black bg-white flex items-center justify-center shrink-0 text-2xl font-doto font-bold">01</div>
-                  <div className="bg-white border-2 border-black p-6 w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                  <div className="bg-white border-2 border-black p-6 w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] overflow-x-auto">
                     <h4 className="font-bold text-lg uppercase mb-2">Input Parsing</h4>
-                    <code className="bg-gray-100 px-2 py-1 text-sm">"iPhone 15 Pro for 120000 in Delhi"</code>
+                    <code className="bg-gray-100 px-2 py-1 text-sm whitespace-nowrap">"iPhone 15 Pro for 120000 in Delhi"</code>
                   </div>
                 </div>
 
@@ -288,13 +288,13 @@ export default function DocsPage() {
                   <div className="absolute top-4 right-4"><Globe2 className="w-6 h-6 opacity-20" /></div>
                   <h4 className="font-bold uppercase tracking-widest mb-4">Priority Search</h4>
                   <p className="text-sm text-gray-600 mb-4">Restricted to high-trust domains (Amazon, Flipkart) for rapid signal.</p>
-                  <code className="block bg-gray-100 p-2 text-xs">site:amazon.in "iPhone 15"</code>
+                  <code className="block bg-gray-100 p-2 text-xs overflow-x-auto">site:amazon.in "iPhone 15"</code>
                 </div>
                 <div className="border-2 border-black p-8 relative">
                   <div className="absolute top-4 right-4"><Search className="w-6 h-6 opacity-20" /></div>
                   <h4 className="font-bold uppercase tracking-widest mb-4">Deep Search</h4>
                   <p className="text-sm text-gray-600 mb-4">Broad sweep for forums, local news, and retailer pages.</p>
-                  <code className="block bg-gray-100 p-2 text-xs">"iPhone 15 market price India"</code>
+                  <code className="block bg-gray-100 p-2 text-xs overflow-x-auto">"iPhone 15 market price India"</code>
                 </div>
               </div>
             </section>
