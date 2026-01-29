@@ -2,7 +2,6 @@
 
 import prisma, { getEmbedding } from './db';
 import { PriceEntry } from './priceEngine';
-import { DDGS } from '@phukon/duckduckgo-search';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -218,7 +217,8 @@ The array order MUST match input.`;
 
 async function getWebMarketPrices(query: string, deepSearch: boolean = false): Promise<WebSearchResult[]> {
   try {
-    const ddgs = new DDGS();
+    // Import the new search service
+    const { performWebSearch } = await import('./searchService');
 
     // 1. Get Trusted Sources
     const sources = await prisma.trustedSource.findMany({
@@ -233,14 +233,14 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
     if (sources.length > 0) {
       const sourceQuery = ` (${sources.map((s: any) => `site:${new URL(s.url).hostname}`).join(' OR ')})`;
       const trustedKeywords = `${query} current market price India${sourceQuery}`;
-      searchPromises.push(ddgs.text({ keywords: trustedKeywords }));
+      searchPromises.push(performWebSearch(trustedKeywords));
     } else {
       searchPromises.push(Promise.resolve([]));
     }
 
     // B. General Web Search (Broader Context)
     const generalKeywords = `${query} price India`;
-    searchPromises.push(ddgs.text({ keywords: generalKeywords }));
+    searchPromises.push(performWebSearch(generalKeywords));
 
     // 3. Execute Searches in Parallel
     const [trustedResults, generalResults] = await Promise.all(searchPromises);

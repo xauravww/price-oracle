@@ -6,9 +6,10 @@ A Next.js AI-powered price transparency engine that helps users verify if they'r
 
 - **Intelligent Price Analysis**: Ask natural language questions like "Is iPhone 15 Pro for ₹120,000 a good deal?"
 - **Vector Semantic Search**: Find similar products using PostgreSQL pgvector extension
-- **Live Web Scraping**: Real-time market data from trusted sources via DuckDuckGo
+- **Live Web Scraping**: Real-time market data with automatic fallback (DuckDuckGo → Serper.dev)
 - **AI-Powered Verdicts**: Get instant analysis from Llama/GPT models
 - **Admin Dashboard**: Manage trusted sources, view logs, and system analytics
+- **Production-Ready**: Bulletproof search that works on Vercel with automatic failover
 
 ## Tech Stack
 
@@ -16,7 +17,7 @@ A Next.js AI-powered price transparency engine that helps users verify if they'r
 - **Language**: TypeScript
 - **Database**: PostgreSQL with Prisma ORM
 - **Vector Search**: pgvector extension
-- **Web Search**: DuckDuckGo API, Jina Reader
+- **Web Search**: Multi-provider (DuckDuckGo, Serper.dev), Jina Reader
 - **AI**: Groq (Llama 3.1) / OpenAI API
 - **Styling**: Tailwind CSS
 
@@ -51,10 +52,17 @@ A Next.js AI-powered price transparency engine that helps users verify if they'r
    AI_CLIENT_API_KEY=your_api_key_here
    AI_SERVICE_URL=http://localhost:3010/v1/chat/completions
 
+   # Web Search (Optional but recommended for production)
+   # Free tier: 2,500 searches/month - Get your key at https://serper.dev
+   SERPER_API_KEY=your_serper_api_key_here
+
    # Admin Credentials (for production deployment)
    ADMIN_USERNAME=admin
    ADMIN_PASSWORD=your_secure_password_here
    ```
+
+   > 💡 **Important for Vercel deployment**: Get a free Serper.dev API key to avoid search errors.  
+   > See [docs/SEARCH_SETUP.md](./docs/SEARCH_SETUP.md) for detailed instructions.
 
 4. Set up the database:
    ```bash
@@ -112,8 +120,12 @@ This project uses PostgreSQL with the pgvector extension for vector similarity s
    - `DATABASE_URL` - Your PostgreSQL connection string
    - `AI_CLIENT_API_KEY` - Your AI service API key
    - `AI_SERVICE_URL` - AI service endpoint
+   - `SERPER_API_KEY` - **[Required]** Your Serper.dev API key (prevents search errors)
    - `ADMIN_USERNAME` - Admin username
    - `ADMIN_PASSWORD` - Secure admin password
+
+   > ⚠️ **Critical**: Add `SERPER_API_KEY` to avoid DuckDuckGo 403 errors on Vercel.  
+   > Get free key at [serper.dev](https://serper.dev) (2,500 searches/month free)
 
 4. Deploy! Vercel will automatically:
    - Run `prisma generate`
@@ -160,8 +172,43 @@ The `vercel.json` configuration is already set up to handle Prisma generation du
 │       ├── priceEngine.ts  # Core price analysis logic
 │       └── searchService.ts# Web search utilities
 ├── public/                 # Static assets
+├── scripts/                # Test and utility scripts
+│   ├── test-search-system.mjs  # Main integration test (use this!)
+│   ├── test-serper.js          # Serper API key validator
+│   └── test-searxng.js         # SearXNG instance tester
+├── docs/                   # Documentation
+│   ├── SEARCH_SETUP.md         # Serper.dev setup guide
+│   ├── MULTI_KEY_SETUP.md      # Multiple API keys guide
+│   ├── TESTING.md              # Testing guide
+│   └── CHANGES_SUMMARY.md      # Recent changes
 └── vercel.json            # Vercel deployment config
 ```
+
+## Documentation
+
+Comprehensive guides are available in the [`docs/`](./docs) folder:
+
+- **[docs/SEARCH_SETUP.md](./docs/SEARCH_SETUP.md)** - Setting up Serper.dev for production
+- **[docs/MULTI_KEY_SETUP.md](./docs/MULTI_KEY_SETUP.md)** - Using multiple API keys for scale
+- **[docs/TESTING.md](./docs/TESTING.md)** - Complete testing guide
+- **[docs/CHANGES_SUMMARY.md](./docs/CHANGES_SUMMARY.md)** - Summary of recent changes
+
+## Testing
+
+Test scripts are available in the [`scripts/`](./scripts) folder:
+
+```bash
+# Main integration test - tests your complete search system
+node scripts/test-search-system.mjs
+
+# Test individual Serper API keys
+node scripts/test-serper.js
+
+# Test SearXNG instances (educational)
+node scripts/test-searxng.js
+```
+
+See [docs/TESTING.md](./docs/TESTING.md) for detailed testing instructions.
 
 ## Contributing
 
