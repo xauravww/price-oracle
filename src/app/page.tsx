@@ -2,237 +2,102 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { 
-  Search, 
-  CheckCircle2, 
-  TrendingUp, 
-  BarChart3, 
-  Users, 
-  Globe, 
-  ArrowRight,
-  ShieldCheck,
-  Zap,
-  ShoppingBag,
-  Store,
-  Building2,
-  HelpCircle,
-  Clock,
-  Database
-} from "lucide-react";
+import { ArrowRight, Zap, Layers, Search, Database } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-[calc(100vh-4rem)] flex flex-col bg-[#fafafa]">
+    <main className="min-h-[calc(100vh-4rem)] flex flex-col bg-white text-foreground font-sans selection:bg-black selection:text-white">
       {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-3xl opacity-60"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-100/30 rounded-full blur-3xl opacity-60"></div>
+      <section className="flex-1 flex flex-col items-center justify-center text-center px-4 py-24 md:py-32 relative overflow-hidden">
+        {/* Decorative Spinning Circle */}
+        <div className="absolute top-10 right-10 md:top-20 md:right-20 pointer-events-none opacity-20 md:opacity-40">
+          <svg
+            className="w-[140px] h-[140px] animate-spin-slow"
+            viewBox="0 0 140 140"
+            style={{ animationDuration: "20s" }}
+          >
+            <defs>
+              <path id="circlePathHero" d="M 70,70 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" fill="transparent" />
+            </defs>
+            <text className="text-[11px] fill-current font-serif uppercase" style={{ fontWeight: 400, letterSpacing: "0.15em" }}>
+              <textPath href="#circlePathHero" startOffset="0%">
+                Price Oracle • Market Intelligence •
+              </textPath>
+            </text>
+          </svg>
         </div>
 
+        {/* Postal Marks Decoration */}
+        <svg className="absolute left-4 top-20 w-28 h-20 opacity-20 rotate-[-10deg] pointer-events-none" viewBox="0 0 100 60">
+          <path d="M 10 15 Q 20 10 30 15 Q 40 20 50 15 Q 60 10 70 15 Q 80 20 90 15" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <path d="M 10 25 Q 20 20 30 25 Q 40 30 50 25 Q 60 20 70 25 Q 80 30 90 25" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <path d="M 10 35 Q 20 30 30 35 Q 40 40 50 35 Q 60 30 70 35 Q 80 40 90 35" stroke="currentColor" strokeWidth="1.5" fill="none" />
+        </svg>
+
+
         <div className="relative z-10 max-w-4xl mx-auto space-y-8">
-          <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2"></span>
-            v2.0 Now Live
+          <div className="inline-flex items-center justify-center px-3 py-1 border border-black rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
+            <span className="w-2 h-2 bg-black rounded-full mr-2 animate-pulse"></span>
+            Live Market Data
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900">
-            The Truth About <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-600">
-              Market Prices.
-            </span>
+
+          <h1 className="text-5xl md:text-8xl font-doto font-black tracking-tight leading-[0.9] uppercase text-balance">
+            Real-Time <br />
+            <span className="text-muted-foreground">Valuation.</span>
           </h1>
-          
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Stop overpaying. Stop guessing. Get real-time price intelligence powered by AI and verified community data.
+
+          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-sans">
+            Decentralized market memory & web intelligence layer. Resolving price confusion with brutal accuracy.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Link href="/demo">
-              <Button size="lg" className="h-12 px-8 text-base rounded-full shadow-lg hover:shadow-xl transition-all">
-                Launch App <ArrowRight className="ml-2 w-4 h-4" />
+              <Button size="lg" className="rounded-none border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors px-8 py-6 text-lg font-doto uppercase tracking-wider">
+                Start Price Check <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
             <Link href="/docs">
-              <Button variant="outline" size="lg" className="h-12 px-8 text-base rounded-full bg-white/50 hover:bg-white border-slate-200">
-                View Documentation
+              <Button variant="outline" size="lg" className="rounded-none border-2 border-black bg-transparent text-black hover:bg-black hover:text-white transition-colors px-8 py-6 text-lg font-doto uppercase tracking-wider">
+                Documentation
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Feature Showcase using EmptyState design */}
-      <section className="px-4 py-24 bg-white border-t border-slate-100">
+      {/* Feature Grid */}
+      <section className="px-6 py-24 border-t border-black/10 bg-slate-50/50">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Why PriceOracle?</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              We combine web scraping, vector search, and LLMs to give you the most accurate price valuation possible.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <EmptyState
-              title="No Guesswork"
-              description="Instantly validate prices against thousands of online sources."
-              icons={[Search, CheckCircle2, ShieldCheck]}
-              className="bg-slate-50/50 border-slate-100 hover:border-emerald-200 hover:shadow-md transition-all"
-            />
-            <EmptyState
-              title="Real-time Trends"
-              description="Track market volatility and price history effortlessly."
-              icons={[TrendingUp, BarChart3, Zap]}
-              className="bg-slate-50/50 border-slate-100 hover:border-blue-200 hover:shadow-md transition-all"
-            />
-            <EmptyState
-              title="Community Powered"
-              description="Benefit from a decentralized network of price reporters."
-              icons={[Users, Globe]}
-              className="bg-slate-50/50 border-slate-100 hover:border-purple-200 hover:shadow-md transition-all"
-            />
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              { i: Layers, t: "6-Stage Recall", d: "Tiered extraction pipeline ensuring near 100% price detection from any web source." },
+              { i: Search, t: "Drill-down Context", d: "AI navigation that identifies deep retailers links directly from search snippets." },
+              { i: Database, t: "Anonymized Memory", d: "Vector-powered historical processing that protects user identity." }
+            ].map((f, idx) => (
+              <div key={idx} className="group space-y-4">
+                <div className="w-12 h-12 flex items-center justify-center border border-black/20 bg-white group-hover:bg-black group-hover:text-white transition-colors">
+                  <f.i className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-doto font-bold uppercase tracking-tight">{f.t}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{f.d}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="px-4 py-24 bg-white border-t border-slate-100">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium mb-4">
-              Simple & Transparent
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">How it works</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-              Get an accurate market valuation for any item in three simple steps.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 relative">
-            {/* Connecting Line (Desktop) */}
-            <div className="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-[2px] bg-slate-100 -translate-y-1/2 -z-10"></div>
-
-            {/* Step 1 */}
-            <div className="bg-white p-8 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-all duration-300 flex flex-col items-center text-center group bg-slate-50/50">
-              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative">
-                <Search className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                <div className="absolute -top-3 -right-3 w-7 h-7 bg-white border border-slate-100 text-slate-500 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">1</div>
-              </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Check Price</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                Enter any product name (e.g., "iPhone 15 Pro"). Our system understands specific models.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="bg-white p-8 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-all duration-300 flex flex-col items-center text-center group bg-slate-50/50">
-              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative">
-                <ShieldCheck className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                <div className="absolute -top-3 -right-3 w-7 h-7 bg-white border border-slate-100 text-slate-500 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">2</div>
-              </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Live Analysis</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                We scan live listings from <span className="font-medium text-slate-700">Verified Sources</span> and trusted marketplaces.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-white p-8 rounded-xl border-2 border-dashed border-slate-200 hover:border-slate-300 transition-all duration-300 flex flex-col items-center text-center group bg-slate-50/50">
-              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 relative">
-                <CheckCircle2 className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors" />
-                <div className="absolute -top-3 -right-3 w-7 h-7 bg-white border border-slate-100 text-slate-500 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">3</div>
-              </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Get Valuation</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                Receive an instant, unbiased price verdict. Know exactly if a deal is Fair or Overpriced.
-              </p>
-            </div>
-          </div>
+      {/* Footer / CTA */}
+      <section className="py-24 px-6 border-t border-black/10 text-center">
+        <Link href="/demo" className="group inline-block">
+          <h2 className="text-4xl md:text-6xl font-doto font-black uppercase tracking-tighter group-hover:underline underline-offset-8 decoration-4 decoration-black/30">
+            Start Search
+          </h2>
+        </Link>
+        <div className="mt-12 flex justify-center gap-8 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+          <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+          <Link href="/docs" className="hover:text-foreground transition-colors">Architecture</Link>
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <section className="px-4 py-24 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
-          </div>
-
-          <Accordion type="single" collapsible className="w-full space-y-4">
-            <AccordionItem value="item-1" className="bg-white px-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200">
-              <AccordionTrigger className="text-left text-lg font-semibold text-slate-900 hover:no-underline hover:text-blue-600 transition-colors">
-                <div className="flex items-center gap-3">
-                  <HelpCircle className="w-5 h-5 text-blue-500 shrink-0" />
-                  Where does the data come from?
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-slate-600 leading-relaxed text-base pb-6">
-                We aggregate data from over 50+ trusted online marketplaces, classifieds, and verified community submissions. Our AI filters out outliers to ensure accuracy.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-2" className="bg-white px-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200">
-              <AccordionTrigger className="text-left text-lg font-semibold text-slate-900 hover:no-underline hover:text-blue-600 transition-colors">
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-blue-500 shrink-0" />
-                  Is the data real-time?
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-slate-600 leading-relaxed text-base pb-6">
-                Yes. Our web search agents scan live listings the moment you make a request. Historical data is updated daily to reflect the latest market trends.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-3" className="bg-white px-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200">
-              <AccordionTrigger className="text-left text-lg font-semibold text-slate-900 hover:no-underline hover:text-blue-600 transition-colors">
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-5 h-5 text-blue-500 shrink-0" />
-                  Is it free to use?
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-slate-600 leading-relaxed text-base pb-6">
-                Yes, the price search and analysis features are completely free to use for everyone.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-white text-slate-600 py-12 border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-4 gap-8">
-          <div className="col-span-2">
-            <h3 className="text-slate-900 text-xl font-bold mb-4 flex items-center gap-2">
-              <div className="bg-slate-900 p-1.5 rounded-lg">
-                <Search className="h-4 w-4 text-white" />
-              </div>
-              PriceOracle
-            </h3>
-            <p className="max-w-xs leading-relaxed text-slate-500">
-              The world's most advanced price intelligence platform. Empowering you with data.
-            </p>
-          </div>
-          <div>
-            <h4 className="text-slate-900 font-semibold mb-4">Product</h4>
-            <ul className="space-y-2">
-              <li><Link href="/demo" className="hover:text-blue-600 transition-colors">Search App</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-600 transition-colors">Documentation</Link></li>
-              <li><Link href="/admin/dashboard" className="hover:text-blue-600 transition-colors">Admin</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className="max-w-6xl mx-auto px-4 mt-12 pt-8 border-t border-slate-100 text-sm text-center text-slate-400">
-          © {new Date().getFullYear()} PriceOracle Inc. All rights reserved.
-        </div>
-      </footer>
     </main>
   );
 }

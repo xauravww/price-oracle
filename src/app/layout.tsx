@@ -25,11 +25,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background flex flex-col`}
       >
         <Navbar />
-        {children}
+        <div className="flex-1">
+          {children}
+        </div>
+        <footer className="w-full py-8 px-6 border-t border-slate-100 bg-white/50 backdrop-blur-sm relative z-20">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-xs text-slate-400 font-medium">
+              © 2026 PriceOracle. Empowering Market Intelligence.
+            </div>
+            <div className="flex items-center gap-6">
+              <a href="/privacy" className="text-xs text-slate-500 hover:text-slate-900 font-bold transition-colors">
+                Privacy & Data Transparency
+              </a>
+              <a href="/docs" className="text-xs text-slate-500 hover:text-slate-900 font-bold transition-colors">
+                Documentation
+              </a>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   );

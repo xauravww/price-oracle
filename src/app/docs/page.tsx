@@ -1,60 +1,94 @@
+"use client";
+
 import {
-  ShieldCheck,
   Zap,
-  Database,
+  ShieldCheck,
   Search,
-  BarChart4,
-  Globe2,
-  ArrowRight,
-  Code2,
-  Cpu,
-  Lock,
-  Layers,
   Network,
-  AlertCircle
+  Cpu,
+  EyeOff,
+  Layers,
+  Database,
+  ArrowRight,
+  AlertCircle,
+  Globe2,
+  Lock,
+  Menu
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b bg-background/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-              <Zap className="w-5 h-5" />
+    <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
+      {/* Decorative Postal Marks (Fixed Background) */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <svg className="absolute top-20 right-10 w-32 h-20 opacity-[0.03] rotate-12" viewBox="0 0 100 60">
+          <path d="M 10 15 Q 20 10 30 15 Q 40 20 50 15 Q 60 10 70 15 Q 80 20 90 15" stroke="currentColor" strokeWidth="2" fill="none" />
+          <path d="M 10 25 Q 20 20 30 25 Q 40 30 50 25 Q 60 20 70 25 Q 80 30 90 25" stroke="currentColor" strokeWidth="2" fill="none" />
+          <path d="M 10 35 Q 20 30 30 35 Q 40 40 50 35 Q 60 30 70 35 Q 80 40 90 35" stroke="currentColor" strokeWidth="2" fill="none" />
+        </svg>
+      </div>
+
+      {/* Navigation - Brutalist Style */}
+      <nav className="sticky top-0 w-full z-50 bg-white border-b-2 border-black">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-black flex items-center justify-center text-white rounded-none">
+              <Zap className="w-6 h-6 fill-white" />
             </div>
-            <span>PriceOracle<span className="text-primary">.</span></span>
+            <span className="font-doto font-bold text-2xl uppercase tracking-tighter">PriceOracle<span className="text-black">.</span></span>
           </Link>
-          <div className="flex items-center gap-6 text-sm font-medium">
-            <Link href="/admin/dashboard" className="hover:text-primary transition-colors">Admin Portal</Link>
-            <Link href="/demo" className="px-4 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-all">
-              Launch App
+          <div className="flex items-center gap-8">
+            <Link href="/demo" className="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:underline decoration-2">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+              Live Demo
+            </Link>
+            <Link href="/admin/dashboard" className="hidden md:flex text-sm font-bold uppercase tracking-widest hover:underline decoration-2">
+              Admin
             </Link>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 pt-32 pb-20 flex gap-12">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-64 shrink-0 sticky top-32 h-fit">
-          <div className="space-y-8">
-            <div>
-              <h4 className="font-bold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Core Concepts</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#process-overview" className="hover:text-primary transition-colors">Process Overview</a></li>
-                <li><a href="#input-analysis" className="hover:text-primary transition-colors">1. Input Analysis</a></li>
-                <li><a href="#vector-search" className="hover:text-primary transition-colors">2. Vector Search</a></li>
-                <li><a href="#web-intelligence" className="hover:text-primary transition-colors">3. Web Intelligence</a></li>
-                <li><a href="#ai-synthesis" className="hover:text-primary transition-colors">4. AI Synthesis</a></li>
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-20 flex flex-col lg:flex-row gap-16 relative z-10">
+
+        {/* Sidebar - Sticky & Stark */}
+        <aside className="hidden lg:block w-72 shrink-0 sticky top-32 h-fit">
+          <div className="space-y-12 border-l-2 border-black/10 pl-6">
+            <div className="space-y-6">
+              <h4 className="font-doto font-bold text-lg uppercase">System Vision</h4>
+              <ul className="space-y-4 text-sm font-medium text-gray-500">
+                <li><a href="#problem-solution" className="hover:text-black hover:translate-x-1 duration-200 block">Resolving Confusion</a></li>
+                <li><a href="#trust-clarity" className="hover:text-black hover:translate-x-1 duration-200 block">Building Trust</a></li>
+                <li><a href="#innovations" className="hover:text-black hover:translate-x-1 duration-200 block">Original Innovations</a></li>
+                <li><a href="#project-timeline" className="hover:text-black hover:translate-x-1 duration-200 block">Development Story</a></li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-bold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Technical Details</h4>
-              <ul className="space-y-3 text-sm">
-                <li><a href="#tech-stack" className="hover:text-primary transition-colors">Tech Stack</a></li>
-                <li><a href="#data-privacy" className="hover:text-primary transition-colors">Data & Privacy</a></li>
+            <div className="space-y-6">
+              <h4 className="font-doto font-bold text-lg uppercase">Core Logic</h4>
+              <ul className="space-y-4 text-sm font-medium text-gray-500">
+                <li><a href="#process-overview" className="hover:text-black hover:translate-x-1 duration-200 block">The Pipeline</a></li>
+                <li><a href="#input-analysis" className="hover:text-black hover:translate-x-1 duration-200 block">1. Input Analysis</a></li>
+                <li><a href="#vector-search" className="hover:text-black hover:translate-x-1 duration-200 block">2. Vector Memory</a></li>
+                <li><a href="#web-intelligence" className="hover:text-black hover:translate-x-1 duration-200 block">3. Web Intelligence</a></li>
+                <li><a href="#extraction-pipeline" className="hover:text-black hover:translate-x-1 duration-200 block">4. Extraction Recall</a></li>
+                <li><a href="#ai-synthesis" className="hover:text-black hover:translate-x-1 duration-200 block">5. AI Synthesis</a></li>
+              </ul>
+            </div>
+            <div className="space-y-6">
+              <h4 className="font-doto font-bold text-lg uppercase">Protocols</h4>
+              <ul className="space-y-4 text-sm font-medium text-gray-500">
+                <li><a href="#admin-panel" className="hover:text-black hover:translate-x-1 duration-200 block">Control Center</a></li>
+                <li><a href="#reporting-loop" className="hover:text-black hover:translate-x-1 duration-200 block">Integrity Loop</a></li>
+                <li><a href="#anonymous-data" className="hover:text-black hover:translate-x-1 duration-200 block">Privacy Shield</a></li>
+              </ul>
+            </div>
+            <div className="space-y-6">
+              <h4 className="font-doto font-bold text-lg uppercase">Tech Specs</h4>
+              <ul className="space-y-4 text-sm font-medium text-gray-500">
+                <li><a href="#resilient-search" className="hover:text-black hover:translate-x-1 duration-200 block">Resilient Search</a></li>
+                <li><a href="#tech-stack" className="hover:text-black hover:translate-x-1 duration-200 block">Stack</a></li>
               </ul>
             </div>
           </div>
@@ -63,288 +97,366 @@ export default function DocsPage() {
         {/* Main Content */}
         <main className="flex-1 max-w-4xl">
           {/* Header */}
-          <section className="mb-16">
-            <h1 className="text-4xl font-extrabold mb-6 tracking-tight lg:text-5xl">
-              How PriceOracle Works
+          <section className="mb-24 relative">
+            <div className="absolute -left-2 top-2 w-full h-full bg-slate-100/50 -z-10 skew-y-1 rounded-3xl opacity-0 md:opacity-100"></div>
+            <h1 className="text-6xl md:text-7xl font-doto font-black mb-8 uppercase tracking-tighter leading-[0.9]">
+              System<br />Architecture.
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              A transparent, step-by-step breakdown of our hybrid valuation engine.
-              We combine local vector memory with live web intelligence to deliver verified price verdicts.
+            <p className="text-xl md:text-2xl text-gray-500 font-medium max-w-2xl leading-relaxed border-l-4 border-black pl-6">
+              A transparent breakdown of the hybrid valuation engine.
+              Combining vector memory with live web intelligence for verified price verdicts.
             </p>
           </section>
 
-          {/* Process Overview */}
-          <section id="process-overview" className="scroll-mt-24 mb-20">
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-              <Network className="w-8 h-8 text-primary" />
-              The Pipeline
+          {/* Vision & Impact Sections */}
+          <section id="problem-solution" className="scroll-mt-32 mb-32 group">
+            <h2 className="text-4xl font-doto font-bold mb-10 flex items-center gap-4 uppercase tracking-tight group-hover:underline decoration-4 underline-offset-8">
+              <Zap className="w-10 h-10 stroke-1 fill-black" />
+              Resolving Confusion
             </h2>
+            <div className="grid md:grid-cols-2 gap-10">
+              <div className="border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all bg-white">
+                <h4 className="text-xl font-bold mb-4 font-doto uppercase">The Noise</h4>
+                <p className="text-gray-600 leading-relaxed">
+                  Market prices are obfuscated by EMI traps, bait offers, and fragmented listings. Finding the "true cost" has become a research project.
+                </p>
+              </div>
+              <div className="border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all bg-black text-white">
+                <h4 className="text-xl font-bold mb-4 font-doto uppercase">The Signal</h4>
+                <p className="text-gray-400 leading-relaxed">
+                  PriceOracle acts as a neutral clearing layer. It aggregates real-time context and crowdsourced memory to expose the mathematical truth.
+                </p>
+              </div>
+            </div>
+          </section>
 
-            <div className="bg-slate-50 border rounded-2xl p-8 mb-8 overflow-x-auto">
-              <div className="min-w-[700px] flex flex-col gap-8">
+          <section id="trust-clarity" className="scroll-mt-32 mb-32">
+            <div className="flex items-end gap-4 mb-10">
+              <h2 className="text-4xl font-doto font-bold uppercase tracking-tight">
+                Proof of Truth
+              </h2>
+              <div className="h-2 flex-1 bg-black/5 mb-3"></div>
+            </div>
+
+            <p className="text-xl text-gray-500 mb-10 leading-relaxed">
+              We don't just provide a number; we provide the evidence.
+              Search snippets, sources, and confidence scores allow users to verify intelligence independently.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {["Source Transparency", "Fact-based Verdicts", "User Conflict Resolution", "Real-time Verification"].map((item, i) => (
+                <div key={i} className="px-4 py-4 border border-black text-xs font-bold uppercase tracking-widest text-center hover:bg-black hover:text-white transition-colors cursor-default">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="innovations" className="scroll-mt-32 mb-32">
+            <div className="flex items-end gap-4 mb-10">
+              <h2 className="text-4xl font-doto font-bold uppercase tracking-tight">
+                Innovations
+              </h2>
+              <div className="h-2 flex-1 bg-black/5 mb-3"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 border-2 border-black bg-white">
+                <h4 className="font-bold text-sm mb-2 uppercase tracking-tight">Drill-down logic</h4>
+                <p className="text-xs text-gray-500">Intelligent identifying of deep product links within search results.</p>
+              </div>
+              <div className="p-6 border-2 border-black bg-white">
+                <h4 className="font-bold text-sm mb-2 uppercase tracking-tight">6-Stage Recall</h4>
+                <p className="text-xs text-gray-500">Tiered extraction pipeline to ensure near 100% price detection.</p>
+              </div>
+              <div className="p-6 border-2 border-black bg-white">
+                <h4 className="font-bold text-sm mb-2 uppercase tracking-tight">Tiered Fetchers</h4>
+                <p className="text-xs text-gray-500">Multi-provider fetch fallbacks to bypass bot-walls.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="project-timeline" className="scroll-mt-32 mb-32">
+            <div className="p-8 bg-black text-white border-2 border-black relative overflow-hidden group">
+              <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                <div className="text-center md:text-left">
+                  <span className="text-5xl font-doto font-bold text-emerald-400">5 Days</span>
+                  <p className="text-xs text-gray-400 uppercase tracking-[4px] font-bold mt-2">Sprint Time</p>
+                </div>
+                <div className="flex-1 border-l border-white/20 pl-8">
+                  <h4 className="font-bold text-lg mb-2 uppercase font-doto">The Intensive Build</h4>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    This entire engine—from the tiered search architecture to the vector-powered valuation logic—was designed, implemented, and refined in a single intensive sprint.
+                  </p>
+                </div>
+              </div>
+              <Cpu className="absolute -right-10 -bottom-10 w-48 h-48 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
+            </div>
+          </section>
+
+          {/* Process Overview */}
+          <section id="process-overview" className="scroll-mt-32 mb-24">
+            <div className="bg-slate-50 border-2 border-black p-4 md:p-12 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <Network className="w-32 h-32" />
+              </div>
+              <h2 className="text-3xl font-doto font-bold mb-12 uppercase tracking-widest border-b-2 border-black pb-4 inline-block">
+                The Pipeline
+              </h2>
+
+              <div className="space-y-12 relative z-10">
                 {/* Step 1 */}
-                <div className="flex justify-center">
-                  <div className="bg-white px-6 py-3 rounded-lg border shadow-sm flex flex-col items-center w-64">
-                    <span className="font-bold text-slate-900">1. User Input</span>
-                    <span className="text-xs text-slate-500">"iPhone 15 Pro for 120000 in Delhi"</span>
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <div className="w-16 h-16 border-2 border-black bg-white flex items-center justify-center shrink-0 text-2xl font-doto font-bold">01</div>
+                  <div className="bg-white border-2 border-black p-6 w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                    <h4 className="font-bold text-lg uppercase mb-2">Input Parsing</h4>
+                    <code className="bg-gray-100 px-2 py-1 text-sm">"iPhone 15 Pro for 120000 in Delhi"</code>
                   </div>
                 </div>
 
-                {/* Arrow Down */}
-                <div className="flex justify-center -my-4 relative z-10">
-                  <div className="w-0.5 h-8 bg-slate-300"></div>
-                </div>
-
-                {/* Step 2: Parallel */}
-                <div className="flex justify-center gap-8">
-                  <div className="bg-blue-50 border-blue-200 border px-4 py-4 rounded-xl shadow-sm w-64 text-center">
-                    <span className="font-bold text-blue-900 block mb-1">2A. Historical Check</span>
-                    <span className="text-[10px] text-blue-700 block">
-                      PostgreSQL Vector DB search using pgvector for similar past entries
-                    </span>
+                {/* Step 2 */}
+                <div className="flex flex-col md:flex-row gap-8 items-start pl-8 md:pl-20 border-l-2 border-dashed border-black/20 ml-8 md:ml-0">
+                  <div className="w-16 h-16 border-2 border-black bg-white flex items-center justify-center shrink-0 text-2xl font-doto font-bold">02</div>
+                  <div className="grid md:grid-cols-2 gap-4 w-full">
+                    <div className="bg-white border-2 border-black p-6 hover:bg-blue-50 transition-colors">
+                      <h4 className="font-bold text-xs uppercase tracking-widest mb-2 text-blue-600">Vector Memory</h4>
+                      <p className="text-sm">Historical context check via pgvector embeddings.</p>
+                    </div>
+                    <div className="bg-white border-2 border-black p-6 hover:bg-emerald-50 transition-colors">
+                      <h4 className="font-bold text-xs uppercase tracking-widest mb-2 text-emerald-600">Web Intelligence</h4>
+                      <p className="text-sm">Real-time crawl via DuckDuckGo & Jina Reader.</p>
+                    </div>
                   </div>
-                  <div className="bg-emerald-50 border-emerald-200 border px-4 py-4 rounded-xl shadow-sm w-64 text-center">
-                    <span className="font-bold text-emerald-900 block mb-1">2B. Web Crawler</span>
-                    <span className="text-[10px] text-emerald-700 block">
-                      DuckDuckGo + Trusted Source Filters + Jina Reader
-                    </span>
-                  </div>
-                </div>
-
-                {/* Connecting Lines */}
-                <div className="flex justify-center -my-4 relative z-0">
-                  <div className="w-64 h-8 border-b-2 border-l-2 border-r-2 border-slate-300 rounded-b-xl"></div>
-                </div>
-                <div className="flex justify-center -mt-4">
-                  <div className="w-0.5 h-8 bg-slate-300"></div>
                 </div>
 
                 {/* Step 3 */}
-                <div className="flex justify-center">
-                  <div className="bg-purple-50 border-purple-200 border px-6 py-4 rounded-xl shadow-sm text-center w-80">
-                    <span className="font-bold text-purple-900 block mb-2">3. AI Synthesis (External API)</span>
-                    <span className="text-xs text-purple-700 block">
-                      Aggregated Context + Logic Prompt <br /> sent to Llama 3.1 (via Groq/OpenAI)
-                    </span>
-                  </div>
-                </div>
-
-                {/* Arrow Down */}
-                <div className="flex justify-center -my-4">
-                  <div className="w-0.5 h-8 bg-slate-300"></div>
-                </div>
-
-                {/* Step 4 */}
-                <div className="flex justify-center">
-                  <div className="bg-slate-900 text-white px-6 py-3 rounded-lg shadow-lg flex flex-col items-center w-64">
-                    <span className="font-bold">4. Final Verdict</span>
-                    <span className="text-xs text-slate-400">JSON: {"{ price, verdict, confidence }"}</span>
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <div className="w-16 h-16 border-2 border-black bg-black text-white flex items-center justify-center shrink-0 text-2xl font-doto font-bold">03</div>
+                  <div className="bg-black text-white border-2 border-black p-6 w-full shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]">
+                    <h4 className="font-bold text-lg uppercase mb-2">Final Verdict</h4>
+                    <div className="text-sm text-gray-400 font-mono">
+                      {"{ price: 118000, verdict: 'Fair', confidence: 0.92 }"}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Detailed Steps */}
-          <div className="space-y-24">
+          {/* Detailed Steps - Styled brutally */}
+          <div className="space-y-32">
 
-            {/* Step 1: Input Analysis */}
-            <section id="input-analysis" className="scroll-mt-24">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700">1</div>
-                <h2 className="text-2xl font-bold">Input Analysis & Parsing</h2>
-              </div>
-              <div className="pl-14">
-                <p className="text-muted-foreground mb-4">
-                  Before any search happens, we parse the raw text input to extract structured data points.
-                </p>
-                <div className="bg-slate-50 border rounded-xl p-5 font-mono text-sm space-y-2">
-                  <div className="flex gap-4">
-                    <span className="text-slate-400 select-none">Regex 1:</span>
-                    <span className="text-purple-600">Price Extraction</span>
-                    <span className="text-slate-500">Detects formats like "₹1,20,000", "Rs 50k", "500 bucks"</span>
+            {/* Input Analysis */}
+            <section id="input-analysis" className="scroll-mt-32">
+              <h3 className="font-doto font-black text-3xl uppercase mb-8 decoration-4 decoration-black underline underline-offset-8">01. Parsing Logic</h3>
+              <div className="pl-6 border-l-4 border-black space-y-6">
+                <p className="text-lg text-gray-600">Regex patterns isolate token types before execution.</p>
+                <div className="space-y-4 font-mono text-sm">
+                  <div className="flex items-center gap-4 p-4 border-b border-gray-200">
+                    <span className="font-bold w-24">PRICE</span>
+                    <span className="text-gray-500">Matches "₹1,20,000", "50k", "500 bucks"</span>
                   </div>
-                  <div className="flex gap-4">
-                    <span className="text-slate-400 select-none">Regex 2:</span>
-                    <span className="text-blue-600">Location</span>
-                    <span className="text-slate-500">Identifies "in Delhi", "at Mumbai" patterns</span>
-                  </div>
-                  <div className="flex gap-4">
-                    <span className="text-slate-400 select-none">Logic:</span>
-                    <span className="text-emerald-600">Item Isolation</span>
-                    <span className="text-slate-500">Removes price/location tokens to get raw product name</span>
-                  </div>
-                </div>
-
-                <div className="mt-8 bg-amber-50/50 border border-amber-100 rounded-xl p-6">
-                  <h4 className="font-bold text-sm mb-3 flex items-center gap-2 text-amber-900">
-                    <AlertCircle className="w-4 h-4 text-amber-600" />
-                    Edge Case: Missing Price Input
-                  </h4>
-                  <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-                    If a user searches for <i>"iPhone 15 Pro"</i> without specifying a price (e.g., omitting <i>"for ₹1,20,000"</i>), the system adapts its response strategy:
-                  </p>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-white border rounded-lg p-4 shadow-sm">
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Action</span>
-                      <p className="text-sm text-slate-700">
-                        The system <b>skips the Verdict generation</b> since there is no baseline to compare against.
-                      </p>
-                    </div>
-                    <div className="bg-white border rounded-lg p-4 shadow-sm">
-                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Output</span>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>Verdict:</span>
-                          <span className="font-mono text-amber-600">"Analysis Pending"</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Web Data:</span>
-                          <span className="font-mono text-emerald-600">Displayed</span>
-                        </div>
-                        <div className="text-xs text-slate-500 italic mt-1 border-t pt-2">
-                          "Please tell me what price you are getting..."
-                        </div>
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-4 p-4 border-b border-gray-200">
+                    <span className="font-bold w-24 text-blue-600">LOCATION</span>
+                    <span className="text-gray-500">Matches "in Delhi", "at Mumbai"</span>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Step 2: Vector Search */}
-            <section id="vector-search" className="scroll-mt-24">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700">2</div>
-                <h2 className="text-2xl font-bold">Vector Memory Search</h2>
-              </div>
-              <div className="pl-14">
-                <p className="text-muted-foreground mb-4">
-                  We maintain a PostgreSQL database powered by <code>pgvector</code>. Every time a user gets a valuation or contributes data, it's embedded into a 1536-dimensional vector.
-                </p>
-                <ul className="space-y-3 text-sm text-foreground/80 list-disc list-outside ml-4">
-                  <li>
-                    <b>Semantic Matching:</b> We find similar items even if the phrasing is different (e.g., "MacBook Air" vs "Apple Laptop M2").
+            {/* Vector Search */}
+            <section id="vector-search" className="scroll-mt-32">
+              <h3 className="font-doto font-black text-3xl uppercase mb-8 decoration-4 decoration-black underline underline-offset-8">02. Vector Memory</h3>
+              <div className="pl-6 border-l-4 border-black space-y-6">
+                <p className="text-lg text-gray-600">PostgreSQL database powered by <code>pgvector</code>. Every valuation is embedded into a 1536-dimensional vector.</p>
+                <ul className="space-y-4">
+                  <li className="bg-gray-50 p-4 border-l-4 border-black">
+                    <span className="font-bold uppercase tracking-wider block mb-1">Semantic Matching</span>
+                    <span className="text-sm text-gray-500">Matches "MacBook Air" with "Apple Laptop M2" based on meaning, not just keywords.</span>
                   </li>
-                  <li>
-                    <b>Historical Context:</b> Provides a baseline "market memory" to sanity check live web results.
+                  <li className="bg-gray-50 p-4 border-l-4 border-black">
+                    <span className="font-bold uppercase tracking-wider block mb-1">Market Memory</span>
+                    <span className="text-sm text-gray-500">Provides a historical baseline to sanity check live web results.</span>
                   </li>
                 </ul>
               </div>
             </section>
 
-            {/* Step 3: Web Intelligence */}
-            <section id="web-intelligence" className="scroll-mt-24">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center font-bold text-emerald-700">3</div>
-                <h2 className="text-2xl font-bold">Live Web Intelligence</h2>
-              </div>
-              <div className="pl-14">
-                <p className="text-muted-foreground mb-6">
-                  We perform a real-time crawl using DuckDuckGo's API, running two parallel search strategies to ensure coverage and accuracy.
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div className="border p-5 rounded-xl">
-                    <h4 className="font-bold mb-2 flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      Priority Search
-                    </h4>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Restricted to Trusted Sources configured by admins.
-                    </p>
-                    <code className="text-[10px] bg-slate-100 p-1 rounded block">
-                      site:amazon.in OR site:flipkart.com "iPhone 15 price"
-                    </code>
-                  </div>
-                  <div className="border p-5 rounded-xl">
-                    <h4 className="font-bold mb-2 flex items-center gap-2">
-                      <Globe2 className="w-4 h-4 text-blue-600" />
-                      General Search
-                    </h4>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Broad search to catch forum discussions, news, and other retailers.
-                    </p>
-                    <code className="text-[10px] bg-slate-100 p-1 rounded block">
-                      "iPhone 15 price India"
-                    </code>
-                  </div>
+            {/* Web Intelligence */}
+            <section id="web-intelligence" className="scroll-mt-32">
+              <h3 className="font-doto font-black text-3xl uppercase mb-8 decoration-4 decoration-black underline underline-offset-8">03. Web Intelligence</h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="border-2 border-black p-8 relative">
+                  <div className="absolute top-4 right-4"><Globe2 className="w-6 h-6 opacity-20" /></div>
+                  <h4 className="font-bold uppercase tracking-widest mb-4">Priority Search</h4>
+                  <p className="text-sm text-gray-600 mb-4">Restricted to high-trust domains (Amazon, Flipkart) for rapid signal.</p>
+                  <code className="block bg-gray-100 p-2 text-xs">site:amazon.in "iPhone 15"</code>
                 </div>
-
-                <div className="bg-amber-50 border border-amber-100 p-4 rounded-lg mt-6">
-                  <h4 className="font-bold text-amber-900 text-sm mb-1">Diversity Filter Logic</h4>
-                  <p className="text-xs text-amber-800">
-                    To prevent one retailer from dominating the results, we programmatically cap results to <b>max 2 per domain</b>. This ensures the AI gets a diverse perspective of the market.
-                  </p>
-                </div>
-
-                <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-lg mt-4">
-                  <h4 className="font-bold text-indigo-900 text-sm mb-1 flex items-center gap-2">
-                    <Layers className="w-4 h-4" />
-                    Deep Search (Optional)
-                  </h4>
-                  <p className="text-xs text-indigo-800 mb-2">
-                    When Deep Search is enabled, we go beyond snippets. We use <b>Jina Reader</b> to fetch the full markdown content of the top 4 search results.
-                  </p>
-                  <code className="text-[10px] bg-white/50 p-1.5 rounded block text-indigo-900 font-mono">
-                    fetch(`https://r.jina.ai/$&#123;url&#125;`) -&gt; Full Content Extraction
-                  </code>
+                <div className="border-2 border-black p-8 relative">
+                  <div className="absolute top-4 right-4"><Search className="w-6 h-6 opacity-20" /></div>
+                  <h4 className="font-bold uppercase tracking-widest mb-4">Deep Search</h4>
+                  <p className="text-sm text-gray-600 mb-4">Broad sweep for forums, local news, and retailer pages.</p>
+                  <code className="block bg-gray-100 p-2 text-xs">"iPhone 15 market price India"</code>
                 </div>
               </div>
             </section>
 
-            {/* Step 4: AI Synthesis */}
-            <section id="ai-synthesis" className="scroll-mt-24">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-700">4</div>
-                <h2 className="text-2xl font-bold">AI Synthesis (External API)</h2>
+            {/* Extraction Pipeline */}
+            <section id="extraction-pipeline" className="scroll-mt-32">
+              <h3 className="font-doto font-black text-3xl uppercase mb-12 decoration-4 decoration-black underline underline-offset-8">04. 6-Stage Recall</h3>
+              <div className="space-y-4">
+                {[
+                  "AI Snippet Parse",
+                  "Snippet Heuristics (Aggressive Regex)",
+                  "Jina Reader Fetch (Full Page)",
+                  "Custom Scraper Fallback (Axios)",
+                  "Deep Content Analysis (LLM)",
+                  "Global Regex Fallback"
+                ].map((step, i) => (
+                  <div key={i} className="flex items-center gap-6 p-4 border-b border-black/10 hover:bg-black hover:text-white transition-colors cursor-crosshair group">
+                    <span className="font-doto font-bold text-2xl text-gray-300 group-hover:text-white/50">0{i + 1}</span>
+                    <span className="font-medium uppercase tracking-wider">{step}</span>
+                  </div>
+                ))}
               </div>
-              <div className="pl-14">
-                <p className="text-muted-foreground mb-6">
-                  We do not run LLMs locally. We securely transmit the aggregated context to an external inference provider (Groq Llama 3.1 or OpenAI GPT-4o-mini) to generate the final verdict.
-                </p>
+            </section>
 
-                <div className="bg-slate-900 text-slate-300 p-6 rounded-xl font-mono text-xs overflow-x-auto">
-                  <div className="text-slate-500 mb-2">// System Prompt Structure</div>
-                  <p className="mb-4">
-                    You are a price transparency expert.<br />
-                    Goal: Evaluate if a user's proposed price is a good deal based on historical data.
-                  </p>
-                  <p className="mb-4">
-                    <span className="text-purple-400">CRITICAL LOGIC:</span><br />
-                    - If User Price &gt; Market Price -&gt; <span className="text-red-400">OVERPRICED</span><br />
-                    - If User Price &lt; Market Price -&gt; <span className="text-emerald-400">UNDERPRICED</span><br />
-                    - If Similar -&gt; <span className="text-blue-400">FAIR DEAL</span>
-                  </p>
-                  <p>
-                    <span className="text-purple-400">STRICT JSON OUTPUT:</span><br />
-                    {"{ expectedPriceRange, verdict, confidence, explanation }"}
-                  </p>
+            {/* AI Synthesis */}
+            <section id="ai-synthesis" className="scroll-mt-32">
+              <h3 className="font-doto font-black text-3xl uppercase mb-8 decoration-4 decoration-black underline underline-offset-8">05. AI Synthesis</h3>
+              <div className="flex flex-col gap-6">
+                <p className="text-lg text-gray-600">Secure transmission of aggregated context to external AI for final verdict generation.</p>
+                <div className="bg-gray-100 p-6 border-l-4 border-purple-500 font-mono text-sm">
+                  <div className="text-purple-600 mb-2 font-bold">// Logic Prompt Output</div>
+                  <div className="space-y-2 text-gray-600">
+                    <p>IF User.Price &gt; Market.Price THEN <span className="text-red-500 font-bold">OVERPRICED</span></p>
+                    <p>IF User.Price &lt; Market.Price THEN <span className="text-emerald-600 font-bold">UNDERPRICED</span></p>
+                    <p>ELSE <span className="text-blue-600 font-bold">FAIR DEAL</span></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Admin Section */}
+            <section id="admin-panel" className="scroll-mt-32 p-12 bg-black text-white mt-24">
+              <div className="flex items-center gap-6 mb-12">
+                <ShieldCheck className="w-12 h-12" />
+                <div>
+                  <h2 className="text-4xl font-doto font-bold uppercase">Control Center</h2>
+                  <p className="text-gray-400">Restricted Access Protocol</p>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-8 text-sm">
+                <div className="border border-white/20 p-6">
+                  <h4 className="font-bold text-emerald-400 uppercase mb-2">Metrics Dashboard</h4>
+                  <p className="text-gray-400">Real-time health monitoring of search cluster and API consumption.</p>
+                </div>
+                <div className="border border-white/20 p-6">
+                  <h4 className="font-bold text-emerald-400 uppercase mb-2">Source Governance</h4>
+                  <p className="text-gray-400">Dynamic whitelist/blacklist for domain authority management.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Reporting Loop */}
+            <section id="reporting-loop" className="scroll-mt-32">
+              <h2 className="text-3xl font-doto font-bold mb-8 uppercase tracking-tight">Integrity Loop</h2>
+              <div className="grid md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <p className="text-gray-600">Human-in-the-loop validation to continuously refine logic. Flagged results directly influence the system.</p>
+                  <ul className="space-y-3 text-sm font-bold uppercase tracking-widest text-gray-500">
+                    <li className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-500"></div> Neutralize incorrect prices</li>
+                    <li className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-500"></div> Prune broken links</li>
+                    <li className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-500"></div> Adjust confidence weights</li>
+                  </ul>
+                </div>
+                <div className="bg-amber-50 border-2 border-amber-200 p-8 flex items-center justify-center">
+                  <AlertCircle className="w-16 h-16 text-amber-500/50" />
+                  <div className="ml-6">
+                    <span className="block text-2xl font-black text-amber-900 mb-1">User Flags</span>
+                    <span className="text-sm font-bold uppercase text-amber-700">Trigger Review Queue</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Anonymous Data */}
+            <section id="anonymous-data" className="scroll-mt-32">
+              <h2 className="text-3xl font-doto font-bold mb-8 uppercase tracking-tight">Privacy Shield</h2>
+              <div className="border-t-4 border-b-4 border-black py-12">
+                <div className="flex flex-col md:flex-row gap-12 items-center">
+                  <EyeOff className="w-24 h-24 stroke-1" />
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-bold uppercase tracking-widest">Zero-Identity Storage</h4>
+                    <p className="text-gray-600">
+                      Contributor data is processed through an isolation layer. We strip all session IDs and IP references.
+                      A price entry consists only of metadata: <b>[item, price, currency, timestamp]</b>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Resilient Search */}
+            <section id="resilient-search" className="scroll-mt-32">
+              <h2 className="text-3xl font-doto font-bold mb-8 uppercase tracking-tight">Resilient Infrastructure</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-gray-50 p-6 border-l-4 border-gray-300">
+                  <span className="font-bold uppercase block mb-2">Provider Fallback</span>
+                  <p className="text-sm text-gray-500">Automatic switch to Serper.dev backup pool if DuckDuckGo is rate-limited.</p>
+                </div>
+                <div className="bg-gray-50 p-6 border-l-4 border-gray-300">
+                  <span className="font-bold uppercase block mb-2">Key Rotation</span>
+                  <p className="text-sm text-gray-500">Round-robin rotation across multiple API keys to maintain 99.9% uptime.</p>
                 </div>
               </div>
             </section>
 
           </div>
 
-          {/* Tech Stack Footer */}
-          <section id="tech-stack" className="mt-24 pt-12 border-t">
-            <h3 className="text-lg font-bold mb-6">Built With</h3>
-            <div className="flex flex-wrap gap-3">
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Next.js 15</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">TypeScript</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">PostgreSQL + Prisma</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">pgvector</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">DuckDuckGo API</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Jina Reader</span>
-              <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium">Groq / OpenAI API</span>
+          <section id="tech-stack" className="mt-32 pt-16 border-t-4 border-black">
+            <h3 className="text-2xl font-doto font-bold mb-10 uppercase tracking-tight">Technical Stack</h3>
+            <div className="grid md:grid-cols-3 gap-10">
+              <div className="space-y-4">
+                <h4 className="text-xs font-black uppercase text-gray-400 tracking-[2px]">Frontend</h4>
+                <div className="h-0.5 w-10 bg-black"></div>
+                <ul className="space-y-2 text-sm font-bold uppercase tracking-wider">
+                  <li>Next.js 15</li>
+                  <li>TypeScript</li>
+                  <li>Tailwind CSS</li>
+                  <li>Lucide Icons</li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h4 className="text-xs font-black uppercase text-gray-400 tracking-[2px]">Intelligence</h4>
+                <div className="h-0.5 w-10 bg-black"></div>
+                <ul className="space-y-2 text-sm font-bold uppercase tracking-wider">
+                  <li>AI Inference</li>
+                  <li>DuckDuckGo Search</li>
+                  <li>Jina Reader</li>
+                  <li>Node HTML Markdown</li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h4 className="text-xs font-black uppercase text-gray-400 tracking-[2px]">Backend</h4>
+                <div className="h-0.5 w-10 bg-black"></div>
+                <ul className="space-y-2 text-sm font-bold uppercase tracking-wider">
+                  <li>PostgreSQL</li>
+                  <li>Prisma ORM</li>
+                  <li>pgvector</li>
+                  <li>Axios Scraper</li>
+                </ul>
+              </div>
             </div>
           </section>
 
-          <footer className="mt-12 py-8 text-sm text-muted-foreground flex justify-between items-center">
-            <p>© 2026 PriceOracle Engine.</p>
-            <div className="flex gap-4">
-              <Link href="/" className="hover:underline">Home</Link>
-              <Link href="/demo" className="hover:underline">App</Link>
+          <footer className="mt-32 pt-12 border-t-4 border-black flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+              <span className="font-doto font-bold text-xl uppercase tracking-tighter">PriceOracle<span className="text-black">.</span></span>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-2">© 2026 Engine v2.0</p>
+            </div>
+            <div className="flex gap-8 text-sm font-bold uppercase tracking-widest text-black/40">
+              <Link href="/" className="hover:text-black transition-colors">Home</Link>
+              <Link href="/demo" className="hover:text-black transition-colors">Terminal</Link>
+              <Link href="#" className="hover:text-black transition-colors">GitHub</Link>
             </div>
           </footer>
         </main>

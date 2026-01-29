@@ -12,7 +12,7 @@ interface PaginationProps {
 
 export default function Pagination({ totalPages, currentPage }: PaginationProps) {
   const searchParams = useSearchParams();
-  
+
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", pageNumber.toString());
@@ -22,32 +22,30 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 py-8">
+    <div className="flex items-center justify-center gap-4 py-12">
       <Link
         href={createPageURL(currentPage - 1)}
-        className={`p-2 rounded-xl border border-slate-200 transition-all ${
-          currentPage <= 1 
-            ? "pointer-events-none opacity-30" 
-            : "hover:bg-white hover:shadow-sm"
-        }`}
+        className={`p-3 border-2 border-black transition-all ${currentPage <= 1
+            ? "pointer-events-none opacity-20 bg-gray-100"
+            : "bg-white hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+          }`}
       >
         <ChevronLeft className="w-5 h-5" />
       </Link>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {[...Array(totalPages)].map((_, i) => {
           const page = i + 1;
           const isCurrent = page === currentPage;
-          
+
           return (
             <Link
               key={page}
               href={createPageURL(page)}
-              className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold transition-all ${
-                isCurrent 
-                  ? "bg-slate-900 text-white shadow-lg shadow-slate-200" 
-                  : "text-slate-500 hover:bg-white hover:border-slate-200 border border-transparent"
-              }`}
+              className={`w-12 h-12 flex items-center justify-center font-bold font-doto text-sm transition-all border-2 border-black ${isCurrent
+                  ? "bg-black text-white"
+                  : "bg-white text-black hover:bg-gray-100"
+                }`}
             >
               {page}
             </Link>
@@ -57,11 +55,10 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
 
       <Link
         href={createPageURL(currentPage + 1)}
-        className={`p-2 rounded-xl border border-slate-200 transition-all ${
-          currentPage >= totalPages 
-            ? "pointer-events-none opacity-30" 
-            : "hover:bg-white hover:shadow-sm"
-        }`}
+        className={`p-3 border-2 border-black transition-all ${currentPage >= totalPages
+            ? "pointer-events-none opacity-20 bg-gray-100"
+            : "bg-white hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+          }`}
       >
         <ChevronRight className="w-5 h-5" />
       </Link>

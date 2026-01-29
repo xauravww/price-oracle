@@ -594,3 +594,111 @@
 {"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T15:10:28.081Z","url":"https://html.duckduckgo.com/html"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T15:10:29.959Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T15:10:29.964Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:05:11.405Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:05:11.412Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:05:11.415Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:05:11.416Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T16:05:13.006Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T16:05:13.010Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:06:01.259Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:06:01.262Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:06:01.264Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:06:01.264Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:06:02.443Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:06:02.445Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:12:23.778Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:12:23.787Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:12:23.790Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:12:23.791Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:12:25.633Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:12:25.638Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:14:06.068Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:14:06.077Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:14:06.079Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:14:06.080Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T16:14:08.971Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T16:14:08.975Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:14:52.906Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:14:52.912Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:14:52.914Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:14:52.914Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:14:54.680Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:14:54.684Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:16:51.456Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:16:51.462Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:16:51.464Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:16:51.464Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T16:16:52.978Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T16:16:52.984Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:18:33.669Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:18:33.676Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:18:33.677Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:18:33.679Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T16:18:35.339Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T16:18:35.344Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:19:22.486Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:19:22.501Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:19:22.506Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:19:22.507Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:19:24.026Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:19:24.032Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:19:57.142Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:19:57.148Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:19:57.150Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:19:57.150Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:19:58.785Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:19:58.789Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:20:45.897Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:20:45.904Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:20:45.905Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:20:45.906Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:20:47.258Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:20:47.262Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:21:31.055Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:21:31.062Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:21:31.064Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:21:31.066Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:21:32.637Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:21:32.642Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:22:16.905Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:22:16.911Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:22:16.913Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:22:16.913Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T16:22:18.485Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T16:22:18.490Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:23:02.379Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:23:02.385Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:23:02.387Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:23:02.387Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:23:03.876Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:23:03.881Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:24:39.554Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:24:39.563Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:24:39.566Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:24:39.567Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:24:41.050Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:24:41.053Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:25:39.110Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:25:39.116Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:25:39.118Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:25:39.119Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:25:40.585Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:25:40.589Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T16:32:16.793Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T16:32:16.798Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T16:32:16.800Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T16:32:16.801Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T16:32:20.323Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T16:32:20.329Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T18:06:39.648Z","verify":true}
+{"backend":"auto","keywords":"iphone 12 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T18:06:39.652Z"}
+{"keywords":"iphone 12 pro in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T18:06:39.654Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T18:06:39.655Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-29T18:06:40.860Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-29T18:06:40.861Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-29T18:19:49.392Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-29T18:19:49.399Z"}
+{"keywords":"iphone 15 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-29T18:19:49.401Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T18:19:49.402Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T18:19:50.856Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T18:19:50.858Z"}

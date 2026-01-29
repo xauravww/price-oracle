@@ -1,7 +1,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { Activity, Filter, Download } from "lucide-react";
+import { Activity, Filter, Download, Terminal } from "lucide-react";
 import Pagination from "@/components/admin/Pagination";
 import prisma from "@/lib/db";
 
@@ -28,70 +28,73 @@ export default async function LogsPage({
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div className="p-6 md:p-12 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b-4 border-black pb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">System Logs</h1>
-          <p className="text-slate-500 mt-2 text-lg">Detailed history of {totalCount} system operations</p>
+          <h1 className="text-5xl md:text-6xl font-doto font-black uppercase tracking-tighter leading-none mb-4">System<br />Logs</h1>
+          <div className="flex items-center gap-3">
+            <Terminal className="w-5 h-5 text-gray-400" />
+            <p className="font-mono text-sm text-gray-500">{totalCount} recorded operations</p>
+          </div>
         </div>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all">
+        <div className="flex gap-4">
+          <button className="flex items-center gap-2 px-4 py-3 bg-white border-2 border-black font-bold uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all">
             <Filter className="w-4 h-4" /> Filter
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-900 rounded-xl text-sm font-bold text-white hover:bg-slate-800 transition-all shadow-lg shadow-slate-200">
+          <button className="flex items-center gap-2 px-4 py-3 bg-black border-2 border-black font-bold uppercase tracking-widest text-xs text-white hover:bg-white hover:text-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <Download className="w-4 h-4" /> Export
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 border-b border-slate-100">
-                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Timestamp</th>
-                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Query</th>
-                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Result</th>
-                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Latency</th>
-                <th className="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
+              <tr className="bg-black text-white border-b-2 border-black">
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Timestamp</th>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Query</th>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Result</th>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Latency</th>
+                <th className="px-6 py-4 text-xs font-black uppercase tracking-[0.2em] font-doto">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y-2 divide-black/5">
               {logs.map((log: any) => (
-                <tr key={log.id} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="px-8 py-5">
-                    <div className="text-sm font-bold text-slate-900">
+                <tr key={log.id} className="hover:bg-yellow-50 transition-colors group">
+                  <td className="px-6 py-4 font-mono text-xs">
+                    <div className="font-bold text-black">
                       {new Date(log.timestamp).toLocaleTimeString()}
                     </div>
-                    <div className="text-[10px] text-slate-400 font-medium">
+                    <div className="text-gray-400">
                       {new Date(log.timestamp).toLocaleDateString()}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
-                    <div className="text-sm font-medium text-slate-600 max-w-xs truncate group-hover:text-slate-900 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-bold text-gray-600 truncate max-w-xs group-hover:text-black font-mono">
                       {log.query}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
-                    <div className="text-sm font-black text-slate-900">
-                      ₹{log.price_result?.toLocaleString() || '0'}
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-black text-black font-doto">
+                      ₹{log.priceResult?.toLocaleString() || '0'}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-2">
-                      <div className="w-12 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-2 bg-gray-200 border border-black overflow-hidden relative">
                         <div
-                          className={`h-full rounded-full ${log.response_time > 1000 ? 'bg-amber-400' : 'bg-emerald-400'}`}
-                          style={{ width: `${Math.min((log.response_time / 2000) * 100, 100)}%` }}
+                          className={`h-full absolute top-0 left-0 ${log.responseTime > 1000 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                          style={{ width: `${Math.min((log.responseTime / 2000) * 100, 100)}%` }}
                         />
                       </div>
-                      <span className="text-xs font-bold text-slate-500">{log.response_time}ms</span>
+                      <span className="text-xs font-bold font-mono">{log.responseTime}ms</span>
                     </div>
                   </td>
-                  <td className="px-8 py-5">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${log.status === 'success'
-                      ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                      : 'bg-red-50 text-red-600 border border-red-100'
+                  <td className="px-6 py-4">
+                    <span className={`inline-block px-2 py-0.5 border border-black text-[10px] font-black uppercase tracking-wider ${log.status === 'success'
+                      ? 'bg-emerald-300 text-black'
+                      : 'bg-red-300 text-black'
                       }`}>
                       {log.status}
                     </span>
@@ -100,10 +103,10 @@ export default async function LogsPage({
               ))}
               {logs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-8 py-20 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <Activity className="w-12 h-12 text-slate-200" />
-                      <p className="text-slate-400 font-medium">No logs recorded in the system yet.</p>
+                  <td colSpan={5} className="px-8 py-32 text-center bg-gray-50">
+                    <div className="flex flex-col items-center gap-4">
+                      <Activity className="w-12 h-12 text-gray-300" />
+                      <p className="font-doto font-bold uppercase text-gray-400">System Idle. No logs.</p>
                     </div>
                   </td>
                 </tr>
@@ -113,7 +116,9 @@ export default async function LogsPage({
         </div>
       </div>
 
-      <Pagination totalPages={totalPages} currentPage={currentPage} />
+      <div className="mt-8">
+        <Pagination totalPages={totalPages} currentPage={currentPage} />
+      </div>
     </div>
   );
 }

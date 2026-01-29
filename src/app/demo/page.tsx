@@ -15,7 +15,11 @@ import {
   User,
   MapPin,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Zap,
+  Terminal,
+  Globe,
+  Search
 } from "lucide-react";
 import { reportUnparsedUrl } from "@/lib/actions";
 import { toast, Toaster } from "react-hot-toast";
@@ -114,269 +118,229 @@ function PriceOracleContent() {
   }, [searchParams]);
 
   return (
-    <div className="max-w-5xl w-full">
-      {/* Hero Section - Automatically hides/shrinks when result is shown if needed, but for now keeps static */}
-      <div className={`text-center mb-12 relative z-10 transition-all duration-500 ${result ? "mt-8 mb-8" : "mb-12"}`}>
-        <div className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium mb-6">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2"></span>
-          Real-time Market Intelligence
+    <div className="max-w-5xl w-full mx-auto px-4 pb-32">
+      {/* Explicit Header */}
+      <div className={`transition-all duration-500 ${result ? "mb-8 pt-8" : "mb-16 pt-20"}`}>
+        <div className="inline-flex items-center gap-3 border-2 border-black bg-white px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+          <div className="w-2.5 h-2.5 bg-red-500 rounded-full border border-black animate-pulse"></div>
+          <span className="font-doto font-bold uppercase tracking-widest text-sm">System Ready</span>
         </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
-          Precision Pricing <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-800">Powered by Intelligence.</span>
+
+        <h1 className="text-5xl md:text-7xl font-doto font-black uppercase tracking-tighter leading-[0.9] mb-6">
+          Price<br /><span className="text-stroke-2 text-transparent">Intelligence</span>
         </h1>
+
         {!result && (
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4">
-            The industry standard for real-time market analysis.
-            Enter your requirements below to generate an instant quote.
+          <p className="text-xl font-medium text-gray-500 border-l-4 border-black pl-6 max-w-2xl leading-relaxed">
+            Execute real-time valuations across Indian marketplaces using vector memory and live web synthesis.
           </p>
         )}
       </div>
 
       {/* Input Section */}
-      <div className="max-w-2xl mx-auto mb-16 relative z-10">
-        <div className="mb-6">
+      <div className="mb-20 relative z-10">
+        <div>
           <AIInput
             onSubmit={handleSubmit}
-            placeholder="Describe your project or product requirements..."
+            placeholder="INPUT COMMAND: e.g. iPhone 15 128GB in Mumbai"
             initialValue={initialValue}
-            className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300"
+            // Overriding styles via class names passed to component if needed, 
+            // but the containing div gives the black border effect.
+            className="font-doto font-bold text-lg"
           />
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-6">
           <button
             onClick={() => setDeepSearch(!deepSearch)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${deepSearch
-              ? "bg-slate-900 text-white shadow-md scale-105"
-              : "bg-white/50 text-slate-500 hover:bg-white hover:text-slate-700 border border-transparent hover:border-slate-200"
+            className={`flex items-center gap-3 px-6 py-3 border-2 border-black transition-all duration-200 uppercase font-bold tracking-widest text-xs ${deepSearch
+              ? "bg-black text-white shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] translate-x-[2px] translate-y-[2px]"
+              : "bg-white text-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
               }`}
           >
-            <div className={`w-1.5 h-1.5 rounded-full ${deepSearch ? "bg-blue-400 animate-pulse" : "bg-slate-300"}`}></div>
-            Deep Search {deepSearch ? "ON" : "OFF"}
+            <div className={`w-2 h-2 ${deepSearch ? "bg-emerald-400" : "bg-gray-300"}`}></div>
+            Deep Search: {deepSearch ? "ENABLED" : "DISABLED"}
           </button>
         </div>
       </div>
 
       {/* Results Display */}
-      {loading && <CreativeLoader />}
+      {loading && (
+        <div className="border-2 border-black bg-white p-12 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <CreativeLoader />
+          <p className="mt-8 font-doto font-bold uppercase tracking-widest animate-pulse">Running Analysis Protocols...</p>
+        </div>
+      )}
 
       {result && !loading && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-          {result.price > 0 ? (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="p-8 md:p-12 border-b border-slate-100 bg-slate-50/30">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                  <div>
-                    <div className="flex items-center gap-2 text-slate-400 mb-2">
-                      <Calendar className="w-4 h-4" />
-                      <span className="text-xs font-bold uppercase tracking-widest">
-                        {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </span>
-                    </div>
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-2">Estimated Valuation</h2>
-                    <div className="text-6xl font-bold text-slate-900 tracking-tight">
+        <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 space-y-12">
+
+          {/* Main Verdict Card */}
+          <div className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-0 overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-4 opacity-5">
+              <Zap className="w-64 h-64" />
+            </div>
+
+            <div className="border-b-4 border-black bg-black text-white p-6 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <Terminal className="w-6 h-6" />
+                <h2 className="font-doto font-bold text-xl uppercase tracking-widest">Pricing Output</h2>
+              </div>
+              <div className="font-mono text-sm opacity-60">
+                {new Date().toLocaleTimeString()}
+              </div>
+            </div>
+
+            {result.price > 0 ? (
+              <div className="p-8 md:p-12">
+                <div className="flex flex-col md:flex-row gap-12 items-start">
+                  <div className="flex-1">
+                    <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-2">Estimated Market Value</p>
+                    <div className="text-7xl md:text-8xl font-doto font-black tracking-tighter leading-none mb-6">
                       ₹{result.price.toLocaleString()}
                     </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold ${result.analysis.verdict.includes("Fair") || result.analysis.verdict.includes("Underpriced")
-                      ? "bg-emerald-50 text-emerald-600"
-                      : "bg-amber-50 text-amber-600"
+
+                    <div className={`inline-flex items-center gap-3 border-2 border-black px-4 py-2 font-bold uppercase tracking-widest text-sm ${result.analysis.verdict.includes("Fair") || result.analysis.verdict.includes("Underpriced")
+                      ? "bg-emerald-400 text-black"
+                      : "bg-amber-400 text-black"
                       }`}>
-                      <CheckCircle2 className="w-4 h-4" />
+                      <CheckCircle2 className="w-5 h-5" />
                       {result.analysis.verdict}
                     </div>
-                    <div className="text-xs font-medium text-slate-400">
-                      Confidence Score: {result.confidenceScore || 98.4}%
-                    </div>
-                    {!deepSearch && (
-                      <button
-                        onClick={handleDeepRecheck}
-                        className="mt-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5"
-                      >
-                        Not satisfied? Check Deeply
-                        <ArrowRight className="w-3 h-3" />
-                      </button>
-                    )}
                   </div>
-                </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-                <div className="p-8">
-                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
-                    <BarChart3 className="w-5 h-5 text-slate-600" />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-4">Market Analysis</h3>
-
-                  <div className="space-y-4">
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                      <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Expected Price Range</div>
-                      <div className="text-lg font-semibold text-slate-900">{result.analysis.expectedPriceRange}</div>
+                  <div className="flex-1 space-y-8 w-full">
+                    <div className="p-6 bg-gray-50 border-2 border-black">
+                      <h4 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-2">Expert Explanation</h4>
+                      <p className="font-medium leading-relaxed">{result.analysis.explanation}</p>
                     </div>
 
-                    <div>
-                      <div className="text-sm font-medium text-slate-900 mb-1">Expert Explanation</div>
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        {result.analysis.explanation}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4">
-                    <Layers className="w-5 h-5 text-slate-600" />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-4">Data Integrity</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                    Analysis based on real-time vector search of local market entries and AI-driven verification against live web sources.
-                  </p>
-                  <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    Verified against {result.webData?.length || 0} active sources
-                  </div>
-                </div>
-              </div>
-
-              {result.relatedEntries && result.relatedEntries.length > 0 && (
-                <div className="p-8 md:p-12 bg-white border-t border-slate-100">
-                  <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    Related Anonymous Results
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {result.relatedEntries.map((entry, index) => (
-                      <div
-                        key={index}
-                        className="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-purple-200 transition-colors"
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-slate-900 line-clamp-1">{entry.item}</h4>
-                          <span className="text-xs font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200">
-                            ₹{entry.price.toLocaleString()}
-                          </span>
-                        </div>
-
-                        <div className="flex flex-col gap-1.5 mt-3">
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <MapPin className="w-3 h-3" />
-                            <span className="truncate">{entry.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-400">
-                            <Clock className="w-3 h-3" />
-                            <span>{new Date(entry.timestamp).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-400">
-                            <User className="w-3 h-3" />
-                            <span>Anonymous Contributor</span>
-                          </div>
-                        </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 border-2 border-black text-center">
+                        <div className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Confidence</div>
+                        <div className="font-doto font-bold text-2xl">{result.confidenceScore || 98}%</div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {result.webData && result.webData.length > 0 && (
-                <div className="p-8 md:p-12 bg-slate-50/50 border-t border-slate-100">
-                  <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                    Real-time Web Context
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(showMoreWeb ? result.webData : result.webData.slice(0, 4)).map((item, index) => (
-                      <a
-                        key={index}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group block p-5 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
-                      >
-                        <div className="flex justify-between items-start gap-4 mb-2">
-                          <h4 className="text-sm font-semibold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
-                            {item.title}
-                          </h4>
-                          <ExternalLink className="w-3 h-3 text-slate-400 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                        <p className="text-xs text-slate-500 line-clamp-2 mb-3 leading-relaxed">
-                          {item.body}
-                        </p>
-                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-50">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                            {item.source}
-                          </span>
-                          {item.price ? (
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                                {item.price}
-                              </span>
-                              {/* Report button for priced items - minimal icon only */}
-                              <button
-                                onClick={(e) => handleReport(e, item)}
-                                className={`p-1 rounded-md transition-colors ${reportedUrls.has(item.url)
-                                    ? "text-emerald-500 bg-emerald-50 cursor-default"
-                                    : "text-slate-300 hover:text-amber-600 hover:bg-amber-50"
-                                  }`}
-                                title={reportedUrls.has(item.url) ? "Reported" : "Report incorrect price"}
-                                disabled={reportedUrls.has(item.url)}
-                              >
-                                {reportedUrls.has(item.url) ? (
-                                  <CheckCircle2 className="w-3 h-3" />
-                                ) : (
-                                  <AlertCircle className="w-3 h-3" />
-                                )}
-                              </button>
-                            </div>
-                          ) : reportedUrls.has(item.url) ? (
-                            <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md flex items-center gap-1">
-                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
-                              Reported
-                            </span>
-                          ) : (
-                            <button
-                              onClick={(e) => handleReport(e, item)}
-                              className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md hover:bg-amber-100 transition-colors flex items-center gap-1"
-                              title="Report unparsed price"
-                            >
-                              <AlertCircle className="w-2.5 h-2.5" />
-                              Report Missing Price
-                            </button>
-                          )}
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-
-                  {result.webData.length > 4 && !showMoreWeb && (
-                    <div className="mt-8 flex justify-center">
-                      <button
-                        onClick={() => setShowMoreWeb(true)}
-                        className="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-full text-sm font-bold hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-sm"
-                      >
-                        Show more results
-                        <ArrowRight className="w-4 h-4 rotate-90" />
-                      </button>
+                      <div className="p-4 border-2 border-black text-center">
+                        <div className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Sources</div>
+                        <div className="font-doto font-bold text-2xl">{result.webData?.length || 0}</div>
+                      </div>
                     </div>
-                  )}
+                  </div>
+                </div>
+
+                {!deepSearch && (
+                  <div className="mt-8 pt-8 border-t-2 border-black/10 flex justify-center">
+                    <button
+                      onClick={handleDeepRecheck}
+                      className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:underline decoration-2 underline-offset-4"
+                    >
+                      Request Deep Audit
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="p-12 text-center bg-amber-50">
+                <div className="w-16 h-16 bg-amber-100 border-2 border-black mx-auto flex items-center justify-center mb-6 rounded-none">
+                  <AlertCircle className="w-8 h-8 text-amber-700" />
+                </div>
+                <h3 className="font-doto font-bold text-2xl uppercase mb-3">Manual Review Required</h3>
+                <p className="max-w-md mx-auto text-gray-600 font-medium">
+                  {typeof result.analysis === 'string' ? result.analysis : result.analysis.explanation}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Web Data Grid */}
+          {result.webData && result.webData.length > 0 && (
+            <div>
+              <div className="flex items-end gap-4 mb-8">
+                <h3 className="text-3xl font-doto font-bold uppercase tracking-tighter">Live Signals</h3>
+                <div className="h-1 flex-1 bg-black mb-2"></div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {(showMoreWeb ? result.webData : result.webData.slice(0, 4)).map((item, index) => (
+                  <a
+                    key={index}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block bg-white border-2 border-black p-6 hover:bg-black hover:text-white transition-all duration-200"
+                  >
+                    <div className="flex justify-between items-start gap-4 mb-3">
+                      <h4 className="font-bold text-lg leading-tight group-hover:underline decoration-2 underline-offset-4 line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <ExternalLink className="w-4 h-4 shrink-0 opacity-50 group-hover:opacity-100" />
+                    </div>
+
+                    <p className="text-sm font-medium text-gray-500 mb-4 line-clamp-2 group-hover:text-gray-400">
+                      {item.body}
+                    </p>
+
+                    <div className="flex items-center justify-between border-t-2 border-black/10 pt-4 group-hover:border-white/20">
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-3 h-3" />
+                        <span className="text-xs font-bold uppercase tracking-widest">{item.source}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {item.price && (
+                          <span className="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2 py-0.5 text-xs font-bold">
+                            {item.price}
+                          </span>
+                        )}
+                        <button
+                          onClick={(e) => handleReport(e, item)}
+                          className={`text-amber-600 hover:text-amber-800 group-hover:text-amber-300 flex items-center gap-1 ${!item.price ? "text-[10px] font-bold uppercase tracking-wider" : "p-1"}`}
+                          title="Report Incorrect Data"
+                        >
+                          <AlertCircle className="w-3 h-3" />
+                          {!item.price && "Report"}
+                        </button>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              {result.webData.length > 4 && !showMoreWeb && (
+                <div className="mt-8 text-center">
+                  <button
+                    onClick={() => setShowMoreWeb(true)}
+                    className="px-8 py-3 border-2 border-black font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+                  >
+                    Load All Sources
+                  </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 md:p-12">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-amber-100 rounded-xl">
-                  <CheckCircle2 className="w-5 h-5 text-amber-600" />
-                </div>
-                <h3 className="font-bold text-slate-900">Action Required</h3>
-              </div>
-              <p className="text-slate-600 leading-relaxed">
-                {typeof result.analysis === 'string' ? result.analysis : result.analysis.explanation}
-              </p>
             </div>
           )}
+
+          {/* Related DB Entries */}
+          {result.relatedEntries && result.relatedEntries.length > 0 && (
+            <div className="border-t-4 border-black pt-12">
+              <h3 className="text-2xl font-doto font-bold uppercase tracking-tighter mb-8">Vector Memory Matches</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                {result.relatedEntries.map((entry, index) => (
+                  <div key={index} className="bg-gray-100 p-6 border-l-4 border-black">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="font-bold truncate pr-4">{entry.item}</h4>
+                      <span className="font-mono text-xs text-gray-500">{new Date(entry.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div className="text-2xl font-doto font-bold text-gray-800 mb-2">₹{entry.price.toLocaleString()}</div>
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400">
+                      <MapPin className="w-3 h-3" /> {entry.location}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       )
       }
@@ -386,15 +350,19 @@ function PriceOracleContent() {
 
 export default function PriceOracle() {
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[#fafafa] text-slate-900 selection:bg-slate-200 flex flex-col items-center justify-center p-6 relative overflow-y-auto">
+    <main className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white flex flex-col items-center pt-6 lg:pt-10 overflow-x-hidden">
       <Toaster position="top-right" />
-      {/* Background Gradients */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none fixed">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-3xl opacity-60"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-100/30 rounded-full blur-3xl opacity-60"></div>
+      {/* Decorative Grid BG */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]">
+        <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse">
+            <path d="M 4 0 L 0 0 0 4" fill="none" stroke="currentColor" strokeWidth="0.1" />
+          </pattern>
+          <rect width="100" height="100" fill="url(#grid)" />
+        </svg>
       </div>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading Interface...</div>}>
         <PriceOracleContent />
       </Suspense>
     </main>

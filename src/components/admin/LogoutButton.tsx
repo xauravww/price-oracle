@@ -3,14 +3,15 @@
 import { LogOut } from "lucide-react";
 import { adminLogout } from "@/lib/actions";
 
-export default function LogoutButton() {
+export default function LogoutButton({ className }: { className?: string }) {
   return (
-    <button 
+    <button
       onClick={() => adminLogout()}
-      className="p-2 md:p-3 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all"
+      className={`group flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-widest text-red-600 border-2 border-transparent hover:border-red-600 hover:bg-red-50 transition-all ${className}`}
       title="Logout"
     >
-      <LogOut className="w-5 h-5 md:w-6 md:h-6" />
+      <span className="hidden md:inline">Exit</span>
+      <LogOut className="w-5 h-5" />
     </button>
   );
 }
