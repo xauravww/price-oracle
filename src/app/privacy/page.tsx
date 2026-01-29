@@ -1,109 +1,113 @@
-
-import { Shield, Database, Globe, EyeOff, Lock } from "lucide-react";
+import { Shield, Database, Globe, Lock, ArrowLeft, Terminal } from "lucide-react";
 import Link from "next/link";
 
 export default function PrivacyPolicy() {
     return (
-        <main className="min-h-screen bg-[#fafafa] text-slate-900 selection:bg-slate-200 py-24 px-6 relative overflow-hidden">
-            {/* Background Subtle Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none fixed">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/20 rounded-full blur-3xl opacity-60"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-100/20 rounded-full blur-3xl opacity-60"></div>
+        <main className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white py-24 px-6 relative overflow-hidden">
+            {/* Decorative Grid BG */}
+            <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]">
+                <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse">
+                        <path d="M 4 0 L 0 0 0 4" fill="none" stroke="currentColor" strokeWidth="0.1" />
+                    </pattern>
+                    <rect width="100" height="100" fill="url(#grid)" />
+                </svg>
             </div>
 
-            <article className="max-w-3xl mx-auto relative z-10">
-                <header className="mb-16">
-                    <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-slate-100 mb-6">
-                        <Shield className="w-6 h-6 text-slate-900" />
+            <article className="max-w-4xl mx-auto relative z-10">
+                <header className="mb-20">
+                    <div className="inline-flex items-center gap-3 border-2 border-black bg-white px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+                        <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black animate-pulse"></div>
+                        <span className="font-doto font-bold uppercase tracking-widest text-sm">Protocol: Transparency</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">
-                        Privacy & Data <br />
-                        <span className="text-slate-400">Transparency.</span>
+
+                    <h1 className="text-5xl md:text-7xl font-doto font-black uppercase tracking-tighter leading-[0.9] mb-8">
+                        Data<br /><span className="text-stroke-2 text-transparent">Privacy</span>
                     </h1>
-                    <p className="text-lg text-slate-500 max-w-xl leading-relaxed">
-                        At PriceOracle, we believe transparency is the foundation of a fair market.
-                        This policy outlines how we handle anonymous data to empower consumers through intelligence.
+
+                    <p className="text-xl font-medium text-gray-500 border-l-4 border-black pl-6 max-w-2xl leading-relaxed">
+                        Transparency is the foundation of a fair market. We do not store personal identifiers with price entries.
                     </p>
                 </header>
 
-                <section className="space-y-12">
+                <div className="space-y-16">
                     {/* Section 1: Contributor Data */}
-                    <div>
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-blue-50 rounded-xl">
-                                <Database className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <h2 className="text-xl font-bold text-slate-900">Contributor Data</h2>
+                    <section className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                        <div className="flex items-center gap-4 mb-6 border-b-4 border-black pb-4">
+                            <Database className="w-8 h-8" />
+                            <h2 className="font-doto font-bold text-2xl uppercase tracking-widest">Contributor Data</h2>
                         </div>
-                        <p className="text-slate-600 leading-relaxed mb-4">
+
+                        <p className="font-medium text-lg mb-8">
                             When users contribute price entries, we store only essential market metrics: item name, price, location, and a generic timestamp.
                         </p>
-                        <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-                            <ul className="space-y-4">
-                                <li className="flex gap-4">
-                                    <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
-                                    <p className="text-sm text-slate-500"><span className="text-slate-900 font-semibold">Anonymous Storage:</span> We do not store names, emails, or personal identifiers with price entries.</p>
-                                </li>
-                                <li className="flex gap-4">
-                                    <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
-                                    <p className="text-sm text-slate-500"><span className="text-slate-900 font-semibold">Aggregation:</span> Individual entries are pooled to create market averages and trend lines.</p>
-                                </li>
-                                <li className="flex gap-4">
-                                    <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
-                                    <p className="text-sm text-slate-500"><span className="text-slate-900 font-semibold">Masking:</span> Public results only show "Anonymous Contributor" to ensure participant privacy.</p>
-                                </li>
-                            </ul>
+
+                        <div className="grid md:grid-cols-3 gap-6">
+                            <div className="bg-gray-50 p-6 border-2 border-black">
+                                <div className="font-bold uppercase tracking-wider text-xs mb-2 text-gray-400">Parameter</div>
+                                <div className="font-doto font-bold text-lg">Anonymous Storage</div>
+                                <p className="text-sm mt-2 text-gray-600">No names, emails, or PII stored.</p>
+                            </div>
+                            <div className="bg-gray-50 p-6 border-2 border-black">
+                                <div className="font-bold uppercase tracking-wider text-xs mb-2 text-gray-400">Parameter</div>
+                                <div className="font-doto font-bold text-lg">Aggregation</div>
+                                <p className="text-sm mt-2 text-gray-600">Entries pooled for averages.</p>
+                            </div>
+                            <div className="bg-gray-50 p-6 border-2 border-black">
+                                <div className="font-bold uppercase tracking-wider text-xs mb-2 text-gray-400">Parameter</div>
+                                <div className="font-doto font-bold text-lg">Masking</div>
+                                <p className="text-sm mt-2 text-gray-600">Publicly "Anonymous".</p>
+                            </div>
                         </div>
-                    </div>
+                    </section>
 
                     {/* Section 2: Web Context Data */}
-                    <div>
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-emerald-50 rounded-xl">
-                                <Globe className="w-5 h-5 text-emerald-600" />
-                            </div>
-                            <h2 className="text-xl font-bold text-slate-900">Real-time Web Context (WB Data)</h2>
+                    <section className="bg-black text-white p-8 shadow-[8px_8px_0px_0px_rgba(100,100,100,1)]">
+                        <div className="flex items-center gap-4 mb-6 border-b-4 border-white/20 pb-4">
+                            <Globe className="w-8 h-8" />
+                            <h2 className="font-doto font-bold text-2xl uppercase tracking-widest">Web Context (WB)</h2>
                         </div>
-                        <p className="text-slate-600 leading-relaxed mb-4">
-                            To provide accurate verdicts, PriceOracle cross-references user data with public market listings.
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="p-6 bg-slate-900 text-white rounded-3xl shadow-lg">
-                                <h3 className="font-bold mb-2">Sources</h3>
-                                <p className="text-sm text-slate-400 leading-relaxed">
+
+                        <div className="grid md:grid-cols-2 gap-12">
+                            <div>
+                                <h3 className="font-bold text-emerald-400 uppercase tracking-wider mb-4">Data Sources</h3>
+                                <p className="font-mono text-sm leading-relaxed opacity-80">
+                                    // SYSTEM ACCESS<br />
                                     We extract information from public search engines and major retailers. This data is used only for real-time comparative analysis.
                                 </p>
                             </div>
-                            <div className="p-6 bg-white border border-slate-100 rounded-3xl shadow-sm">
-                                <h3 className="font-bold mb-2 text-slate-900">Processing</h3>
-                                <p className="text-sm text-slate-500 leading-relaxed">
-                                    Web results are processed through third-party readability services (like Jina) to isolate pricing data from distracting clutter.
+                            <div>
+                                <h3 className="font-bold text-emerald-400 uppercase tracking-wider mb-4">Processing Logic</h3>
+                                <p className="font-mono text-sm leading-relaxed opacity-80">
+                                    // READABILITY PARSE<br />
+                                    Web results are processed through third-party readability services to isolate pricing data from clutter.
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
                     {/* Section 3: Data Security */}
-                    <div>
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-purple-50 rounded-xl">
-                                <Lock className="w-5 h-5 text-purple-600" />
-                            </div>
-                            <h2 className="text-xl font-bold text-slate-900">Data Integrity</h2>
+                    <section className="bg-white border-2 border-black p-8 border-dashed">
+                        <div className="flex items-center gap-4 mb-4">
+                            <Lock className="w-6 h-6" />
+                            <h2 className="font-doto font-bold text-xl uppercase tracking-widest">Integrity Protocols</h2>
                         </div>
-                        <p className="text-slate-600 leading-relaxed">
+                        <p className="font-medium leading-relaxed max-w-3xl">
                             We do not sell data to advertisers. Our intelligence model's only purpose is to help people pay what is fair. All data is stored securely using encrypted cloud infrastructure.
                         </p>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
-                <footer className="mt-24 pt-12 border-t border-slate-100">
-                    <Link href="/" className="text-sm font-bold text-slate-900 hover:text-slate-600 transition-colors inline-flex items-center gap-2">
-                        Back to Oracle
+                <footer className="mt-24 flex items-center justify-between border-t-4 border-black pt-8">
+                    <Link href="/" className="group flex items-center gap-3 font-bold uppercase tracking-widest hover:bg-black hover:text-white px-6 py-3 border-2 border-black transition-all">
+                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        Return to Oracle
                     </Link>
-                    <p className="text-xs text-slate-400 mt-4 italic">
-                        Last updated: January 2026. This policy is living and will evolve with our technology.
-                    </p>
+
+                    <div className="hidden md:flex items-center gap-2 text-xs font-mono text-gray-400">
+                        <Terminal className="w-4 h-4" />
+                        <span>LAST_UPDATE: JAN_2026</span>
+                    </div>
                 </footer>
             </article>
         </main>
