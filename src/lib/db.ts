@@ -5,7 +5,15 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+// Handle missing DATABASE_URL during build time
+const connectionString = process.env.DATABASE_URL || "postgresql://dummy:dummy@localhost:5432/dummy";
+
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  datasources: {
+    db: {
+      url: connectionString,
+    },
+  },
   log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
 });
 

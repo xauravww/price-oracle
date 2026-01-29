@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 import { getEntries, deleteEntry } from "@/lib/actions";
 import { Trash2, Database, Search, Plus, ExternalLink } from "lucide-react";
@@ -29,9 +30,9 @@ export default async function DatabasePage({
         <div className="p-6 border-b border-slate-100 bg-slate-50/30">
           <div className="relative max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input 
-              type="text" 
-              placeholder="Search entries..." 
+            <input
+              type="text"
+              placeholder="Search entries..."
               className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all"
             />
           </div>
@@ -62,16 +63,16 @@ export default async function DatabasePage({
                   </td>
                   <td className="px-8 py-5">
                     <div className="text-sm text-slate-500 font-medium">
-                      {new Date(entry.timestamp).toLocaleDateString('en-IN', { 
-                        day: '2-digit', 
-                        month: 'short', 
-                        year: 'numeric' 
+                      {new Date(entry.timestamp).toLocaleDateString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
                       })}
                     </div>
                   </td>
                   <td className="px-8 py-5 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Link 
+                      <Link
                         href={`/?q=${encodeURIComponent(`${entry.item} for ${entry.price}`)}`}
                         target="_blank"
                         className="p-3 text-slate-300 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all"

@@ -111,6 +111,39 @@ function wordWrap(text: string, width: number = 80): string {
   return lines.join('\n');
 }
 
+/**
+ * Robustly parses JSON from AI response, handling cases where the model
+ * might include conversational filler or markdown blocks.
+ */
+function parseAIResponse<T>(content: string): T {
+  try {
+    // 1. Try direct parse
+    return JSON.parse(content) as T;
+  } catch (e) {
+    // 2. Try to find JSON within markdown code blocks or just between braces
+    const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) ||
+      content.match(/```([\s\S]*?)```/) ||
+      content.match(/(\{[\s\S]*\})/);
+
+    if (jsonMatch && jsonMatch[1]) {
+      try {
+        return JSON.parse(jsonMatch[1]) as T;
+      } catch (innerError) {
+        // Fallback for the third regex match which captures the whole curly brace block
+        if (jsonMatch[0]) {
+          try {
+            return JSON.parse(jsonMatch[0]) as T;
+          } catch (thirdError) {
+            throw new Error(`Failed to parse AI response: ${content.substring(0, 100)}...`);
+          }
+        }
+        throw innerError;
+      }
+    }
+    throw e;
+  }
+}
+
 export interface WebSearchResult {
   title: string;
   body: string;
@@ -145,6 +178,8 @@ Rules:
 5. Ignore category labels like 'Under ₹16,000'.
 6. If multiple prices exist on a listing, return null for price but provide the 'suggestedUrl' of the most relevant product.
 
+CRITICAL: Return ONLY a valid JSON object. No conversational text, no pre-amble, no markdown formatting unless it is part of the JSON values.
+
 Output JSON format:
 {
   "results": [
@@ -173,7 +208,8 @@ The array order MUST match input.`;
     if (!response.ok) return new Array(results.length).fill({ price: null, suggestedUrl: null });
 
     const data = await response.json();
-    const parsed = JSON.parse(data.choices[0].message.content);
+    const content = data.choices[0]?.message?.content || "";
+    const parsed = parseAIResponse<{ results: ExtractionResult[] }>(content);
     return parsed.results;
   } catch (e) {
     console.error("AI Price Extraction Error:", e);
@@ -553,6 +589,8 @@ export async function getExpertOpinionAction(item: string, price: number, histor
     - If User's Proposed Price is LOWER than the Market/Historical Price, it is UNDERPRICED.
     - If they are similar, it is a FAIR DEAL.
 
+    CRITICAL: Return ONLY a valid JSON object. Do not include any explanation outside the JSON.
+
     STRICT JSON OUTPUT FORMAT ONLY:
     {
       "expectedPriceRange": "₹X – ₹Y",
@@ -591,7 +629,8 @@ export async function getExpertOpinionAction(item: string, price: number, histor
     }
 
     const data = await response.json() as { choices: { message: { content: string } }[] };
-    return JSON.parse(data.choices[0].message.content) as AnalysisResult;
+    const content = data.choices[0]?.message?.content || "";
+    return parseAIResponse<AnalysisResult>(content);
   } catch (error) {
     console.error("AI Error:", error);
     const confidence = history.length > 5 ? "High" : history.length > 0 ? "Medium" : "Low";

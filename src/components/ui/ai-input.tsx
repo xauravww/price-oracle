@@ -1,6 +1,6 @@
 "use client";
 
-import { CornerRightUp, Mic } from "lucide-react";
+import { CornerRightUp } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -33,8 +33,8 @@ export function AIInput({
 
   return (
     <div className={cn("relative max-w-xl w-full mx-auto", className)}>
-      
-      <div 
+
+      <div
         className={cn(
           "relative flex items-center justify-center w-full bg-white rounded-3xl border border-gray-200 transition-all duration-200 focus-within:ring-2 focus-within:ring-slate-500",
           "min-h-[52px]"
@@ -42,7 +42,7 @@ export function AIInput({
         style={{ minHeight: `${minHeight}px` }}
       >
         {/* Ghost element to drive height */}
-        <div 
+        <div
           className="w-full px-12 py-3.5 text-center invisible whitespace-pre-wrap break-words leading-relaxed text-black"
           aria-hidden="true"
           style={{ minHeight: `${minHeight}px`, maxHeight: `${maxHeight}px` }}
@@ -70,6 +70,7 @@ export function AIInput({
           )}
         />
 
+        {/* Voice input icon disabled for now
         <div
           className={cn(
             "absolute top-1/2 -translate-y-1/2 rounded-xl bg-gray-100 py-1 px-1 transition-all duration-200 z-10",
@@ -78,7 +79,8 @@ export function AIInput({
         >
           <Mic className="w-4 h-4 text-gray-600" />
         </div>
-        
+        */}
+
         <button
           onClick={handleReset}
           type="button"
