@@ -1,6 +1,6 @@
 
 import dotenv from 'dotenv';
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch'; // Native fetch is available
 
 dotenv.config();
 
