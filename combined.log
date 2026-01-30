@@ -702,3 +702,39 @@
 {"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-29T18:19:49.402Z","url":"https://html.duckduckgo.com/html"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-29T18:19:50.856Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-29T18:19:50.858Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:07:24.552Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:07:24.557Z"}
+{"keywords":"iphone 15 in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:07:24.559Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:07:24.560Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:07:24.562Z","verify":true}
+{"backend":"auto","keywords":"iphone 15 in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:07:24.563Z"}
+{"keywords":"iphone 15 in price India","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:07:24.564Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:07:24.564Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T03:07:25.871Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:07:25.876Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-30T03:07:26.092Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-30T03:07:26.095Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:10:08.637Z","verify":true}
+{"backend":"auto","keywords":"a zebronics gaming mouse in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:10:08.644Z"}
+{"keywords":"a zebronics gaming mouse in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML lite search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:10:08.646Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:10:08.647Z","url":"https://lite.duckduckgo.com/lite"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:10:08.650Z","verify":true}
+{"backend":"auto","keywords":"a zebronics gaming mouse in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:10:08.652Z"}
+{"keywords":"a zebronics gaming mouse in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:10:08.654Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:10:08.655Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T03:10:10.145Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:10:10.149Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":10,"timestamp":"2026-01-30T03:10:10.412Z"}
+{"backend":"lite","level":"info","message":"Search completed successfully","resultCount":10,"timestamp":"2026-01-30T03:10:10.414Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:12:52.840Z","verify":true}
+{"backend":"auto","keywords":"hp laptop gaming in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:12:52.845Z"}
+{"keywords":"hp laptop gaming in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:12:52.847Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:12:52.848Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T03:12:52.850Z","verify":true}
+{"backend":"auto","keywords":"hp laptop gaming in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T03:12:52.851Z"}
+{"keywords":"hp laptop gaming in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T03:12:52.852Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T03:12:52.852Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T03:12:54.247Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:12:54.251Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T03:12:54.575Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:12:54.578Z"}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { AIInput } from "@/components/ui/ai-input";
 import { CreativeLoader } from "@/components/ui/creative-loader";
@@ -66,7 +66,20 @@ function PriceOracleContent() {
   const [currentQuery, setCurrentQuery] = useState("");
   const [showMoreWeb, setShowMoreWeb] = useState(false);
   const [reportedUrls, setReportedUrls] = useState<Set<string>>(new Set());
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const searchParams = useSearchParams();
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  const LOADING_MESSAGES = [
+    "Initializing research agents...",
+    "Scanning distributed market nodes...",
+    "Prioritizing data accuracy over speed...",
+    "Cross-referencing historical pricing...",
+    "Validating merchant credibility...",
+    "Synthesizing market intelligence...",
+    "Preparing final analysis report..."
+  ];
 
   const handleSubmit = async (value: string, forceDeep?: boolean) => {
     if (!value.trim()) return;
@@ -79,6 +92,8 @@ function PriceOracleContent() {
     if (forceDeep) setDeepSearch(true);
 
     setLoading(true);
+    setElapsedTime(0);
+    setLoadingMessageIndex(0);
     setResult(null); // Clear previous result to avoid confusion
     try {
       const data = await processPriceRequest(value, isDeep);
@@ -89,6 +104,30 @@ function PriceOracleContent() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    let messageTimer: NodeJS.Timeout;
+
+    if (loading) {
+      if (loaderRef.current) {
+        loaderRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      timer = setInterval(() => {
+        setElapsedTime(prev => prev + 1);
+      }, 1000);
+
+      messageTimer = setInterval(() => {
+        setLoadingMessageIndex(prev => (prev + 1) % LOADING_MESSAGES.length);
+      }, 3500);
+    }
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(messageTimer);
+    };
+  }, [loading]);
 
   const handleDeepRecheck = () => {
     if (currentQuery) {
@@ -166,9 +205,24 @@ function PriceOracleContent() {
 
       {/* Results Display */}
       {loading && (
-        <div className="border-2 border-black bg-white p-12 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div ref={loaderRef} className="border-2 border-black bg-white p-12 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <CreativeLoader />
-          <p className="mt-8 font-doto font-bold uppercase tracking-widest animate-pulse">Running Analysis Protocols...</p>
+
+          <div className="mt-8 space-y-4">
+            <div className="font-doto font-bold text-4xl tabular-nums">
+              {elapsedTime.toFixed(1)}s
+            </div>
+
+            <div className="h-8 relative overflow-hidden">
+              <p key={loadingMessageIndex} className="font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-2 duration-300 absolute inset-0 flex items-center justify-center">
+                {LOADING_MESSAGES[loadingMessageIndex]}
+              </p>
+            </div>
+
+            <p className="text-xs font-medium text-gray-500 max-w-md mx-auto mt-4">
+              We insist on high-fidelity verification which may take a moment.
+            </p>
+          </div>
         </div>
       )}
 

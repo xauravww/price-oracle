@@ -78,6 +78,7 @@ export async function searchSimilarEntries(query: string): Promise<PriceEntry[]>
         (v.embedding <=> $1::vector) as distance
       FROM vec_items v
       JOIN price_entries p ON v.id = p.id
+      WHERE (v.embedding <=> $1::vector) < 0.6
       ORDER BY distance
       LIMIT 10
     `, embeddingString)) as any[];
