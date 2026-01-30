@@ -303,8 +303,40 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
     // 3. Execute Searches in Parallel
     const [trustedResults, generalResults] = await Promise.all(searchPromises);
 
-    // 4. Combine & Deduplicate (Trusted First)
-    const combinedRawResults = [...(trustedResults || []), ...(generalResults || [])];
+    // Filter results using Blacklist Rules
+    const blacklistRules = await prisma.blacklistRule.findMany({ where: { isActive: true } });
+
+    const filterUrl = (url: string) => {
+      try {
+        const urlObj = new URL(url);
+        const urlStr = url.toLowerCase();
+
+        for (const rule of blacklistRules) {
+          if (rule.type === 'DOMAIN') {
+            // Exact domain match or subdomains
+            if (urlObj.hostname === rule.pattern || urlObj.hostname.endsWith('.' + rule.pattern)) {
+              return false;
+            }
+          } else if (rule.type === 'REGEX') {
+            try {
+              const regex = new RegExp(rule.pattern, 'i');
+              if (regex.test(urlStr)) return false;
+            } catch (e) {
+              console.error("Invalid blacklist regex:", rule.pattern);
+            }
+          }
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    // 4. Combine & Deduplicate (Trusted First) & Apply Blacklist
+    let combinedRawResults = [...(trustedResults || []), ...(generalResults || [])];
+
+    // Apply filtering
+    combinedRawResults = combinedRawResults.filter(r => r.href && filterUrl(r.href));
 
     if (combinedRawResults.length === 0) return [];
 
@@ -800,6 +832,120 @@ export async function adminLogin(formData: FormData) {
   return { success: false, error: 'Invalid credentials' };
 }
 
+// --- BLACKLIST ACTIONS ---
+
+export async function getBlacklistRules() {
+  return await prisma.blacklistRule.findMany({
+    orderBy: { createdAt: 'desc' }
+  });
+}
+
+export async function addBlacklistRule(pattern: string, type: 'DOMAIN' | 'REGEX', description?: string) {
+  try {
+    if (type === 'REGEX') {
+      // Validate Regex
+      new RegExp(pattern);
+    }
+
+    await prisma.blacklistRule.create({
+      data: {
+        pattern,
+        type,
+        description,
+        isActive: true
+      }
+    });
+
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error) {
+    console.error("Error adding blacklist rule:", error);
+    return { success: false, error: 'Failed to add rule' };
+  }
+}
+
+export async function deleteBlacklistRule(id: number) {
+  try {
+    await prisma.blacklistRule.delete({ where: { id } });
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to delete rule' };
+  }
+}
+
+export async function toggleBlacklistRule(id: number, isActive: boolean) {
+  try {
+    await prisma.blacklistRule.update({
+      where: { id },
+      data: { isActive }
+    });
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Failed to update rule' };
+  }
+}
+
+export async function generateRegexFromPrompt(prompt: string): Promise<{ success: boolean, regex?: string, error?: string }> {
+  try {
+    const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
+    const apiKey = process.env.AI_CLIENT_API_KEY;
+
+    if (!apiKey) return { success: false, error: "AI Service Not Configured" };
+
+    const systemPrompt = `You are a regex generator helper.
+    Goal: Convert the user's plain English description into a JavaScript-compatible Regular Expression (RegExp).
+    
+    Rules:
+    1. Return ONLY the regex string itself. Do not wrap in slashes (e.g., return 'foo.*' not '/foo.*/').
+    2. Do not explain anything.
+    3. The regex is for matching URLs or parts of URLs.
+    4. Ensure strictness where appropriate to avoid false positives.
+    
+    Output Format: Just the raw regex string.`;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: `Description: ${prompt}` }
+        ]
+      })
+    });
+
+    if (!response.ok) return { success: false, error: "AI Request Failed" };
+
+    const data = await response.json();
+    let content = data.choices[0]?.message?.content?.trim() || "";
+
+    // Clean up potential markdown code blocks if the model disobeys
+    content = content.replace(/^```regex\n?/, '').replace(/^```\n?/, '').replace(/```$/, '').trim();
+
+    // Remove leading/trailing slashes if present
+    if (content.startsWith('/') && content.endsWith('/')) {
+      content = content.substring(1, content.length - 1);
+    }
+
+    // Validate the regex
+    try {
+      new RegExp(content);
+      return { success: true, regex: content };
+    } catch (e) {
+      return { success: false, error: "Generated invalid regex" };
+    }
+
+  } catch (error) {
+    console.error("Regex Gen Error:", error);
+    return { success: false, error: "Failed to generate regex" };
+  }
+}
+
 export async function deleteEntry(id: string) {
   try {
     await prisma.vecItem.delete({ where: { id } });
@@ -917,4 +1063,72 @@ export async function deleteReportedUrl(id: number) {
 export async function adminLogout() {
   (await cookies()).delete('admin_token');
   redirect('/admin/login');
+}
+
+export async function generateRegexPattern(description: string): Promise<{ success: boolean; pattern?: string; error?: string }> {
+  try {
+    const apiUrl = process.env.AI_SERVICE_URL || "https://api.openai.com/v1/chat/completions";
+    const apiKey = process.env.AI_CLIENT_API_KEY;
+
+    if (!apiKey) {
+      return { success: false, error: "AI service not configured" };
+    }
+
+    const systemPrompt = `You are a Regex Expert.
+Goal: Convert natural language descriptions into Javascript-compatible Regular Expressions.
+
+Rules:
+1. Return ONLY the regex pattern string. No slashes unless part of the pattern logic (e.g. don't wrap in /.../).
+2. Do not include flags (like 'g', 'i') in the output pattern string itself.
+3. If the user asks for a domain, create a pattern that matches the domain and its subdomains safely.
+4. If the request is vague, create a safe, non-greedy match.
+5. Handle URL parameters correctly. '?' must be escaped as '\\?' when matching a literal question mark.
+
+Examples:
+Input: "All pages from amazon.in"
+Output: ".*amazon\\.in.*"
+
+Input: "Any URL with the word 'fakedata'"
+Output: ".*fakedata.*"
+
+Input: "URLs ending in .pdf"
+Output: ".*\\.pdf$"
+
+Input: "Block s?k type url starting with amazon"
+Output: ".*amazon.*\\/s\\?k=.*"
+
+Input: "URLs containing /search?q="
+Output: ".*\\/search\\?q=.*"
+
+CRITICAL: Return ONLY a valid JSON object.
+Format: { "pattern": "..." }`;
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: description }
+        ],
+        response_format: { type: "json_object" }
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("AI Service returned error");
+    }
+
+    const data = await response.json();
+    const content = data.choices[0]?.message?.content || "";
+    const parsed = parseAIResponse<{ pattern: string }>(content);
+
+    return { success: true, pattern: parsed.pattern };
+  } catch (error) {
+    console.error("Regex Generation Error:", error);
+    return { success: false, error: "Failed to generate pattern. Please try again." };
+  }
 }

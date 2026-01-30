@@ -738,3 +738,15 @@
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:12:54.251Z"}
 {"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T03:12:54.575Z"}
 {"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T03:12:54.578Z"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T05:09:47.457Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T05:09:47.460Z"}
+{"keywords":"iphone 16 pro in current market price India (site:amazon.in)","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T05:09:47.461Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T05:09:47.462Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"Initializing DDGS with options","timeout":10000,"timestamp":"2026-01-30T05:09:47.463Z","verify":true}
+{"backend":"auto","keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting text search","region":"wt-wt","safesearch":"moderate","timelimit":null,"timestamp":"2026-01-30T05:09:47.464Z"}
+{"keywords":"iphone 16 pro in price India","level":"info","maxResults":null,"message":"Starting HTML search","region":"wt-wt","timelimit":null,"timestamp":"2026-01-30T05:09:47.464Z"}
+{"level":"info","message":"Making request","method":"POST","timestamp":"2026-01-30T05:09:47.464Z","url":"https://html.duckduckgo.com/html"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T05:09:48.511Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T05:09:48.513Z"}
+{"level":"info","message":"No more pages to fetch","resultCount":11,"timestamp":"2026-01-30T05:09:48.653Z"}
+{"backend":"html","level":"info","message":"Search completed successfully","resultCount":11,"timestamp":"2026-01-30T05:09:48.654Z"}

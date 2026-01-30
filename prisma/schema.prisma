@@ -71,3 +71,14 @@ model ReportedUrl {
   @@index([timestamp])
   @@map("reported_urls")
 }
+
+model BlacklistRule {
+  id          Int      @id @default(autoincrement())
+  pattern     String
+  type        String   // 'DOMAIN' or 'REGEX'
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  description String?
+
+  @@map("blacklist_rules")
+}
