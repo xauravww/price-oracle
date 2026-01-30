@@ -44,14 +44,16 @@ import {
   addBlacklistRule,
   deleteBlacklistRule,
   toggleBlacklistRule,
-  generateRegexPattern
+  generateRegexPattern,
+  updateTrustedSource,
+  updateBlacklistRule
 } from "@/lib/actions";
 
 export default function SourcesPage() {
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: '', url: '', category: 'E-commerce' });
+  const [formData, setFormData] = useState({ name: '', url: '', category: 'E-commerce', priceSelector: '' });
   const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -67,6 +69,10 @@ export default function SourcesPage() {
   const [ruleFormData, setRuleFormData] = useState({ pattern: '', type: 'DOMAIN', description: '' });
   const [isRuleDialogOpen, setIsRuleDialogOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // Edit State
+  const [editingSourceId, setEditingSourceId] = useState<number | null>(null);
+  const [editingRuleId, setEditingRuleId] = useState<number | null>(null);
 
   useEffect(() => {
     loadSources();
@@ -101,19 +107,48 @@ export default function SourcesPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const result = await addTrustedSource(formData.name, formData.url, formData.category);
+      let result;
+      if (editingSourceId) {
+        result = await updateTrustedSource(editingSourceId, {
+          name: formData.name,
+          url: formData.url,
+          category: formData.category,
+          priceSelector: formData.priceSelector
+        });
+      } else {
+        result = await addTrustedSource(formData.name, formData.url, formData.category, formData.priceSelector);
+      }
+
       if (result.success) {
-        setFormData({ name: '', url: '', category: 'E-commerce' });
+        setFormData({ name: '', url: '', category: 'E-commerce', priceSelector: '' });
         setIsCustomCategory(false);
         setIsDialogOpen(false);
+        setEditingSourceId(null);
         await loadSources();
-        toast.success("Source added successfully");
+        toast.success(editingSourceId ? "Source updated successfully" : "Source added successfully");
       } else {
         toast.error("Error: " + result.error);
       }
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function openAddDialog() {
+    setEditingSourceId(null);
+    setFormData({ name: '', url: '', category: 'E-commerce', priceSelector: '' });
+    setIsDialogOpen(true);
+  }
+
+  function openEditDialog(source: any) {
+    setEditingSourceId(source.id);
+    setFormData({
+      name: source.name,
+      url: source.url,
+      category: source.category,
+      priceSelector: source.priceSelector || ''
+    });
+    setIsDialogOpen(true);
   }
 
   // Regex Validation State
@@ -142,18 +177,45 @@ export default function SourcesPage() {
 
     setSubmitting(true);
     try {
-      const result = await addBlacklistRule(ruleFormData.pattern, ruleFormData.type as 'DOMAIN' | 'REGEX', ruleFormData.description);
+      let result;
+      if (editingRuleId) {
+        result = await updateBlacklistRule(editingRuleId, {
+          pattern: ruleFormData.pattern,
+          type: ruleFormData.type as 'DOMAIN' | 'REGEX',
+          description: ruleFormData.description
+        });
+      } else {
+        result = await addBlacklistRule(ruleFormData.pattern, ruleFormData.type as 'DOMAIN' | 'REGEX', ruleFormData.description);
+      }
+
       if (result.success) {
         setRuleFormData({ pattern: '', type: 'DOMAIN', description: '' });
         setIsRuleDialogOpen(false);
+        setEditingRuleId(null);
         await loadBlacklistRules();
-        toast.success("Rule added successfully");
+        toast.success(editingRuleId ? "Rule updated successfully" : "Rule added successfully");
       } else {
         toast.error("Error: " + result.error);
       }
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function openAddRuleDialog() {
+    setEditingRuleId(null);
+    setRuleFormData({ pattern: '', type: 'DOMAIN', description: '' });
+    setIsRuleDialogOpen(true);
+  }
+
+  function openEditRuleDialog(rule: any) {
+    setEditingRuleId(rule.id);
+    setRuleFormData({
+      pattern: rule.pattern,
+      type: rule.type,
+      description: rule.description || ''
+    });
+    setIsRuleDialogOpen(true);
   }
 
   async function handleDelete(id: number) {
@@ -246,14 +308,16 @@ export default function SourcesPage() {
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="h-12 px-6 text-sm font-bold uppercase tracking-wider rounded-none border-2 border-black bg-black text-white hover:bg-white hover:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                <Button onClick={openAddDialog} className="h-12 px-6 text-sm font-bold uppercase tracking-wider rounded-none border-2 border-black bg-black text-white hover:bg-white hover:text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Source
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px] border-4 border-black rounded-none shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] p-8">
                 <DialogHeader>
-                  <DialogTitle className="font-doto font-black text-2xl uppercase tracking-tighter mb-2">Add New Source</DialogTitle>
+                  <DialogTitle className="font-doto font-black text-2xl uppercase tracking-tighter mb-2">
+                    {editingSourceId ? "Edit Source" : "Add New Source"}
+                  </DialogTitle>
                   <DialogDescription className="text-gray-600 font-bold uppercase tracking-widest text-xs">
                     Register a new verified marketplace or brand website.
                   </DialogDescription>
@@ -280,6 +344,18 @@ export default function SourcesPage() {
                       required
                       className="h-12 border-2 border-black rounded-none focus:ring-0 focus:bg-yellow-50 focus:border-black font-mono text-sm"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold uppercase tracking-wider block">Price Selector (Optional)</label>
+                    <Input
+                      placeholder="E.G. .a-price-whole, #priceblock_ourprice"
+                      value={formData.priceSelector}
+                      onChange={e => setFormData({ ...formData, priceSelector: e.target.value })}
+                      className="h-12 border-2 border-black rounded-none focus:ring-0 focus:bg-yellow-50 focus:border-black font-mono text-sm"
+                    />
+                    <p className="text-[10px] uppercase font-bold text-gray-400">
+                      CSS Selector to target precise price element.
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -322,7 +398,7 @@ export default function SourcesPage() {
                     </Button>
                     <Button type="submit" disabled={submitting} className="rounded-none border-2 border-black bg-emerald-500 text-black hover:bg-emerald-400 font-bold uppercase tracking-wider h-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                       {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
-                      Add Source
+                      {editingSourceId ? "Update Source" : "Add Source"}
                     </Button>
                   </DialogFooter>
                 </form>
@@ -363,13 +439,27 @@ export default function SourcesPage() {
                               <span className="px-2 py-1 text-[10px] font-bold uppercase tracking-widest h-auto border border-black bg-yellow-300 text-black">{source.category}</span>
                             </div>
                             <p className="text-sm font-mono text-gray-500 flex items-center gap-2 truncate">
-                              <span className="truncate border-b border-dashed border-gray-400">{source.url}</span>
+                              <span className="truncate border-b border-dashed border-gray-400 max-w-[200px]">{source.url}</span>
                               <ExternalLink className="w-3 h-3 shrink-0 opacity-50" />
+                              {source.priceSelector && (
+                                <span className="ml-2 px-2 py-0.5 bg-gray-100 border border-black text-[10px] text-black rounded-none font-bold uppercase tracking-wider shrink-0">
+                                  {source.priceSelector}
+                                </span>
+                              )}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center justify-end gap-3 sm:border-l-2 sm:border-black sm:pl-6 shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => openEditDialog(source)}
+                            className="h-10 w-10 rounded-none border-2 border-black text-black hover:bg-black hover:text-white transition-all mr-2"
+                            title="Edit Source"
+                          >
+                            <Zap className="w-4 h-4" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
@@ -451,14 +541,16 @@ export default function SourcesPage() {
 
             <Dialog open={isRuleDialogOpen} onOpenChange={setIsRuleDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="h-12 px-6 text-sm font-bold uppercase tracking-wider rounded-none border-2 border-black bg-red-600 text-white hover:bg-black hover:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                <Button onClick={openAddRuleDialog} className="h-12 px-6 text-sm font-bold uppercase tracking-wider rounded-none border-2 border-black bg-red-600 text-white hover:bg-black hover:text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Rule
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px] border-4 border-black rounded-none shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] p-8">
                 <DialogHeader>
-                  <DialogTitle className="font-doto font-black text-2xl uppercase tracking-tighter mb-2">Create Filter Rule</DialogTitle>
+                  <DialogTitle className="font-doto font-black text-2xl uppercase tracking-tighter mb-2">
+                    {editingRuleId ? "Edit Filter Rule" : "Create Filter Rule"}
+                  </DialogTitle>
                   <DialogDescription className="text-gray-600 font-bold uppercase tracking-widest text-xs">
                     Define a new pattern to exclude from search results.
                   </DialogDescription>
@@ -527,7 +619,7 @@ export default function SourcesPage() {
                     </Button>
                     <Button type="submit" disabled={submitting} className="rounded-none border-2 border-black bg-red-600 text-white hover:bg-red-500 font-bold uppercase tracking-wider h-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                       {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
-                      Add Rule
+                      {editingRuleId ? "Update Rule" : "Add Rule"}
                     </Button>
                   </DialogFooter>
                 </form>
@@ -573,6 +665,15 @@ export default function SourcesPage() {
                       </div>
 
                       <div className="flex items-center justify-end gap-3 sm:border-l-2 sm:border-black sm:pl-6 shrink-0">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => openEditRuleDialog(rule)}
+                          className="h-10 w-10 rounded-none border-2 border-black text-black hover:bg-black hover:text-white transition-all mr-2"
+                          title="Edit Rule"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

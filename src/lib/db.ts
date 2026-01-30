@@ -32,6 +32,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 export default prisma;
 
+// Force HMR reload for schema update
+
 /**
  * Generate deterministic embedding vector for text
  * This function creates a 1536-dimensional vector for semantic search

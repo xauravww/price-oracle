@@ -144,12 +144,39 @@ function parseAIResponse<T>(content: string): T {
   }
 }
 
+import * as cheerio from 'cheerio';
+
 /**
  * Heuristic-based regex parser to extract prices from snippets when AI fails.
  * Targets common Indian currency formats and filters out EMI/Discount false positives.
+ * ALSO SUPPORTS: Targeted CSS extraction if selector provided.
  */
-function extractPriceWithRegex(text: string): string | undefined {
+async function extractPriceWithRegex(text: string, selector?: string): Promise<string | undefined> {
   if (!text) return undefined;
+
+  // 0. CSS Selector Strategy (Highest Priority)
+  if (selector) {
+    try {
+      const $ = cheerio.load(text);
+      const selectedText = $(selector).first().text().trim();
+      if (selectedText) {
+        // Clean up the text: remove newlines, multiple spaces
+        const cleanPrice = selectedText.replace(/\s+/g, ' ').trim();
+
+        // Validate if it looks like a price (contains digits)
+        if (/\d/.test(cleanPrice)) {
+          // Ensure currency symbol if missing
+          if (!/^[₹$Rs]/.test(cleanPrice) && !/currencies/i.test(cleanPrice)) {
+            // Simple heuristic: if just a number, prepend ₹
+            if (/^[\d,.]+$/.test(cleanPrice)) return `₹${cleanPrice}`;
+          }
+          return cleanPrice;
+        }
+      }
+    } catch (e) {
+      console.warn("CSS Selector extraction failed:", e);
+    }
+  }
 
   // Patterns for price extraction
   // 1. Standalone large numbers with commas (e.g., 1,19,999)
@@ -281,7 +308,16 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
     // 1. Get Trusted Sources
     const sources = await prisma.trustedSource.findMany({
       where: { isActive: true },
-      select: { url: true },
+      select: { url: true, priceSelector: true } as any,
+    });
+
+    // Map domain to selector for quick lookup
+    const selectorMap = new Map<string, string>();
+    sources.forEach((s: any) => {
+      try {
+        const hostname = new URL(s.url).hostname.replace('www.', '');
+        if (s.priceSelector) selectorMap.set(hostname, s.priceSelector);
+      } catch (e) { }
     });
 
     // 2. Define Search Promises
@@ -426,7 +462,14 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
               if (fallbackExtraction[0]?.price) {
                 price = fallbackExtraction[0].price;
               } else {
-                const regexPrice = extractPriceWithRegex(cleanContent);
+                let knownSelector = undefined;
+                try {
+                  // Try to look up selector from map if we have the URL
+                  const fallbackHostname = new URL(targetUrl).hostname.replace('www.', '');
+                  knownSelector = selectorMap.get(fallbackHostname);
+                } catch (e) { }
+
+                const regexPrice = await extractPriceWithRegex(cleanContent, knownSelector);
                 if (regexPrice) {
                   price = regexPrice;
                 }
@@ -437,9 +480,30 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
           }
         }
 
+        // Lookup selector
+        let selector = undefined;
+        try {
+          const resultHostname = new URL(r.url).hostname.replace('www.', '');
+          selector = selectorMap.get(resultHostname);
+        } catch (e) { }
+
+        const extracted = await extractPriceWithRegex(r.body, selector); // Try body first with selector
+
+        let finalPrice = price;
+        if (!finalPrice) {
+          // If body extraction worked, use it
+          if (extracted) finalPrice = extracted;
+          // Otherwise fallback to title extraction (sync)
+          else {
+            // We need to await title extraction if we change it to async too, but currently it's same function.
+            // Since extractPriceWithRegex is now async, we must await it even for title.
+            finalPrice = await extractPriceWithRegex(r.title);
+          }
+        }
+
         return {
           ...r,
-          price: price || extractPriceWithRegex(r.title) || extractPriceWithRegex(r.body)
+          price: finalPrice
         };
       }));
 
@@ -511,9 +575,12 @@ async function getWebMarketPrices(query: string, deepSearch: boolean = false): P
           console.error("Drill down failed:", err);
         }
       }
+      const titlePrice = await extractPriceWithRegex(r.title);
+      const bodyPrice = await extractPriceWithRegex(r.body);
+
       return {
         ...r,
-        price: ext?.price || extractPriceWithRegex(r.title) || extractPriceWithRegex(r.body)
+        price: ext?.price || titlePrice || bodyPrice
       };
     }));
 
@@ -966,11 +1033,12 @@ export async function getTrustedSources() {
   });
 }
 
-export async function addTrustedSource(name: string, url: string, category: string) {
+export async function addTrustedSource(name: string, url: string, category: string, priceSelector?: string) {
   try {
     const trimmedName = name.trim();
     const trimmedUrl = url.trim().toLowerCase();
     const trimmedCategory = category.trim();
+    const trimmedSelector = priceSelector?.trim() || null;
 
     if (!trimmedName || !trimmedUrl || !trimmedCategory) {
       return { success: false, error: "All fields are required" };
@@ -997,8 +1065,9 @@ export async function addTrustedSource(name: string, url: string, category: stri
         name: trimmedName,
         url: trimmedUrl,
         category: trimmedCategory,
+        priceSelector: trimmedSelector,
         isActive: true,
-      },
+      } as any,
     });
 
     revalidatePath('/admin/sources');
@@ -1054,6 +1123,58 @@ export async function deleteReportedUrl(id: number) {
   try {
     await prisma.reportedUrl.delete({ where: { id } });
     revalidatePath('/admin/reports');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updateTrustedSource(id: number, data: { name?: string, url?: string, category?: string, priceSelector?: string }) {
+  try {
+    const updateData: any = {};
+    if (data.name) updateData.name = data.name.trim();
+    if (data.url) {
+      const trimmedUrl = data.url.trim().toLowerCase();
+      try {
+        new URL(trimmedUrl);
+        updateData.url = trimmedUrl;
+      } catch {
+        return { success: false, error: "Invalid URL format" };
+      }
+
+      const existing = await prisma.trustedSource.findUnique({ where: { url: trimmedUrl } });
+      if (existing && existing.id !== id) {
+        return { success: false, error: "Another source with this URL already exists" };
+      }
+    }
+    if (data.category) updateData.category = data.category.trim();
+    if (data.priceSelector !== undefined) updateData.priceSelector = data.priceSelector?.trim() || null;
+
+    await prisma.trustedSource.update({
+      where: { id },
+      data: updateData,
+    });
+
+    revalidatePath('/admin/sources');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updateBlacklistRule(id: number, data: { pattern?: string, type?: 'DOMAIN' | 'REGEX', description?: string }) {
+  try {
+    const updateData: any = {};
+    if (data.pattern) updateData.pattern = data.pattern.trim();
+    if (data.type) updateData.type = data.type;
+    if (data.description !== undefined) updateData.description = data.description?.trim() || null;
+
+    await prisma.blacklistRule.update({
+      where: { id },
+      data: updateData,
+    });
+
+    revalidatePath('/admin/sources');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };

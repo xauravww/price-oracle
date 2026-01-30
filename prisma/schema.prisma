@@ -53,8 +53,9 @@ model TrustedSource {
   name      String
   url       String   @unique
   category  String
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  priceSelector String?  @map("price_selector")
 
   @@index([category])
   @@map("trusted_sources")
